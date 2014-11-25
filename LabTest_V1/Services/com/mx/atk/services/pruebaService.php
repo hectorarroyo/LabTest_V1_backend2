@@ -1,5 +1,5 @@
 <?php
-//cambio desde linea
+//cambio desde linea hecha por cuenta externa
 require_once ("generalService.php");
 
 class pruebaService extends generalService //mismo nombre que el archivo
