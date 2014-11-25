@@ -36,9 +36,13 @@ class pruebaService extends generalService //mismo nombre que el archivo
 //cambio numero dos realizado cuando se hizo un cambio en linea con cuenta externa
 $test = 110;
 
+<<<<<<< HEAD
 
 $test = 23459;
 
+=======
+$test = 2345;
+>>>>>>> FETCH_HEAD
 
 
 //prueba uno
