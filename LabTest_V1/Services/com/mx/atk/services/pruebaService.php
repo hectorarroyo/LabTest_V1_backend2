@@ -1,5 +1,5 @@
 <?php
-
+//cambio desde linea
 require_once ("generalService.php");
 
 class pruebaService extends generalService //mismo nombre que el archivo
@@ -17,7 +17,7 @@ class pruebaService extends generalService //mismo nombre que el archivo
 		
 			return "OK";
 	}
-	/**Prueba de servicios que recibe un par‡metro0**/
+	/**Prueba de servicios que recibe un parâ€¡metro0**/
 	public function sumaVar($SumVar)
 	{
 		$var =  5;
