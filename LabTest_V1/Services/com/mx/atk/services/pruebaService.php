@@ -36,7 +36,7 @@ class pruebaService extends generalService //mismo nombre que el archivo
 //cambio numero dos realizado cuando se hizo un cambio en linea con cuenta externa
 $test = 110;
 
-$test = 23;
+$test = 2345;
 
 
 //prueba uno
