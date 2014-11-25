@@ -36,6 +36,8 @@ class pruebaService extends generalService //mismo nombre que el archivo
 //cambio numero dos realizado cuando se hizo un cambio en linea con cuenta externa
 $test = 10;
 
+$test = 23;
+
 
 //prueba uno
 $table = "tabla_prueba";
