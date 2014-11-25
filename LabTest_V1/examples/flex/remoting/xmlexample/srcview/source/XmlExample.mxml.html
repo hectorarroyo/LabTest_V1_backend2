@@ -1,0 +1,56 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>XmlExample.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> creationComplete=&quot;init<span class="asBracket">()</span>&quot; xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">578</span>&quot; height=&quot;<span class="mxmlString">230</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+<span class="mxmlTag">&lt;mx:Script&gt;</span>
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+        <span class="asReserved">import</span> mx.controls.Alert;
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+        <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+        
+        <span class="asReserved">private</span> <span class="asVar">var</span> xmlExampleService<span class="asOperator">:</span>RemoteObject;
+
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> sourceDataGrid<span class="asOperator">:</span>XMLList;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            xmlExampleService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+            xmlExampleService.source <span class="asOperator">=</span> <span class="asString">&quot;weborb.examples.XmlExample&quot;</span>;
+            xmlExampleService.getData.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, onResult <span class="asBracket">)</span>;
+            xmlExampleService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;            
+            xmlExampleService.getData<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString, <span class="asString">&quot;Error&quot;</span> <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onResult<span class="asBracket">(</span>result<span class="asOperator">:</span>ResultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            sourceDataGrid <span class="asOperator">=</span> result.result.customer;
+        <span class="asBracket">}</span>
+        
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+<span class="mxmlTag">&lt;/mx:Script&gt;</span>    
+    <span class="mxmlComponent">&lt;mx:DataGrid</span> dataProvider=&quot;<span class="mxmlString">{</span>sourceDataGrid<span class="mxmlString">}</span>&quot; top=&quot;<span class="mxmlString">10</span>&quot; bottom=&quot;<span class="mxmlString">10</span>&quot; left=&quot;<span class="mxmlString">10</span>&quot; right=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Id</span>&quot; dataField=&quot;<span class="mxmlString">@id</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">First name</span>&quot; dataField=&quot;<span class="mxmlString">@firstname</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Last name</span>&quot; dataField=&quot;<span class="mxmlString">@lastname</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Phone</span>&quot; dataField=&quot;<span class="mxmlString">@phone</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">City</span>&quot; dataField=&quot;<span class="mxmlString">@city</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Country</span>&quot; dataField=&quot;<span class="mxmlString">@country</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

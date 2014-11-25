@@ -1,0 +1,77 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>remove.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">520</span>&quot; height=&quot;<span class="mxmlString">390</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.events.CloseEvent;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> FoodAndDrinks.Product;
+            <span class="asReserved">import</span> FoodAndDrinks.ActiveRecords;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> OnDelete<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> selectedProduct<span class="asOperator">:</span>Product <span class="asOperator">=</span> Product<span class="asBracket">(</span>grdProducts.selectedItem<span class="asBracket">)</span>;
+                
+                Alert.show<span class="asBracket">(</span><span class="asString">&quot;Are you sure you would like to remove product \&quot;&quot;</span> <span class="asOperator">+</span> selectedProduct.Name <span class="asOperator">+</span> <span class="asString">&quot;\&quot; ?&quot;</span>,
+                    <span class="asString">&quot;Food &amp; Drinks&quot;</span>,
+                    Alert.YES <span class="asOperator">|</span> Alert.NO,
+                    <span class="asReserved">this</span>,
+                    <span class="asFunction">function</span><span class="asBracket">(</span>closeEvent<span class="asOperator">:</span>CloseEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                    <span class="asBracket">{</span>
+                        <span class="asReserved">if</span><span class="asBracket">(</span>closeEvent.detail <span class="asOperator">==</span> Alert.YES<span class="asBracket">)</span>
+                        <span class="asBracket">{</span>
+                            <span class="asComment">// [ProductInstance].remove() is a WDMF API to remove a record from the database                            
+</span>                            selectedProduct.remove<span class="asBracket">()</span>;
+                            
+                            <span class="asReserved">if</span><span class="asBracket">(</span> grdProducts.dataProvider.length <span class="asOperator">&gt;</span> 0 <span class="asBracket">)</span>
+                                grdProducts.selectedIndex <span class="asOperator">=</span> 0;
+                        <span class="asBracket">}</span>
+                    <span class="asBracket">})</span>;    
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> title=&quot;<span class="mxmlString">WebORB Data Management for Flex - Data Removal Example</span>&quot; width=&quot;<span class="mxmlString">500</span>&quot; height=&quot;<span class="mxmlString">370</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComment">&lt;!--</span><span class="mxmlComment">
+        The dataProvider for the datagrid is a result of the findAll() method call. 
+        The method fetches all records from the Product table. The data is retrieved 
+        asynchronously, but the method returns a bindable place holder result value
+        right away. When the data arrives from the server, WDMF populates the placeholder
+        with the actual data. Each item in the collection is an instance of the Product 
+        class
+        </span><span class="mxmlComment">--&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> id=&quot;<span class="mxmlString">grdProducts</span>&quot;  width=&quot;<span class="mxmlString">460</span>&quot; height=&quot;<span class="mxmlString">142</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot;
+            dataProvider=&quot;<span class="mxmlString">{</span>ActiveRecords.Product.findAll<span class="asBracket">()</span><span class="mxmlString">}</span>&quot; <span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">ID</span>&quot; dataField=&quot;<span class="mxmlString">ProductId</span>&quot; width=&quot;<span class="mxmlString">30</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; <span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Name</span>&quot; dataField=&quot;<span class="mxmlString">Name</span>&quot; width=&quot;<span class="mxmlString">100</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Price</span>&quot; dataField=&quot;<span class="mxmlString">Price</span>&quot; width=&quot;<span class="mxmlString">100</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Picture</span>&quot; dataField=&quot;<span class="mxmlString">PictureFileName</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Delete Record</span>&quot;  width=&quot;<span class="mxmlString">125</span>&quot; x=&quot;<span class="mxmlString">315</span>&quot; y=&quot;<span class="mxmlString">288</span>&quot; click=&quot;OnDelete<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">26.5</span>&quot; y=&quot;<span class="mxmlString">168</span>&quot; width=&quot;<span class="mxmlString">419</span>&quot; height=&quot;<span class="mxmlString">107</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#e6eff2</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">20</span>&quot; y=&quot;<span class="mxmlString">27</span>&quot; text=&quot;<span class="mxmlString">Product Name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">20</span>&quot; y=&quot;<span class="mxmlString">53</span>&quot; text=&quot;<span class="mxmlString">Product Price:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComment">&lt;!--</span><span class="mxmlComment"> 
+            The labels below are bound to the product name (.Name) and product price (.Price) 
+            for the currently select item in the data grid (grdProducts.selectedItem). 
+            Since the data grid&apos;s data provider uses a result of a WDMF operation, all the data provider 
+            elements are the WDMF generated objects (Product object in this example).
+            </span><span class="mxmlComment">--&gt;</span>            
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">115</span>&quot; y=&quot;<span class="mxmlString">27</span>&quot; text=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.Name<span class="mxmlString">}</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">115</span>&quot; y=&quot;<span class="mxmlString">53</span>&quot; text=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.Price<span class="mxmlString">}</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Box</span> x=&quot;<span class="mxmlString">267</span>&quot; y=&quot;<span class="mxmlString">12</span>&quot;  borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Image</span> id=&quot;<span class="mxmlString">imgPreview</span>&quot; width=&quot;<span class="mxmlString">139</span>&quot; height=&quot;<span class="mxmlString">82</span>&quot; source=&quot;<span class="mxmlString">images/{</span>grdProducts.selectedItem.PictureFileName<span class="mxmlString">}</span>&quot; <span class="mxmlComponent">/&gt;</span>                
+            <span class="mxmlComponent">&lt;/mx:Box&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

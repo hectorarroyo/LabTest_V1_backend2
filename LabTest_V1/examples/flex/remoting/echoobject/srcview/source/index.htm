@@ -1,0 +1,115 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Echoing ActionScript object between Flex and .NET</title>
+<LINK href="..\..\..\orbexamples.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Echoing an ActionScript object between Flex and .NET</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Usage of RemoteObject to exchange complex type data between Flex 
+			client and a .NET object</li>
+			<li>Invocation of a remote method in a C# class with a complex type 
+			argument</li>
+			<li>Response and error handling</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/EchoComplexType.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td><a href="server-code">Browse</a>&nbsp;
+		<a href="server-code/IdentityServiceSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Product edition 
+		availability:</td>
+		<td>
+		  	<ul>
+				<li>WebORB Standard Edition (localhost clients only)</li>
+				<li>WebORB Professional Edition</li>
+				<li>WebORB Enterprise Edition</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+		  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+					id="EchoComplexType" width="679" height="256"
+					codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+					<param name="movie" value="EchoComplexType.swf" />
+					<param name="quality" value="high" />
+					<param name="bgcolor" value="#869ca7" />
+					<param name="allowScriptAccess" value="sameDomain" />
+					<embed src="EchoComplexType.swf" quality="high" bgcolor="#869ca7"
+						width="679" height="256" name="EchoComplexType" align="middle"
+						play="true"
+						loop="false"
+						quality="high"
+						allowScriptAccess="sameDomain"
+						type="application/x-shockwave-flash"
+						pluginspage="http://www.adobe.com/go/getflashplayer">
+					</embed>
+			</object>		
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>The example uses RemoteObject API to declare a reference to 
+			a remote .NET class</li>
+			<li>The button click handler creates a generic ('untyped') 
+			ActionScript object and populates it with data from the 
+			'Client-side' box controls.<br>
+&nbsp;<table border="1" style="border-collapse: collapse" cellpadding="3" bgcolor="#E5E5E5" id="table2" bordercolor="#999999">
+				<tr>
+					<td class="bottomCell"><font face="Courier New">var 
+					myIdentity:Object = new Object();<br>
+					myIdentity.name = nameFieldClient.text;<br>
+					myIdentity.age = ageClient.value;<br>
+					myIdentity.sex = genderGroup.selectedValue;<br>
+					myIdentity.eyeColor = eyeColorClient.selectedItem;</font></td>
+				</tr>
+			</table><br>
+			</li>
+			<li>The example sends the ActionScript object to the server. WebORB 
+			adapts the data structure received from the client to the formal 
+			argument type of the invoked method</li>
+			<li>.NET class makes a change in the received object and returns the 
+			same instance back to the client. On the client-side the object 
+			received in the 'gotNewIdentity' handler is not the same instance 
+			sent in the request.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Explore example's source code (click Browse or right-mouse click 
+			and select View Source)</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

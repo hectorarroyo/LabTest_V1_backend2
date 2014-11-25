@@ -1,0 +1,110 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ComplexTypeTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+    
+    <span class="asReserved">import</span> weborb.tests.Employee;
+    <span class="asReserved">import</span> flash.net.registerClassAlias;
+    
+    <span class="asReserved">public</span> <span class="asClass">class</span> ComplexTypeTest
+    <span class="asBracket">{</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> complexType<span class="asOperator">:</span>ComplexType;
+        <span class="asReserved">private</span> <span class="asVar">var</span> remoteObject<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        
+        <span class="asReserved">private</span> <span class="asVar">var</span> testString<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asString">&quot;Joe Orbman&quot;</span>;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> ComplexTypeTest<span class="asBracket">(</span>application<span class="asOperator">:</span>Object<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asComment">//flash.net.registerClassAlias( &quot;tests.ComplexType&quot;, tests.ComplexType );
+</span>            <span class="asReserved">this</span>.summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+            remoteObject <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               remoteObject.destination <span class="asOperator">=</span> <span class="asString">&quot;ComplexTypesTest&quot;</span>;
+               remoteObject.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, onFault<span class="asBracket">)</span>;
+               
+               remoteObject.echoComplexType.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoComplexType_Result<span class="asBracket">)</span>;
+               remoteObject.echoNullComplexType.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoNullComplexType_Result<span class="asBracket">)</span>;
+               remoteObject.getEmployee.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, getEmployee_Result<span class="asBracket">)</span>;
+               remoteObject.setEmployee.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, setEmployee_Result<span class="asBracket">)</span>;
+               remoteObject.getEnumType.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, getEnumType_Result<span class="asBracket">)</span>;               
+               <span class="asReserved">this</span>.complexType <span class="asOperator">=</span> <span class="asReserved">new</span> ComplexType<span class="asBracket">(</span> 2 <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asComment">// ***************** named type declaration *************************
+</span>
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runComplexTypeTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            remoteObject.echoComplexType<span class="asBracket">(</span> <span class="asReserved">this</span>.complexType <span class="asBracket">)</span>;
+            remoteObject.echoNullComplexType<span class="asBracket">(</span> <span class="asReserved">null</span> <span class="asBracket">)</span>;
+            remoteObject.getEmployee<span class="asBracket">(</span> testString <span class="asBracket">)</span>;
+            <span class="asVar">var</span> emp<span class="asOperator">:</span>Employee <span class="asOperator">=</span> <span class="asReserved">new</span> Employee<span class="asBracket">()</span>;
+            emp.employeeName <span class="asOperator">=</span> testString;
+            remoteObject.setEmployee<span class="asBracket">(</span> emp <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoComplexType_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> complexType.equals<span class="asBracket">(</span> event.result <span class="asBracket">)</span> <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: complex type test - echoComplexType&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: complex type test - echoComplexType&quot;</span> <span class="asBracket">)</span>;
+          application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoNullComplexType_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: complex type test - echoNullComplexType&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: complex type test - echoNullComplexType&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+
+    <span class="asReserved">public</span> <span class="asFunction">function</span> getEnumType_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        Alert.show<span class="asBracket">(</span> event.result.toString<span class="asBracket">()</span> <span class="asBracket">)</span>;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> getEmployee_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asComment">//Alert.show(event.result.toString(), &apos;Debug&apos;);
+</span>        <span class="asComment">//var employee:Employee = event.result as Employee;
+</span>        
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result.employeeName <span class="asOperator">==</span> testString <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: complex type test - getEmployee&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: complex type test - getEmployee&quot;</span> <span class="asBracket">)</span>;    
+            
+      application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;    
+    <span class="asBracket">}</span>    
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> setEmployee_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: complex type test - setEmployee&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: complex type test - setEmployee&quot;</span> <span class="asBracket">)</span>;
+            
+          application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span>        </pre></body>
+</html>

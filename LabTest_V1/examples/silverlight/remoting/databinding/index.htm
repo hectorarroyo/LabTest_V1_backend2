@@ -1,0 +1,107 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Using Flex client security API</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+   <style type="text/css">
+    #silverlightControlHost {
+	    height:300;
+	    width:700;
+    }
+    </style>
+    <script type="text/javascript">
+        function onSilverlightError(sender, args) {
+
+            var appSource = "";
+            if (sender != null && sender != 0) {
+                appSource = sender.getHost().Source;
+            }
+            var errorType = args.ErrorType;
+            var iErrorCode = args.ErrorCode;
+
+            var errMsg = "Unhandled Error in Silverlight 2 Application " +  appSource + "\n" ;
+
+            errMsg += "Code: "+ iErrorCode + "    \n";
+            errMsg += "Category: " + errorType + "       \n";
+            errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+            if (errorType == "ParserError")
+            {
+                errMsg += "File: " + args.xamlFile + "     \n";
+                errMsg += "Line: " + args.lineNumber + "     \n";
+                errMsg += "Position: " + args.charPosition + "     \n";
+            }
+            else if (errorType == "RuntimeError")
+            {
+                if (args.lineNumber != 0)
+                {
+                    errMsg += "Line: " + args.lineNumber + "     \n";
+                    errMsg += "Position: " +  args.charPosition + "     \n";
+                }
+                errMsg += "MethodName: " + args.methodName + "     \n";
+            }
+
+            throw new Error(errMsg);
+        }
+    </script>
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Silverlight Grid, Data binding and Remote Data</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Usage of the WeborbClient API to retrieve data from a PHP data source
+			and display it in a data grid</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a target="_blank" href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/DataBinding.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td>
+        <a target="_blank" href="../../../flex/remoting/databinding/server-code">Browse</a>&nbsp;
+        <a href="../../../flex/remoting/databinding/server-code/DataBindingSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+		<div id='errorLocation' style="font-size: small;color: Gray;"></div>
+		<div id="silverlightControlHost">
+		<object data="data:application/x-silverlight," type="application/x-silverlight-2-b2" width="100%" height="100%">
+			<param name="source" value="ClientBin/DataGridDataBinding.xap"/>
+			<param name="onerror" value="onSilverlightError" />
+			<param name="background" value="gray" />
+			<param name="initParams" value="WebORBURL=weborb.php" />
+
+			<a href="http://go.microsoft.com/fwlink/?LinkID=115261" style="text-decoration: none;">
+     			<img src="http://go.microsoft.com/fwlink/?LinkId=108181" alt="Get Microsoft Silverlight" style="border-style: none"/>
+			</a></object>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>PHP class returns data from mysql_query</li>
+			<li>WebORB handles conversation of the returned data type into an array so it can be used in Grid's ItemsSource</li>
+		</ul>
+		&nbsp;</td>
+	</tr>
+	</table>
+
+</body>
+
+</html>

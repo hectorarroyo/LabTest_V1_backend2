@@ -1,0 +1,143 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>main.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot;
+    creationComplete=&quot;onCreationComplete<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>        
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.collections.ArrayCollection;  
+        <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+        <span class="asReserved">import</span> mx.controls.Alert;  
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent
+        <span class="asReserved">import</span> mx.rpc.events.FaultEvent
+        <span class="asReserved">import</span> tests.<span class="asOperator">*</span>; 
+
+        <span class="asReserved">private</span> <span class="asVar">var</span> primitiveTest<span class="asOperator">:</span>PrimitiveTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> stringsTest<span class="asOperator">:</span>StringTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> primitiveArrayTest<span class="asOperator">:</span>ArrayOfPrimitivesTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> complexTypesTest<span class="asOperator">:</span>ComplexTypeTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> multipleArgsTest<span class="asOperator">:</span>MultipleArgsTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> dataAccessTest<span class="asOperator">:</span>DatabaseTest;
+        <span class="asReserved">private</span> <span class="asVar">var</span> secureInvokeTest<span class="asOperator">:</span>SecureInvocationTest;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> log<span class="asOperator">:</span>ArrayCollection <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">()</span>;
+        
+        <span class="asComment">//[Bindable]
+</span>        <span class="asComment">//private var summaryList:Array = new Array(); 
+</span>        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onCreationComplete<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+           <span class="asBracket">{</span>
+               primitiveTest <span class="asOperator">=</span> <span class="asReserved">new</span> PrimitiveTest<span class="asBracket">(</span> <span class="asReserved">this</span><span class="asBracket">)</span>;
+               stringsTest <span class="asOperator">=</span> <span class="asReserved">new</span> StringTest<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+               primitiveArrayTest <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayOfPrimitivesTest<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+               complexTypesTest <span class="asOperator">=</span> <span class="asReserved">new</span> ComplexTypeTest<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+               multipleArgsTest <span class="asOperator">=</span> <span class="asReserved">new</span> MultipleArgsTest<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+               dataAccessTest <span class="asOperator">=</span> <span class="asReserved">new</span> DatabaseTest<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+               secureInvokeTest <span class="asOperator">=</span> <span class="asReserved">new</span> SecureInvocationTest<span class="asBracket">(</span> <span class="asReserved">this</span> <span class="asBracket">)</span>;
+           <span class="asBracket">}</span> 
+           
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onEchoInt<span class="asBracket">(</span>event<span class="asOperator">:</span>ResultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span> event.result.toString<span class="asBracket">()</span> , <span class="asString">&quot;Echo Int Result&quot;</span><span class="asBracket">)</span>; 
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runPrimitiveTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            log.removeAll<span class="asBracket">()</span>;
+            primitiveTest.runPrimitiveTests<span class="asBracket">(</span>log<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runStringsTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            stringsTest.runStringTests<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runPrimitiveArraysTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            primitiveArrayTest.runPrimitiveArraysTests<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runComplexTypesTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            complexTypesTest.runComplexTypeTests<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runMultipleArgsTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            multipleArgsTest.runMultipleArgsTests<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runDataAccessTest<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            dataAccessTest.runTests<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runSecureInvocation<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summary.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            secureInvokeTest.runSecureTests<span class="asBracket">()</span>;            
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> setSummary<span class="asBracket">(</span>array<span class="asOperator">:</span>Array<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            log <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">(</span>array<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> setDataOutput<span class="asBracket">(</span>array<span class="asOperator">:</span>Array<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            dataOutput.dataProvider <span class="asOperator">=</span> array;
+        <span class="asBracket">}</span>
+        
+           
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>  
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">11</span>&quot; width=&quot;<span class="mxmlString">711</span>&quot; height=&quot;<span class="mxmlString">464</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">WebORB Flex RPC Test Suite</span>&quot; backgroundColor=&quot;<span class="mxmlString">#8bb6a0</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">23</span>&quot; label=&quot;<span class="mxmlString">Run Primitive Tests</span>&quot; click=&quot;runPrimitiveTests<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">53</span>&quot; label=&quot;<span class="mxmlString">Run Strings Tests</span>&quot; click=&quot;runStringsTests<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton0</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">83</span>&quot; label=&quot;<span class="mxmlString">Run Primitive Array Tests</span>&quot; click=&quot;runPrimitiveArraysTests<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton1</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">113</span>&quot; label=&quot;<span class="mxmlString">Run Complex Type Tests</span>&quot; click=&quot;runComplexTypesTests<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton2</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">143</span>&quot; label=&quot;<span class="mxmlString">Run Multiple Args Tests</span>&quot; click=&quot;runMultipleArgsTests<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton3</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">173</span>&quot; label=&quot;<span class="mxmlString">Run Data Access Test</span>&quot; click=&quot;runDataAccessTest<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton4</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">203</span>&quot; label=&quot;<span class="mxmlString">Run Secure Invocation</span>&quot; click=&quot;runSecureInvocation<span class="asBracket">()</span>&quot;  width=&quot;<span class="mxmlString">183</span>&quot; id=&quot;<span class="mxmlString">primitiveTestButton5</span>&quot; fillColors=&quot;<span class="mxmlString">[#ffffff, #ffffff]</span>&quot; fillAlphas=&quot;<span class="mxmlString">[0.82, 1.0]</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">279</span>&quot; width=&quot;<span class="mxmlString">671</span>&quot; id=&quot;<span class="mxmlString">dataOutput</span>&quot; height=&quot;<span class="mxmlString">135</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">CustomerID</span>&quot; dataField=&quot;<span class="mxmlString">CustomerID</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Company Name</span>&quot; dataField=&quot;<span class="mxmlString">CompanyName</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Name</span>&quot; dataField=&quot;<span class="mxmlString">ContactName</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Title</span>&quot; dataField=&quot;<span class="mxmlString">ContactTitle</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Address</span>&quot; dataField=&quot;<span class="mxmlString">Address</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">City</span>&quot; dataField=&quot;<span class="mxmlString">City</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Region</span>&quot; dataField=&quot;<span class="mxmlString">Region</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Postal Code</span>&quot; dataField=&quot;<span class="mxmlString">PostalCode</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Country</span>&quot; dataField=&quot;<span class="mxmlString">Country</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Phone</span>&quot; dataField=&quot;<span class="mxmlString">Phone</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Fax</span>&quot; dataField=&quot;<span class="mxmlString">Fax</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> x=&quot;<span class="mxmlString">201</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">480</span>&quot; height=&quot;<span class="mxmlString">261</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>log<span class="mxmlString">}</span>&quot; id=&quot;<span class="mxmlString">summary</span>&quot; horizontalScrollPolicy=&quot;<span class="mxmlString">on</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Results</span>&quot; wordWrap=&quot;<span class="mxmlString">true</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>   
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

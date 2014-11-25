@@ -1,0 +1,508 @@
+<html><!-- InstanceBegin template="/Templates/sub2b.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Integrating Flex and PHP using WebORB | Flex PHP integration | AMF0 and
+AM3 Remoting with PHP</title>
+<!-- InstanceEndEditable --><style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 20px
+}
+
+td {
+	font-family: Tahoma;
+	font-size: 10pt;
+}
+
+-->
+</style>
+<link href="../../styles/main.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #CC6600}
+.style5 {color: #999999}
+.style6 {color: #999999}
+.style11 {font-size: 14px; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;}
+.style13 {color: #FFFFFF}
+.style13 {color: #FFFFFF}
+-->
+</style>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body topmargin="20">
+<p><font face="Arial" style="font-size: 20pt">Getting started with<font color="#FF8000"> Silverlight and 
+PHP using WebORB</font></font></p>
+<div align="center">
+  <center>
+<table border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse" bordercolor="#111111" width="700">
+                  <tr valign="top">
+                    <td style="font-family: Tahoma; font-size: 10pt" >WebORB for PHP 
+                    supports invocations of PHP classes from Silverlight client 
+                    applications. Using WebORB, Silverlight developers can
+							easily integrate  client applications with  PHP 
+                    backend without all the complexity associated with the 
+                    traditional methods Silverlight relies on.<p>
+                    This guide provides an overview of creating a Silverlight 
+                    project connecting it with a PHP
+							class using WebORB. The result of the walkthrough is a
+						Silverlight application communicating with a PHP object 
+                    which runs a database query, returns a result subsequently 
+                    rendered in Silverlight data grid component.<p>
+                    Required software:<ul>
+                      <li>WebORB for PHP 3.5 or newer</li>
+                      <li>PHP 5 or newer</li>
+                      <li>Visual Studio 2008 with Silverlight extensions, .NET 
+                      3.5</li>
+                      <li>Web server configured to run PHP</li>
+                      </ul>
+                      <p>
+                    The guide consists of the following sections:<ul>
+                        <li><a href="#weborbinstallation">WebORB installation 
+                        overview</a></li>
+                        <li><a href="#phpservice">Inspecting/Running PHP Service</a></li>
+                        <li><a href="#silverlightproject">Creating Silverlight 
+                        project</a></li>
+                        <li><a href="#clientcode">Writing client-side code</a></li>
+                        </ul>
+                        </td>
+                  </tr>
+					<tr>
+                    <td align="left" height="30" style="font-family: Tahoma; font-size: 10pt" ><b>
+                    <a name="weborbinstallation"></a>GETTING STARTED -
+					WEBORB INSTALLATION</b></td>
+                  </tr>
+					<tr>
+                    <td align="left"  background="images/dotHorz.gif" height="5" ></td>
+                  </tr>
+					<tr>
+                        <td align="center" style="font-family: Tahoma; font-size: 10pt">
+						<p align="left">Product distribution of WebORB for PHP 
+                        3.5 or above contains the
+                        following directory structure:</p>
+						<table border="0" style="border-width:1; border-style:solid; border-collapse: collapse; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px" cellpadding="5" bgcolor="#D7E8E6" id="table7">
+							<tr>
+								<td style="font-size:8pt; font-family:Tahoma"><font face="Courier New">
+								<font color="#000099">&#9516;&nbsp; WEBORB
+                                Installation directory<br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; index.php </font>------- management console
+                                point of entry<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; weborb.php </font>------- 
+                                main PHP script - place it into the&nbsp; <br>
+                                <font color="#000099">&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </font>same directory where your compiled SWF<font color="#000099"><br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </font>are located and adjust paths in the <font color="#000099">
+                                <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>require_once calls in the file<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /Services </font>------- contains deployed 'remotable'
+								PHP classes<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /examples </font>------- contains examples shipped
+								with WebORB<font color="#000099"><br>
+								&#9474;<br>
+                                &#9500;&#9472;&#9472; /Console&nbsp; </font>------- contains
+                                WebORB Management Console<font color="#000099"> <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9500;&#9472;
+                                index.php&nbsp; </font>----- main console page<font color="#000099"><br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; weborb.php&nbsp;</font>----- remoting entry point for the console <font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /weborbassets<br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; 
+                                /silverlight <br>
+                                &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &#9474;&nbsp;&nbsp;&nbsp;&nbsp; </font> <br>
+                                <font color="#000099">&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9492;&#9472; 
+                                WeborbClient.dll </font>
+                                ---- Silverlight client component<font color="#000099"><br>
+								&#9474;<br>
+								&#9492;&#9472;&#9472; /Weborb&nbsp;&nbsp; </font>
+                                ------- contains configuration, log and <br>
+                                <font color="#000099">&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>
+                                WebORB for PHP source code<font color="#000099"><br>
+&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; weborb-config.xml&nbsp; </font>----- 
+                                contains a reference to the <br>
+                                <font color="#000099">&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>
+                                /Services folder, as well as other<font color="#000099"><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</font>important weborb configuration<font color="#000099">&nbsp;
+								</font></font></td>
+							</tr>
+						</table>
+						<p align="left">
+						If you are deploying on a Windows computer with IIS,
+						make sure to grant Read/Write permissions to the IUSR_&lt;machinename&gt;
+						account for the /Weborb folder.<br>
+						<br>
+						You can verify the installation by running WebORB
+                        Management Console included with the WebORB
+						distribution.&nbsp; Open http://localhost/[WEBORB
+                        INSTALL PATH]/index.php in a
+						browser. When the console is loaded, you can inspect
+                        available PHP services using the Management tab
+                        or run the examples included with the product.</td>
+                      </tr>
+                  <tr>
+                    <td align="left" height="32" style="font-family: Tahoma; font-size: 10pt">
+                    <b><a name="phpservice"></a>PHP SERVICE</b></td>
+                  </tr>
+                  <tr>
+                    <td align="left"  background="images/dotHorz.gif" height="5" ></td>
+                  </tr>
+                  <tr>
+                        <td style="font-family: Tahoma; font-size: 10pt" valign="top">
+						<p align="left">WebORB for PHP includes several PHP 
+                        classes pre-deployed for remote access. To make a PHP 
+                        class available for remote access it must be deployed 
+                        into the /services folder from the WebORB product 
+                        distribution. You can see all deployed classes using the 
+                        WebORB Management Console. To launch the console open 
+                        index.php from the root of the WebORB installation 
+                        folder using the following URL: 
+                        http://localhost/WEBORB-HOME-PATH/index.php</p>
+						<p align="left">Click the Management tab, all deployed 
+                        services will show up in the service browser in the 
+                        Services sub-tab. In the service browser click Weborb &gt; 
+                        Examples and select CustomersDataService as shown below:</p>
+						<p align="left">
+                        <img border="0" src="images/silver8.jpg" width="327" height="430" style="border-style: solid; border-width: 1"></p>
+						<p align="left">The source code of the PHP class is 
+                        shown below:</p>
+						<div class="codediv">&lt;?php<br>
+                        class CustomersDataService<br>
+                        {<br>
+                        &nbsp;
+                        public function getCustomers()<br>
+                        &nbsp;
+                        {<br>
+                        &nbsp;&nbsp;&nbsp; $conx = mysql_connect(&quot;localhost&quot;, &quot;flexuser&quot;, 
+                        &quot;password&quot;);<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;
+                        if( $conx )<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        throw new Exception( &quot;cannot connect to mysql database&quot; 
+                        );<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;
+                        if( !mysql_select_db('northwind', $conx) )<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        throw new Exception( &quot;cannot select northwind database, 
+                        make sure to run northwing.sql from /Services/Weborb/tests&quot; 
+                        );<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;
+                        $queryResult = mysql_query(&quot;SELECT * FROM customers order by 
+                        CustomerID&quot;) or die(&quot;Invalid query: &quot; . mysql_error());<br>
+                        &nbsp;&nbsp;&nbsp; mysql_close( $conx );<br>
+                        &nbsp;&nbsp;&nbsp;
+                        return $queryResult;<br>
+                        &nbsp;
+                        }<br>
+                        }<br>
+                        ?&gt;</div>
+						<p align="left">The code runs a query against a MySQL 
+                        database. Before running the code, the database can be 
+                        created with a SQL script (northwind.sql) located in the 
+                        [WEBORB-HOME]/Services/Weborb/tests directory. Run the 
+                        script and continue below.</p>
+						<p align="left">Back in the server browser tree view select the getCustomers node which 
+                        represents the method in the CustomersDataService class 
+                        and click the Invoke button to invoke the method. You 
+                        should see the result of the method invocation as shown 
+                        below:</p>
+						<p align="left">
+                        <img border="0" src="images/silver9.gif" width="358" height="172" style="border-style: solid; border-width: 1"></p>
+						<p align="left">The object displayed in console is the 
+                        result of the actual PHP method invocation. Expand one 
+                        of the array items. The structure of individual record 
+                        in the response should be as shown below:</p>
+						<p align="left"><a name="resultstructure"></a>
+                        <img border="0" src="images/silver11.gif" width="393" height="258" style="border-style: solid; border-width: 1"></p>
+						<p align="left">The response is structured as an array 
+                        of objects. Each object represents a row in the query 
+                        result. Object field names correspond to the columns. It 
+                        is important to know the structure of the response, but 
+                        it will be more apparent when we develop the client-side 
+                        code.</p>
+						</td>
+                      </tr>
+                  <tr>
+                    <td align="left" height="32" style="font-family: Tahoma; font-size: 10pt"><b>
+                    <a name="silverlightproject"></a>CREATING A SILVERLIGHT PROJECT</b></td>
+                  </tr>
+                  <tr>
+                    <td align="left"  background="images/dotHorz.gif" height="5" ></td>
+                  </tr>
+                  <tr>
+                    <td align="left">
+						<p align="left">The instructions below will guide you through the process of creating and running a 
+                        weborb-remoting-enabled Silverlight application. The 
+                        application invokes a method on a PHP class which runs a 
+                        database query and returns a result.<ol>
+                          <li><p align="left">
+						Using Visual Studio 2008 create a &quot;Silverlight 
+                        Application&quot; project. This should be a very 
+                        straight-forward task if you are familiar with Visual 
+                        Studio 2008. If not, from the main menu select File &gt; 
+                        New &gt; Project. Assuming you develop with C#, select 
+                        &quot;Silverlight&quot; under Visual C# in the Project types tree. 
+                        Enter a name for you project (this guide uses the 
+                        Silverlight2PHP name as shown below). Click OK to create 
+                        the project<br>
+                        <br>
+                        <img border="0" src="images/newproject.jpg" width="540" height="400"><br>
+                        <br>
+&nbsp;</li>
+                          <li><p align="left">
+						The next screen provides a choice of either creating a 
+                        web application to host the Silverlight client or just 
+                        creating an HTML page for the client which would need to 
+                        be deployed to a web server. Since you are working with 
+                        PHP which is already running in a web server, it is 
+                        recommended to select an option to generate an HTML 
+                        page. However, that choice also requires that the page 
+                        is copied to the web server running your PHP script. 
+                        Make a selection as shown below and click OK:<br>
+                        <br>
+                        <img border="0" src="images/weborpage.jpg" width="443" height="381"><br>
+&nbsp;</li>
+                          <li><p align="left">
+						Modify Page.xaml to contain the following XAML markup:<font SIZE="2" COLOR="#0000ff">
+						  </font><font COLOR="#0000ff">
+						<div class="codediv">
+                          &lt;</font><font COLOR="#a31515">UserControl</font>
+                          <font COLOR="#ff0000"><br>
+&nbsp;&nbsp; x</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">Class</font><font COLOR="#0000ff">=&quot;Silverlight2PHP.Page&quot;<br>
+&nbsp;&nbsp; </font>
+                          <font COLOR="#ff0000">xmlns</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">my</font><font COLOR="#0000ff">=&quot;clr-namespace:System.Windows.Controls;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; assembly=System.Windows.Controls.Data&quot;</font>
+                          <font COLOR="#ff0000"><br>
+&nbsp;&nbsp; xmlns</font><font COLOR="#0000ff">=&quot;<a href="http://schemas.microsoft.com/winfx/2006/xaml/presentation">http://schemas.microsoft.com/winfx/2006/xaml/presentation</a>&quot;</font>
+                          <font COLOR="#ff0000"><br>
+&nbsp;&nbsp; xmlns</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">x</font><font COLOR="#0000ff">=&quot;<a href="http://schemas.microsoft.com/winfx/2006/xaml">http://schemas.microsoft.com/winfx/2006/xaml</a>&quot;</font>
+                          <font COLOR="#ff0000"><br>
+&nbsp;&nbsp; Width</font><font COLOR="#0000ff">=&quot;400&quot;</font><font COLOR="#ff0000"> 
+                          Height</font><font COLOR="#0000ff">=&quot;300&quot;&gt;<br>
+&nbsp; &lt;</font><font COLOR="#a31515">Grid</font><font COLOR="#ff0000"> 
+                          x</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">Name</font><font COLOR="#0000ff">=&quot;LayoutRoot&quot;</font><font COLOR="#ff0000"> 
+                          Background</font><font COLOR="#0000ff">=&quot;White&quot;&gt;<br>
+&nbsp; &nbsp; 
+                          &lt;</font><font COLOR="#a31515">Grid.RowDefinitions</font><font COLOR="#0000ff">&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;</font><font COLOR="#a31515">RowDefinition</font><font COLOR="#ff0000"> 
+                          Height</font><font COLOR="#0000ff">=&quot;30&quot; 
+                          /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;</font><font COLOR="#a31515">RowDefinition</font><font COLOR="#ff0000"> 
+                          Height</font><font COLOR="#0000ff">=&quot;*&quot; 
+                          /&gt;<br>
+&nbsp; &nbsp; 
+                          &lt;/</font><font COLOR="#a31515">Grid.RowDefinitions</font><font COLOR="#0000ff">&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;</font><font COLOR="#a31515">Button</font><font COLOR="#ff0000"> 
+                          x</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">Name</font><font COLOR="#0000ff">=&quot;LoadDataButton&quot;</font><font COLOR="#ff0000"> 
+                          Content</font><font COLOR="#0000ff">=&quot;Run PHP 
+                          Query&quot;</font><font COLOR="#ff0000"> <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid.Row</font><font COLOR="#0000ff">=&quot;0&quot;</font><font COLOR="#ff0000"> 
+                          Click</font><font COLOR="#0000ff">=&quot;LoadDataButton_Click&quot; 
+                          /&gt;<br>
+&nbsp; &nbsp; 
+                          &lt;</font><font COLOR="#a31515">my</font><font COLOR="#0000ff">:</font><font COLOR="#a31515">DataGrid</font><font COLOR="#ff0000"> 
+                          x</font><font COLOR="#0000ff">:</font><font COLOR="#ff0000">Name</font><font COLOR="#0000ff">=&quot;CustomersGrid&quot;</font><font COLOR="#ff0000"> 
+                          Grid.Row</font><font COLOR="#0000ff">=&quot;1&quot;</font><font COLOR="#ff0000">
+                          <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                          AlternatingRowBackground</font><font COLOR="#0000ff">=&quot;LightBlue&quot; 
+                          /&gt;<br>
+&nbsp; &lt;/</font><font COLOR="#a31515">Grid</font><font COLOR="#0000ff">&gt;<br>
+                          &lt;/</font><font COLOR="#a31515">UserControl</font><font COLOR="#0000ff">&gt;</font></div>
+                          <p>&nbsp;</li>
+                          <li>Select and right-click &quot;References&quot; in the 
+                          Solution Explorer panel. Then click &quot;Add Reference...&quot; 
+                          as shown below:<br>
+                          <img border="0" src="images/addreference.jpg" width="383" height="175" style="border-style: solid; border-width: 1"><br>
+&nbsp;</li>
+                          <li>Using the Browse tab navigate to the WebORB for 
+                          PHP installation and select WeborbClient.dll from the 
+                          [WEBORB-PATH]\weborbassets\silverlight folder as shown 
+                          below:<br>
+                          <img border="0" src="images/addweborbclientdll.jpg" width="467" height="383"><br>
+                          <br>
+                          Click OK to add the reference.<br>
+&nbsp;</li>
+                          <li>Back in the XAML editor right click anywhere in 
+                          the XAML markup and select &quot;View Code&quot; as shown below:<br>
+                          <img border="0" src="images/viewcode.jpg" width="480" height="416" style="border-style: solid; border-width: 1"><br>
+&nbsp;</li>
+                          <li><a name="clientcode"></a>Modify the code to look as shown below:<div class="codediv">
+                            <font COLOR="#0000ff">using</font> System;<font COLOR="#0000ff"><br>
+                            using</font> System.Collections.Generic;<font COLOR="#0000ff"><br>
+                            using</font> System.Windows;<font COLOR="#0000ff"><br>
+                            using</font> System.Windows.Controls;<font COLOR="#0000ff"><br>
+                            <br>
+                            </font><font COLOR="#008000">// import WebORB client 
+                            namespace</font><font COLOR="#0000ff"><br>
+                            using</font> Weborb.Client;<font COLOR="#0000ff"><br>
+                            <br>
+                            namespace</font> Silverlight2PHP<br>
+                            {<br>
+                            <font COLOR="#0000ff">&nbsp; public</font>
+                            <font COLOR="#0000ff">partial</font>
+                            <font COLOR="#0000ff">class</font>
+                            <font COLOR="#2b91af">Page</font> :
+                            <font COLOR="#2b91af">UserControl</font><br>
+&nbsp; {<br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp; // declare 
+                            a local variable for the server-side service proxy</font><br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; private</font>
+                            <font COLOR="#2b91af">WeborbClient</font> 
+                            serviceProxy;<br>
+                            <br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; public</font> 
+                            Page()<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>{<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>&nbsp; 
+                            InitializeComponent();<br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            // Initialize service proxy. The first parameter is 
+                            the URL <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // for WebORB gateway. In this case the URL is 
+                            relative. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // WeborbClient will resolve it against the URL 
+                            the client <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // application is loaded from. Alternatively the 
+                            URL can be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // absolute, such as http://host/path/weborb.php. 
+                            The second <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // argument must be an instance of UserControl. 
+                            It is used <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // for callbacks to avoid cross-thread data 
+                            access problems.</font><br>
+&nbsp; <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>serviceProxy =
+                            <font COLOR="#0000ff">new</font>
+                            <font COLOR="#2b91af">WeborbClient</font>(
+                            <font COLOR="#a31515">&quot;weborb.php&quot;</font>,
+                            <font COLOR="#0000ff">this</font> );<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>}<br>
+                            <br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp; // This 
+                            method is invoked when the user clicks the <br>
+&nbsp;&nbsp;&nbsp; // LoadDataButton button. The method performs a remote <br>
+&nbsp;&nbsp;&nbsp; // invocation of a method in the PHP class.</font><br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; private</font>
+                            <font COLOR="#0000ff">void</font> 
+                            LoadDataButton_Click( <font COLOR="#0000ff">object</font> 
+                            sender,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <font COLOR="#2b91af">RoutedEventArgs</font> e )<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>{<br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            // Create a responder with references to a function 
+                            invoked <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // when a response from service is available. The 
+                            responder <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // is a generic type. The generic parameter must 
+                            be the type <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // WebORB will convert the return value to. In 
+                            this case, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the result of a query from PHP will be 
+                            automatically <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // converted to a list of Customer objects. The 
+                            Customer <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // class (shown below) and must contain the same 
+                            properties<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // as the names of the columns in the query 
+                            result (<a href="#resultstructure">see above</a>).</font><br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>
+                            <font COLOR="#2b91af">&nbsp; Responder</font>&lt;<font COLOR="#2b91af">List</font>&lt;<font COLOR="#2b91af">Customer</font>&gt;&gt; 
+                            responder;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; responder = <font COLOR="#0000ff">new</font>
+                            <font COLOR="#2b91af">Responder</font>&lt;<font COLOR="#2b91af">List</font>&lt;<font COLOR="#2b91af">Customer</font>&gt;&gt;(GotCustomers,<font COLOR="#0000ff">null</font>);<br>
+                            <br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            // Invoke a remote method. In this case the first 
+                            argument is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the name of the PHP class, second argument is 
+                            the name of <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the method. Third argument must be an array of 
+                            parameters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // for the method invocation or null if there are 
+                            no <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // parameters. Finally the last argument is the 
+                            responder <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // object with references to the callback 
+                            functions.</font><br>
+&nbsp; <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>serviceProxy.Invoke(
+                            <font COLOR="#a31515">&quot;Weborb.Examples.CustomersDataService&quot;</font>,
+                            <font COLOR="#a31515"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            &quot;getCustomers&quot;</font>, <font COLOR="#0000ff"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            null</font>, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            responder );<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>}<br>
+                            <br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp; // The 
+                            method is invoked when a response from the remote 
+                            method<br>
+&nbsp;&nbsp;&nbsp; // invocation is available. The type of the method argument 
+                            is<br>
+&nbsp;&nbsp;&nbsp; // the same as the generic parameter type of the responder 
+                            used <br>
+&nbsp;&nbsp;&nbsp; // above.</font><br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; private</font>
+                            <font COLOR="#0000ff">void</font> GotCustomers(
+                            <font COLOR="#2b91af">List</font>&lt;<font COLOR="#2b91af">Customer</font>&gt; 
+                            customers )<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>{<br>
+                            <font COLOR="#008000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            // assign the collection of customers as the data 
+                            source of <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the customers data grid. The data will be 
+                            automatically <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // rendered as a result of the data binding.</font><br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </font>CustomersGrid.ItemsSource = customers;<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; </font>}<br>
+&nbsp;}<br>
+                            <br>
+                            <font COLOR="#0000ff">&nbsp; public</font>
+                            <font COLOR="#0000ff">class</font>
+                            <font COLOR="#2b91af">Customer</font><br>
+&nbsp;{<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; public</font>
+                            <font COLOR="#0000ff">string</font> ContactName {
+                            <font COLOR="#0000ff">get</font>;
+                            <font COLOR="#0000ff">set</font>; }<br>
+                            <font COLOR="#0000ff">&nbsp;&nbsp;&nbsp; public</font>
+                            <font COLOR="#0000ff">string</font> ContactTitle {
+                            <font COLOR="#0000ff">get</font>;
+                            <font COLOR="#0000ff">set</font>; }<br>
+&nbsp; }<br>
+                            }</div>
+                          <p>&nbsp;</li><li>Save the files and compile the project 
+                          by pressing F6 or Shift+F6.<br>
+&nbsp;</li><li>Once the project is compiled, deploy the HTML page and the XAP 
+                          file (Silverlight2PHP.html and Silverlight2PHP.xap if 
+                          you followed this guide) into the WebORB home 
+                          directory and run the Silverlight client using the 
+                          following URL: 
+                          http://host/WEBORB-HOME-PATH/Silverlight2PHP.html</li></ol>
+					</td>
+                      </tr>
+					</table>
+
+  </center>
+</div>
+</body>
+<!-- InstanceEnd --></html>

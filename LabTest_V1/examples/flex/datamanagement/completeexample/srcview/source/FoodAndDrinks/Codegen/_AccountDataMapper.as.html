@@ -1,0 +1,80 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>_AccountDataMapper.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+      <span class="asPackage">package</span> FoodAndDrinks.Codegen
+      <span class="asBracket">{</span>
+        <span class="asReserved">import</span> weborb.data.<span class="asOperator">*</span>;
+
+        <span class="asReserved">import</span> mx.rpc.AsyncToken;
+        <span class="asReserved">import</span> mx.rpc.Responder;
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+        <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+
+        <span class="asReserved">import</span> FoodAndDrinks.Account;
+        <span class="asReserved">import</span> FoodAndDrinks.DataMapperRegistry;
+      
+        <span class="asReserved">public</span> <span class="asReserved">dynamic</span> <span class="asClass">class</span> _AccountDataMapper <span class="asReserved">extends</span> DataMapper
+        <span class="asBracket">{</span>
+        
+          <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> createActiveRecordInstance<span class="asBracket">()</span><span class="asOperator">:</span>ActiveRecord
+          <span class="asBracket">{</span>
+            <span class="asReserved">return</span> <span class="asReserved">new</span> Account<span class="asBracket">()</span>;
+          <span class="asBracket">}</span>
+        
+          <span class="asReserved">protected</span> <span class="asReserved">override</span> <span class="asFunction">function</span> <span class="asReserved">get</span> RemoteClassName<span class="asBracket">()</span><span class="asOperator">:</span>String
+          <span class="asBracket">{</span>
+            <span class="asReserved">return</span> <span class="asString">&quot;FoodAndDrinks.AccountDataMapper&quot;</span>;
+          <span class="asBracket">}</span>
+          
+          <span class="asReserved">public</span> <span class="asFunction">function</span> load<span class="asBracket">(</span>account<span class="asOperator">:</span>Account, responder<span class="asOperator">:</span>Responder <span class="asOperator">=</span> <span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Account
+          <span class="asBracket">{</span>
+              <span class="asReserved">if</span><span class="asBracket">(</span><span class="asOperator">!</span>account.IsPrimaryKeyInitialized<span class="asBracket">)</span>
+                  <span class="asReserved">throw</span> <span class="asReserved">new</span> Error<span class="asBracket">(</span><span class="asString">&quot;Record can be loaded only with initialized primary key&quot;</span><span class="asBracket">)</span>;
+          
+              <span class="asReserved">if</span><span class="asBracket">(</span>IdentityMap.exists<span class="asBracket">(</span>account.getURI<span class="asBracket">()))</span>
+              <span class="asBracket">{</span>
+                account <span class="asOperator">=</span> Account<span class="asBracket">(</span>IdentityMap.extract<span class="asBracket">(</span>account.getURI<span class="asBracket">()))</span>;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span>account.IsLoaded <span class="asOperator">||</span> account.IsLoading<span class="asBracket">)</span>
+                  <span class="asReserved">return</span> account;
+              <span class="asBracket">}</span> 
+              <span class="asReserved">else</span>
+               IdentityMap.add<span class="asBracket">(</span>account<span class="asBracket">)</span>;
+
+              <span class="asVar">var</span> asyncToken<span class="asOperator">:</span>AsyncToken <span class="asOperator">=</span> <span class="asReserved">new</span> DatabaseAsyncToken<span class="asBracket">(</span>createRemoteObject<span class="asBracket">()</span>.findByPrimaryKey<span class="asBracket">(</span>account.AccountId<span class="asBracket">)</span>,<span class="asReserved">null</span>,account<span class="asBracket">)</span>;
+
+              <span class="asReserved">return</span> account;
+           <span class="asBracket">}</span>
+
+           <span class="asReserved">public</span> <span class="asFunction">function</span> findByPrimaryKey<span class="asBracket">(</span>accountId<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span>Account
+           <span class="asBracket">{</span>
+              <span class="asVar">var</span> activeRecord<span class="asOperator">:</span>Account <span class="asOperator">=</span> <span class="asReserved">new</span> Account<span class="asBracket">()</span>;
+
+              activeRecord.AccountId <span class="asOperator">=</span> accountId;
+
+              <span class="asReserved">return</span> load<span class="asBracket">(</span>activeRecord<span class="asBracket">)</span>;
+           <span class="asBracket">}</span>
+
+           <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> loadChildRelation<span class="asBracket">(</span>activeRecord<span class="asOperator">:</span>ActiveRecord,relationName<span class="asOperator">:</span>String, activeCollection<span class="asOperator">:</span>ActiveCollection<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+           <span class="asBracket">{</span>
+              <span class="asVar">var</span> item<span class="asOperator">:</span>Account <span class="asOperator">=</span> Account<span class="asBracket">(</span>activeRecord<span class="asBracket">)</span>;
+
+              <span class="asReserved">if</span><span class="asBracket">(</span>relationName <span class="asOperator">==</span> <span class="asString">&quot;relatedOrder&quot;</span><span class="asBracket">)</span>
+              <span class="asBracket">{</span>
+   
+                 DataMapperRegistry.Instance.Order.findByAccountId<span class="asBracket">(</span>item.AccountId, activeCollection, getRelationQueryOptions<span class="asBracket">(</span>relationName<span class="asBracket">))</span>;
+                
+                 <span class="asReserved">return</span>;
+              <span class="asBracket">}</span>
+           
+           <span class="asBracket">}</span>
+        <span class="asBracket">}</span>  
+      <span class="asBracket">}</span></pre></body>
+</html>

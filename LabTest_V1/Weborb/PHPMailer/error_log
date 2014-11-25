@@ -1,0 +1,2 @@
+[14-Jun-2009 23:15:16] PHP Warning:  fsockopen() [<a href='function.fsockopen'>function.fsockopen</a>]: unable to connect to mail.amdf.com.mx:25 (Connection refused) in /home/staff/public_html/smtp/class.smtp.php on line 122
+[15-Jun-2009 08:37:27] PHP Warning:  fsockopen() [<a href='function.fsockopen'>function.fsockopen</a>]: unable to connect to mail.amdf.com.mx:25 (Connection refused) in /home/staff/public_html/smtp/class.smtp.php on line 122

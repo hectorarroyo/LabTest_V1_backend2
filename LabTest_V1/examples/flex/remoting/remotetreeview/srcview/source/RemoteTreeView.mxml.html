@@ -1,0 +1,127 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>RemoteTreeView.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; creationComplete=&quot;init<span class="asBracket">()</span>&quot; width=&quot;<span class="mxmlString">680</span>&quot; height=&quot;<span class="mxmlString">405</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.events.TreeEvent;
+            <span class="asReserved">import</span> mx.rpc.AsyncToken;
+            <span class="asReserved">import</span> mx.collections.ArrayCollection;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.Fault;
+            <span class="asReserved">import</span> mx.rpc.Responder;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+            <span class="asReserved">private</span> <span class="asVar">var</span> files<span class="asOperator">:</span>ArrayCollection;
+            
+            <span class="asReserved">private</span> <span class="asVar">var</span> fileSystemService<span class="asOperator">:</span>RemoteObject;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                flash.net.registerClassAlias<span class="asBracket">(</span> <span class="asString">&quot;Weborb.Examples.FolderItem&quot;</span>, FolderNode <span class="asBracket">)</span>;
+                flash.net.registerClassAlias<span class="asBracket">(</span> <span class="asString">&quot;Weborb.Examples.FileItem&quot;</span>, FileNode <span class="asBracket">)</span>;
+                flash.net.registerClassAlias<span class="asBracket">(</span> <span class="asString">&quot;Weborb.Examples.FileSystemItem&quot;</span>, FileSystemNode <span class="asBracket">)</span>;
+                fileSystemService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                fileSystemService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.FileSystemBrowser&quot;</span>;
+                fileSystemService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                fileSystemService.getRoot.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, processRootStructure <span class="asBracket">)</span>;
+                loadingPanel.visible <span class="asOperator">=</span> <span class="asReserved">true</span>;
+                fileSystemService.getRoot<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> processRootStructure<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                files <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">(</span> result.result <span class="asReserved">as</span> Array <span class="asBracket">)</span>;                    
+                loadingPanel.visible <span class="asOperator">=</span> <span class="asReserved">false</span>;            
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                loadingPanel.visible <span class="asOperator">=</span> <span class="asReserved">false</span>;                    
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> handleTreeChange<span class="asBracket">(</span> event<span class="asOperator">:</span>Event <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> selectedItem<span class="asOperator">:</span>Object <span class="asOperator">=</span> Tree<span class="asBracket">(</span> event.target <span class="asBracket">)</span>.selectedItem;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> selectedItem <span class="asReserved">is</span> FolderNode <span class="asBracket">)</span>
+                    fetchFolderInfo<span class="asBracket">(</span> FolderNode<span class="asBracket">(</span> selectedItem <span class="asBracket">)</span> <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> handleRetrieve<span class="asBracket">(</span> event<span class="asOperator">:</span>TreeEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> event.item <span class="asReserved">is</span> FolderNode <span class="asOperator">&amp;&amp;</span> event.opening <span class="asBracket">)</span>
+                    fetchFolderInfo<span class="asBracket">(</span> FolderNode<span class="asBracket">(</span> event.item <span class="asBracket">)</span> <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> fetchFolderInfo<span class="asBracket">(</span> folder<span class="asOperator">:</span>FolderNode <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> folder.Items.length <span class="asOperator">!=</span> 0 <span class="asBracket">)</span>
+                    <span class="asReserved">return</span>;
+                    
+                loadingPanel.visible <span class="asOperator">=</span> <span class="asReserved">true</span>;
+                <span class="asVar">var</span> asyncToken<span class="asOperator">:</span>AsyncToken <span class="asOperator">=</span> fileSystemService.getDirectory<span class="asBracket">(</span> folder.fullName <span class="asBracket">)</span>;
+                
+                asyncToken.addResponder<span class="asBracket">(</span> <span class="asReserved">new</span> mx.rpc.Responder<span class="asBracket">(</span>
+                    <span class="asFunction">function</span><span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                    <span class="asBracket">{</span>
+                        folder.Items <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">(</span> event.result <span class="asReserved">as</span> Array <span class="asBracket">)</span>;
+                        fileSystemTree.validateNow<span class="asBracket">()</span>;
+                        fileSystemTree.expandItem<span class="asBracket">(</span> folder, <span class="asReserved">true</span> <span class="asBracket">)</span>;                        
+                        loadingPanel.visible <span class="asOperator">=</span> <span class="asReserved">false</span>;
+                    <span class="asBracket">}</span>,
+                    <span class="asFunction">function</span><span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                    <span class="asBracket">{</span>
+                        gotError<span class="asBracket">(</span> fault <span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                <span class="asBracket">))</span>;                
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Fade</span> id=&quot;<span class="mxmlString">fadeIn</span>&quot; alphaFrom=&quot;<span class="mxmlString">0.0</span>&quot; alphaTo=&quot;<span class="mxmlString">1.0</span>&quot; duration=&quot;<span class="mxmlString">200</span>&quot; <span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Fade</span> id=&quot;<span class="mxmlString">fadeOut</span>&quot; alphaFrom=&quot;<span class="mxmlString">1.0</span>&quot; alphaTo=&quot;<span class="mxmlString">0.0</span>&quot; duration=&quot;<span class="mxmlString">200</span>&quot; <span class="mxmlComponent">/&gt;</span>
+
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">660</span>&quot; height=&quot;<span class="mxmlString">380</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Flex Tree View with Remote Data</span>&quot;<span class="mxmlComponent">&gt;</span>
+
+        <span class="mxmlComponent">&lt;mx:Tree</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">28</span>&quot; width=&quot;<span class="mxmlString">265</span>&quot; height=&quot;<span class="mxmlString">302</span>&quot;
+            id=&quot;<span class="mxmlString">fileSystemTree</span>&quot;
+            dataDescriptor=&quot;<span class="mxmlString">{</span><span class="asReserved">new</span> FileSystemTreeDataDescriptor<span class="asBracket">()</span><span class="mxmlString">}</span>&quot;
+            dataProvider=&quot;<span class="mxmlString">{</span>files<span class="mxmlString">}</span>&quot;
+            change=&quot;handleTreeChange<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot;
+            itemOpening=&quot;handleRetrieve<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot;
+            labelField=&quot;<span class="mxmlString">Name</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#d1e1f1</span>&quot; borderColor=&quot;<span class="mxmlString">#b9daee</span>&quot; backgroundAlpha=&quot;<span class="mxmlString">0.24</span>&quot;<span class="mxmlComponent">&gt;</span><span class="mxmlComponent">&lt;/mx:Tree&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">46</span>&quot; y=&quot;<span class="mxmlString">104</span>&quot; width=&quot;<span class="mxmlString">191</span>&quot; height=&quot;<span class="mxmlString">145</span>&quot; 
+                   backgroundColor=&quot;<span class="mxmlString">#ccd6dd</span>&quot; backgroundAlpha=&quot;<span class="mxmlString">0.79</span>&quot; 
+                   borderStyle=&quot;<span class="mxmlString">solid</span>&quot; borderColor=&quot;<span class="mxmlString">#1f719c</span>&quot; 
+                   id=&quot;<span class="mxmlString">loadingPanel</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot; 
+                   showEffect=&quot;<span class="mxmlString">{</span>fadeIn<span class="mxmlString">}</span>&quot; hideEffect=&quot;<span class="mxmlString">{</span>fadeOut<span class="mxmlString">}</span>&quot;  dropShadowEnabled=&quot;<span class="mxmlString">true</span>&quot; shadowDirection=&quot;<span class="mxmlString">right</span>&quot; shadowDistance=&quot;<span class="mxmlString">5</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">25.5</span>&quot; y=&quot;<span class="mxmlString">54</span>&quot; text=&quot;<span class="mxmlString">Loading...</span>&quot; fontSize=&quot;<span class="mxmlString">28</span>&quot; fontFamily=&quot;<span class="mxmlString">Arial</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; color=&quot;<span class="mxmlString">#606f86</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">285</span>&quot; y=&quot;<span class="mxmlString">28</span>&quot; width=&quot;<span class="mxmlString">347</span>&quot; height=&quot;<span class="mxmlString">302</span>&quot; borderColor=&quot;<span class="mxmlString">#b9daee</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">27</span>&quot; text=&quot;<span class="mxmlString">Name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">79</span>&quot; text=&quot;<span class="mxmlString">Created On:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">105</span>&quot; text=&quot;<span class="mxmlString">Last Accessed On:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">131</span>&quot; text=&quot;<span class="mxmlString">Last Written On:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">53</span>&quot; text=&quot;<span class="mxmlString">Size:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">122</span>&quot; y=&quot;<span class="mxmlString">27</span>&quot; id=&quot;<span class="mxmlString">nameField</span>&quot; text=&quot;<span class="mxmlString">{</span>fileSystemTree.selectedItem.Name<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">122</span>&quot; y=&quot;<span class="mxmlString">53</span>&quot; id=&quot;<span class="mxmlString">sizeField</span>&quot; text=&quot;<span class="mxmlString">{</span>fileSystemTree.selectedItem.size <span class="asOperator">+</span> <span class="asOperator">&amp;</span>quot; bytes<span class="asOperator">&amp;</span>quot; <span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">122</span>&quot; y=&quot;<span class="mxmlString">79</span>&quot; id=&quot;<span class="mxmlString">createdOnField</span>&quot; text=&quot;<span class="mxmlString">{</span>fileSystemTree.selectedItem.createdOn<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">122</span>&quot; y=&quot;<span class="mxmlString">105</span>&quot; id=&quot;<span class="mxmlString">lastModifiedOn</span>&quot; text=&quot;<span class="mxmlString">{</span>fileSystemTree.selectedItem.lastAccessedOn<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">122</span>&quot; y=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">lastWrittenOn</span>&quot; text=&quot;<span class="mxmlString">{</span>fileSystemTree.selectedItem.lastWrittenOn<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">295</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; text=&quot;<span class="mxmlString">Selected File/Folder Information</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">11</span>&quot; y=&quot;<span class="mxmlString">6</span>&quot; text=&quot;<span class="mxmlString">File system structure from the remote server:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

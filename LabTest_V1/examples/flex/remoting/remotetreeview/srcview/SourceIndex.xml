@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of RemoteTreeView</title>
+	<nodes>
+		<node label="FileNode.as" icon="actionScriptIcon" url="source/FileNode.as.html"/>
+		<node label="FileSystemNode.as" icon="actionScriptIcon" url="source/FileSystemNode.as.html"/>
+		<node label="FileSystemTreeDataDescriptor.as" icon="actionScriptIcon" url="source/FileSystemTreeDataDescriptor.as.html"/>
+		<node label="FolderNode.as" icon="actionScriptIcon" url="source/FolderNode.as.html"/>
+		<node selected="true" label="RemoteTreeView.mxml" icon="mxmlAppIcon" url="source/RemoteTreeView.mxml.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 3K)" url="RemoteTreeView.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

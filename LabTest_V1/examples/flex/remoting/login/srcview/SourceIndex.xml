@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Login</title>
+	<nodes>
+		<node label="Controller.as" icon="actionScriptIcon" url="source/Controller.as.html"/>
+		<node selected="true" label="Login.mxml" icon="mxmlAppIcon" url="source/Login.mxml.html"/>
+		<node label="LoginBox.mxml" icon="mxmlIcon" url="source/LoginBox.mxml.html"/>
+		<node label="Model.as" icon="actionScriptIcon" url="source/Model.as.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 3K)" url="Login.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

@@ -1,0 +1,230 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ShopView.mxml</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Canvas</span> 
+    creationComplete=&quot;onCreationComplete<span class="asBracket">()</span>&quot;
+    xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; backgroundAlpha=&quot;<span class="mxmlString">0.0</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Metadata&gt;</span>
+       <span class="mxmlCdata">[Event(name=&quot;logout&quot;)] 
+    </span><span class="mxmlTag">&lt;/mx:Metadata&gt;</span>
+
+<span class="mxmlTag">&lt;mx:Script&gt;</span>
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.events.DynamicEvent;
+        <span class="asReserved">import</span> mx.core.Application;
+        <span class="asReserved">import</span> FoodAndDrinks.Codegen._OrderLine;
+        <span class="asReserved">import</span> mx.controls.Alert;
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+        <span class="asReserved">import</span> mx.controls.PopUpButton;
+        <span class="asReserved">import</span> UI.Administrate.AdministerCatalog;
+        <span class="asReserved">import</span> mx.managers.PopUpManager;
+        <span class="asReserved">import</span> FoodAndDrinks.OrderLine;
+        <span class="asReserved">import</span> weborb.data.DynamicLoadEvent;
+        <span class="asReserved">import</span> mx.events.CollectionEvent;
+        <span class="asReserved">import</span> FoodAndDrinks.Order;
+        <span class="asReserved">import</span> FoodAndDrinks.Product;
+        <span class="asReserved">import</span> FoodAndDrinks.ActiveRecords;
+        <span class="asReserved">import</span> mx.collections.ArrayCollection;
+        <span class="asReserved">import</span> FoodAndDrinks.Account;
+        <span class="asReserved">import</span> mx.rpc.Responder;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> _account<span class="asOperator">:</span>Account;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> _products<span class="asOperator">:</span>ArrayCollection;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> _order<span class="asOperator">:</span>Order;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> _orderLines<span class="asOperator">:</span>ArrayCollection;
+        <span class="asComment">// Main application (FoodAndDrinks.mxml) invokes the method below to initialize the 
+</span>        <span class="asComment">// catalog and open/create order associated with the logged in account.
+</span>        <span class="asReserved">public</span> <span class="asFunction">function</span> init<span class="asBracket">(</span>account<span class="asOperator">:</span>Account<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            _account <span class="asOperator">=</span> account;
+            
+            <span class="asComment">// Load all products using paging. The method synchronously returns a managed collection.
+</span>            <span class="asComment">// The collection initially is empty since the data loading is handled asynchronously.
+</span>            <span class="asComment">// As soon as the data arrives from the server, WDMF initializes the collection. 
+</span>            <span class="asComment">// The collection is bindable, as a result, all the data is shown in the UI as soon as
+</span>            <span class="asComment">// the collection is initialized.
+</span>            _products <span class="asOperator">=</span> ActiveRecords.Product.findAll<span class="asBracket">({</span>PageSize<span class="asOperator">:</span>10<span class="asBracket">})</span>;
+            
+            <span class="asComment">// Check if there is an order for the given account. If no order can be found, WDMF creates a new
+</span>            <span class="asComment">// order record and returns the corresponding Order object.
+</span>            <span class="asComment">// The method used below - findOrCreateByAccountIdAndStatus - is a dynamic method, composed of the 
+</span>            <span class="asComment">// following parts: findOrCreateBy + AccountId + And + Status, where AccountId and Status are the 
+</span>            <span class="asComment">// properties of the Order class. The method first checks if a record with the given properties
+</span>            <span class="asComment">// exists in the Order table. If not, WDMF creates one. The record then is returned to the client
+</span>            <span class="asComment">// as an instance of the Order class.
+</span>            <span class="asVar">var</span> order<span class="asOperator">:</span>ArrayCollection;
+            order <span class="asOperator">=</span> ActiveRecords.Order.findOrCreateByAccountIdAndStatus<span class="asBracket">(</span>account.AccountId,<span class="asString">&quot;new&quot;</span><span class="asBracket">)</span>;
+            
+            <span class="asComment">// Add a listener for the event fired when the Order object for the current account is loaded
+</span>            order.addEventListener<span class="asBracket">(</span><span class="asString">&quot;loaded&quot;</span>,
+                <span class="asFunction">function</span><span class="asBracket">(</span>event<span class="asOperator">:</span>DynamicLoadEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                <span class="asBracket">{</span>
+                    <span class="asComment">// store the order object in memory. This application works with the given order object
+</span>                    _order <span class="asOperator">=</span> order<span class="asBracket">[</span>0<span class="asBracket">]</span> <span class="asReserved">as</span> Order;
+                    _orderLines <span class="asOperator">=</span> _order.RelatedOrderLine;
+                <span class="asBracket">})</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onCreationComplete<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            Application.application.addEventListener<span class="asBracket">(</span><span class="asString">&quot;productAdded&quot;</span>, onProductAdded<span class="asBracket">)</span>;    
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onProductAdded<span class="asBracket">(</span>event<span class="asOperator">:</span>DynamicEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> product<span class="asOperator">:</span>Product <span class="asOperator">=</span> Product<span class="asBracket">(</span>event.product<span class="asBracket">)</span>;
+            _products.addItem<span class="asBracket">(</span>product<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        <span class="asReserved">public</span> <span class="asFunction">function</span> addToCart<span class="asBracket">(</span>product<span class="asOperator">:</span>Product<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            
+            <span class="asVar">var</span> resultList<span class="asOperator">:</span>ArrayCollection;
+            
+            <span class="asComment">// Check if the item added to the shopping cart already exists in the order.
+</span>            <span class="asComment">// The method used below - findOrCreateByOrderIdAndProductId - is a dynamic method, composed of the 
+</span>            <span class="asComment">// following parts: findOrCreateBy + OrderId + And + ProductId, where OrderId and ProductId are the 
+</span>            <span class="asComment">// properties of the OrderLine class. The method first checks if a record with the given properties
+</span>            <span class="asComment">// exists in the OrderLine table. If not, WDMF creates one. The record then is returned to the client
+</span>            <span class="asComment">// as an instance of the OrderLine class.            
+</span>            resultList <span class="asOperator">=</span> ActiveRecords.OrderLine.findOrCreateByOrderIdAndProductId<span class="asBracket">(</span> _order.OrderId, product.ProductId <span class="asBracket">)</span>;
+            
+            <span class="asComment">// Add a listener to be called when the record is received from the server.
+</span>            resultList.addEventListener<span class="asBracket">(</span><span class="asString">&quot;loaded&quot;</span>,
+                <span class="asFunction">function</span><span class="asBracket">(</span>event<span class="asOperator">:</span>DynamicLoadEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                <span class="asBracket">{</span>
+                    <span class="asComment">// There&apos;s only one record, so cast it to the OrderLine class
+</span>                    <span class="asVar">var</span> orderLine<span class="asOperator">:</span>OrderLine <span class="asOperator">=</span> resultList<span class="asBracket">[</span>0<span class="asBracket">]</span> <span class="asReserved">as</span> OrderLine;
+                    
+                    <span class="asComment">// If the user clicks &quot;Add to cart&quot; several times in a row, the object will be locked
+</span>                    <span class="asComment">// while the record is updated. The IsLocked flag indicates that an update is in progress.
+</span>                    <span class="asReserved">if</span><span class="asBracket">(</span>orderLine.IsLocked<span class="asBracket">)</span>
+                        <span class="asReserved">return</span>;
+                    
+                    <span class="asComment">// Update the quantity which represents how many items of the given product are in the cart
+</span>                    orderLine.Quanity<span class="asOperator">++</span>;
+                    
+                    
+                    <span class="asVar">var</span> responder<span class="asOperator">:</span> mx.rpc.Responder <span class="asOperator">=</span> <span class="asReserved">new</span> mx.rpc.Responder<span class="asBracket">(</span>
+                        <span class="asFunction">function</span><span class="asBracket">(</span>newOrderLine<span class="asOperator">:</span>_OrderLine<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>                        
+                        <span class="asBracket">{</span>
+                            <span class="asComment">//_order.RelatedOrderLine.addItem(newOrderLine);
+</span>                            <span class="asComment">//var orderLines:ArrayCollection;
+</span>                            <span class="asVar">var</span> isNew<span class="asOperator">:</span>Boolean <span class="asOperator">=</span> <span class="asReserved">true</span>;
+                            <span class="asReserved">for</span> <span class="asReserved">each</span><span class="asBracket">(</span><span class="asVar">var</span> orderInLine<span class="asOperator">:</span>OrderLine <span class="asReserved">in</span> _orderLines<span class="asBracket">)</span>
+                            <span class="asBracket">{</span>
+                                <span class="asReserved">if</span><span class="asBracket">(</span>orderInLine.ProductId <span class="asOperator">==</span> product.ProductId<span class="asBracket">)</span>
+                                <span class="asBracket">{</span>
+                                    orderInLine.Quanity<span class="asOperator">++</span>;
+                                    isNew <span class="asOperator">=</span> <span class="asReserved">false</span>;
+                                    <span class="asReserved">break</span>;
+                                <span class="asBracket">}</span>
+                            <span class="asBracket">}</span>
+                            <span class="asReserved">if</span><span class="asBracket">(</span>isNew<span class="asBracket">)</span>
+                            <span class="asBracket">{</span>
+                                _orderLines.addItem<span class="asBracket">(</span>orderLine<span class="asBracket">)</span>;
+                            <span class="asBracket">}</span>
+                            <span class="asComment">//_orderLines = ActiveRecords.OrderLine.findByOrderId(newOrderLine.OrderId);
+</span>                            
+                        <span class="asBracket">}</span>, <span class="asReserved">null</span><span class="asBracket">)</span>;
+                    <span class="asComment">// Save the order line. The call below triggers an update in the database
+</span>                    orderLine.save<span class="asBracket">(</span><span class="asReserved">true</span>, responder<span class="asBracket">)</span>;
+                <span class="asBracket">})</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> openAdmin<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> adminWindow<span class="asOperator">:</span>AdministerCatalog <span class="asOperator">=</span> <span class="asReserved">new</span> AdministerCatalog<span class="asBracket">()</span>;
+            PopUpManager.addPopUp<span class="asBracket">(</span> adminWindow, <span class="asReserved">this</span>, <span class="asReserved">true</span> <span class="asBracket">)</span>;
+            PopUpManager.centerPopUp<span class="asBracket">(</span> adminWindow <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+<span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:HBox</span> top=&quot;<span class="mxmlString">46</span>&quot; right=&quot;<span class="mxmlString">10</span>&quot; bottom=&quot;<span class="mxmlString">10</span>&quot; left=&quot;<span class="mxmlString">10</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:VBox</span> height=&quot;<span class="mxmlString">100%</span>&quot; width=&quot;<span class="mxmlString">210</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Panel</span> title=&quot;<span class="mxmlString">Shopping Cart</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; styleName=&quot;<span class="mxmlString">shopViewPanel</span>&quot; <span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TileList</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>_orderLines<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">&gt;</span>
+                <span class="mxmlComponent">&lt;mx:itemRenderer&gt;</span>
+                    <span class="mxmlTag">&lt;mx:Component&gt;</span>
+                        <span class="mxmlComponent">&lt;mx:Canvas</span> horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot;<span class="mxmlComponent">&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:VBox</span> top=&quot;<span class="mxmlString">5</span>&quot; left=&quot;<span class="mxmlString">5</span>&quot; right=&quot;<span class="mxmlString">5</span>&quot;    bottom=&quot;<span class="mxmlString">5</span>&quot;
+                                borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot;<span class="mxmlComponent">&gt;</span>
+                                <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">{</span>data.RelatedProduct.Name<span class="mxmlString">}</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; paddingLeft=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                                <span class="mxmlComponent">&lt;mx:HBox&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Image</span> scaleContent=&quot;<span class="mxmlString">true</span>&quot; horizontalAlign=&quot;<span class="mxmlString">center</span>&quot;  width=&quot;<span class="mxmlString">80</span>&quot; height=&quot;<span class="mxmlString">50</span>&quot; source=&quot;<span class="mxmlString">images/{</span>data.RelatedProduct.PictureFileName<span class="mxmlString">}</span>&quot;  autoLoad=&quot;<span class="mxmlString">true</span>&quot;  <span class="mxmlComponent">/&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:VBox&gt;</span>
+                                        <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Price: ${</span>data.RelatedProduct.Price<span class="mxmlString">}</span>&quot; <span class="mxmlComponent">/&gt;</span>    
+                                        <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Quantity: {</span>data.Quanity<span class="mxmlString">}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                    <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+                                <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+                                <span class="mxmlComponent">&lt;mx:HBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; paddingRight=&quot;<span class="mxmlString">10</span>&quot; paddingBottom=&quot;<span class="mxmlString">5</span>&quot;<span class="mxmlComponent">&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Spacer</span> width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">remove</span>&quot;  height=&quot;<span class="mxmlString">15</span>&quot; click=&quot;data.remove<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+                            <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>    
+                        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+                    <span class="mxmlTag">&lt;/mx:Component&gt;</span>
+                <span class="mxmlComponent">&lt;/mx:itemRenderer&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:TileList&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+        <span class="mxmlComponent">&lt;mx:VBox</span> height=&quot;<span class="mxmlString">100%</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Panel</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Product Catalog</span>&quot; styleName=&quot;<span class="mxmlString">shopViewPanel</span>&quot;<span class="mxmlComponent">&gt;</span>
+                <span class="mxmlComponent">&lt;mx:TileList</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>_products<span class="mxmlString">}</span>&quot; borderStyle=&quot;<span class="mxmlString">none</span>&quot; y=&quot;<span class="mxmlString">0</span>&quot;<span class="mxmlComponent">&gt;</span>
+                    <span class="mxmlComponent">&lt;mx:itemRenderer&gt;</span>
+                        <span class="mxmlTag">&lt;mx:Component&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:Canvas</span> horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot; verticalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot;<span class="mxmlComponent">&gt;</span>
+                            <span class="mxmlTag">&lt;mx:Script&gt;</span>
+                                <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+                                    <span class="asReserved">import</span> FoodAndDrinks.Product;
+                                    
+                                    <span class="asReserved">private</span> <span class="asFunction">function</span> onAdd<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                                    <span class="asBracket">{</span>
+                                        ShopView<span class="asBracket">(</span>parentDocument<span class="asBracket">)</span>.addToCart<span class="asBracket">(</span>Product<span class="asBracket">(</span>data<span class="asBracket">))</span>;
+                                    <span class="asBracket">}</span>
+                                <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+                            <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:VBox</span>
+                                top=&quot;<span class="mxmlString">5</span>&quot;
+                                left=&quot;<span class="mxmlString">5</span>&quot;
+                                right=&quot;<span class="mxmlString">5</span>&quot;
+                                bottom=&quot;<span class="mxmlString">5</span>&quot;
+                                borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot;<span class="mxmlComponent">&gt;</span> 
+                                <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">{</span>data.Name<span class="mxmlString">}</span>&quot; textAlign=&quot;<span class="mxmlString">center</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                <span class="mxmlComponent">&lt;mx:Image</span> horizontalAlign=&quot;<span class="mxmlString">center</span>&quot;  width=&quot;<span class="mxmlString">190</span>&quot; height=&quot;<span class="mxmlString">127</span>&quot; source=&quot;<span class="mxmlString">images/{</span>data.PictureFileName<span class="mxmlString">}</span>&quot;  autoLoad=&quot;<span class="mxmlString">true</span>&quot;  <span class="mxmlComponent">/&gt;</span>
+                                <span class="mxmlComponent">&lt;mx:HBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; paddingRight=&quot;<span class="mxmlString">10</span>&quot; <span class="mxmlComponent">&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Label</span> paddingLeft=&quot;<span class="mxmlString">10</span>&quot; text=&quot;<span class="mxmlString">Price: ${</span>data.Price<span class="mxmlString">}</span>&quot;  <span class="mxmlComponent">/&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Spacer</span> width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                    <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">add to cart</span>&quot;  height=&quot;<span class="mxmlString">15</span>&quot; click=&quot;onAdd<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                                <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+                            <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>    
+                            <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+                        <span class="mxmlTag">&lt;/mx:Component&gt;</span>
+                    <span class="mxmlComponent">&lt;/mx:itemRenderer&gt;</span>
+                <span class="mxmlComponent">&lt;/mx:TileList&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+    <span class="mxmlComponent">&lt;mx:ApplicationControlBar</span> right=&quot;<span class="mxmlString">10</span>&quot; left=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Welcome  {</span>_account.Login<span class="mxmlString">}</span>&quot; color=&quot;<span class="mxmlString">#ffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:VRule</span> height=&quot;<span class="mxmlString">12</span>&quot; strokeColor=&quot;<span class="mxmlString">#ffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:LinkButton</span> label=&quot;<span class="mxmlString">Manage Catalog</span>&quot; color=&quot;<span class="mxmlString">#ffff00</span>&quot; click=&quot;openAdmin<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Spacer</span> width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:LinkButton</span> label=&quot;<span class="mxmlString">Logout</span>&quot; color=&quot;<span class="mxmlString">#ffff00</span>&quot; click=&quot;<span class="asBracket">{</span>dispatchEvent<span class="asBracket">(</span> <span class="asReserved">new</span> Event<span class="asBracket">(</span><span class="asString">&apos;logout&apos;</span><span class="asBracket">))}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:ApplicationControlBar&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Canvas&gt;</span></pre></body>
+</html>

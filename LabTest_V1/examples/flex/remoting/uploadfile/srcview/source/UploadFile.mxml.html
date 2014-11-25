@@ -1,0 +1,68 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>UploadFile.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; creationComplete=&quot;initApp<span class="asBracket">()</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">549</span>&quot; height=&quot;<span class="mxmlString">392</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+<span class="mxmlTag">&lt;mx:Script&gt;</span>
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.utils.URLUtil;
+        <span class="asReserved">import</span> mx.utils.UIDUtil;
+        <span class="asReserved">import</span> mx.controls.Alert;
+
+        <span class="asReserved">public</span> <span class="asVar">var</span> fileRef<span class="asOperator">:</span>FileReference;
+        <span class="asReserved">public</span> <span class="asVar">var</span> arrTypes<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+        
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">public</span> <span class="asVar">var</span> status<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> initApp<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            fileRef <span class="asOperator">=</span> <span class="asReserved">new</span> FileReference<span class="asBracket">()</span>;
+            fileRef.addEventListener<span class="asBracket">(</span><span class="asString">&quot;select&quot;</span>, uploadImage<span class="asBracket">)</span>;
+            fileRef.addEventListener<span class="asBracket">(</span><span class="asString">&quot;ioError&quot;</span>, onError<span class="asBracket">)</span>;
+            fileRef.addEventListener<span class="asBracket">(</span><span class="asString">&quot;complete&quot;</span>, onComplete<span class="asBracket">)</span>;
+            arrTypes.push<span class="asBracket">(</span><span class="asReserved">new</span> FileFilter<span class="asBracket">(</span><span class="asString">&quot;Images&quot;</span>, <span class="asString">&quot;*.jpg;*.gif;*.png;*.jpeg&quot;</span><span class="asBracket">))</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onError<span class="asBracket">(</span>e<span class="asOperator">:</span>IOErrorEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>e.text, <span class="asString">&quot;Error&quot;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onComplete<span class="asBracket">(</span>e<span class="asOperator">:</span>Event<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            progressBar.source <span class="asOperator">=</span> img;
+            callLater<span class="asBracket">(</span><span class="asFunction">function</span><span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span> <span class="asBracket">{</span>
+            status <span class="asOperator">=</span> <span class="asString">&quot;Downloading&quot;</span>;
+            img.source <span class="asOperator">=</span> URLUtil.getFullURL<span class="asBracket">(</span>Application.application.url,<span class="asString">&quot;/upload/&quot;</span> <span class="asOperator">+</span> fileRef.name<span class="asBracket">)</span>;
+            <span class="asBracket">})</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> openFile<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            fileRef.browse<span class="asBracket">(</span>arrTypes<span class="asBracket">)</span>;            
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> uploadImage<span class="asBracket">(</span>e<span class="asOperator">:</span>Event<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> url<span class="asOperator">:</span>URLRequest <span class="asOperator">=</span> <span class="asReserved">new</span> URLRequest<span class="asBracket">(</span>Application.application.url<span class="asBracket">)</span>;
+            url.method <span class="asOperator">=</span> <span class="asString">&quot;POST&quot;</span>;
+
+            progressBar.source <span class="asOperator">=</span> fileRef;
+            status <span class="asOperator">=</span> <span class="asString">&quot;Uploading&quot;</span>;
+            fileRef.upload<span class="asBracket">(</span>url<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+<span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Image</span> id=&quot;<span class="mxmlString">img</span>&quot; height=&quot;<span class="mxmlString">340</span>&quot; left=&quot;<span class="mxmlString">10</span>&quot; right=&quot;<span class="mxmlString">10</span>&quot; top=&quot;<span class="mxmlString">10</span>&quot; horizontalAlign=&quot;<span class="mxmlString">center</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">474</span>&quot; label=&quot;<span class="mxmlString">Upload</span>&quot; bottom=&quot;<span class="mxmlString">10</span>&quot; click=&quot;openFile<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;mx:ProgressBar</span> id=&quot;<span class="mxmlString">progressBar</span>&quot; label=&quot;<span class="mxmlString">{</span>status<span class="mxmlString">} %1 of %2 bytes, %3%%</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">456</span>&quot; direction=&quot;<span class="mxmlString">right</span>&quot; themeColor=&quot;<span class="mxmlString">#A79FFD</span>&quot; labelPlacement=&quot;<span class="mxmlString">center</span>&quot; height=&quot;<span class="mxmlString">22</span>&quot; bottom=&quot;<span class="mxmlString">10</span>&quot; indeterminate=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">/&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

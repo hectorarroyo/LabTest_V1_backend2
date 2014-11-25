@@ -1,0 +1,40 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>LoginBox.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:TitleWindow</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; title=&quot;<span class="mxmlString">Login</span>&quot; showCloseButton=&quot;<span class="mxmlString">true</span>&quot; close=&quot;PopUpManager.removePopUp<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.managers.PopUpManager;
+            <span class="asReserved">private</span> <span class="asVar">var</span> controller<span class="asOperator">:</span>Controller;
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> setController<span class="asBracket">(</span> controller<span class="asOperator">:</span>Controller <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">this</span>.controller <span class="asOperator">=</span> controller;    
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> login<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                controller.login<span class="asBracket">(</span> userNameTI.text, passwordTI.text <span class="asBracket">)</span>
+                PopUpManager.removePopUp<span class="asBracket">(</span> <span class="asReserved">this</span> <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Form&gt;</span>
+        <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Username:</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">userNameTI</span>&quot; text=&quot;<span class="mxmlString">joe</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+        <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Password:</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">passwordTI</span>&quot; displayAsPassword=&quot;<span class="mxmlString">false</span>&quot; text=&quot;<span class="mxmlString">flexrocks</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Form&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Button</span> click=&quot;login<span class="asBracket">()</span>&quot; label=&quot;<span class="mxmlString">Login</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:TitleWindow&gt;</span></pre></body>
+</html>

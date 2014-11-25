@@ -1,0 +1,457 @@
+<html><!-- InstanceBegin template="/Templates/sub2b.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Integrating Flex and PHP using WebORB | Flex PHP integration | AMF0 and
+AM3 Remoting with PHP</title>
+<!-- InstanceEndEditable --><style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 20px
+}
+
+td {
+	font-family: Tahoma;
+	font-size: 10pt;
+}
+
+-->
+</style>
+<link href="../../styles/main.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #CC6600}
+.style5 {color: #999999}
+.style6 {color: #999999}
+.style11 {font-size: 14px; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;}
+.style13 {color: #FFFFFF}
+.style13 {color: #FFFFFF}
+-->
+</style>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<script type="text/javascript">
+
+var base= "images/"
+var nrm = new Array();
+var omo = new Array();
+var ocl = new Array();
+var imgnames = new Array('fb3','fb2');
+var stuff = new Array('fb3','fb2');
+var select = 0;
+var name2 = "";
+var temp = 0;
+
+// Pre-load part.
+
+if (document.images)
+{
+	for (i=0;i<stuff.length;i++)
+	{
+		nrm[i] = new Image;
+		nrm[i].src = base + imgnames[i] + ".gif"
+		omo[i] = new Image;
+		omo[i].src = base + imgnames[i] + "_omo.gif";
+		ocl[i] = new Image;
+		ocl[i].src = base + imgnames[i] + "_clic.gif";
+	}
+}
+
+// The functions: first mouseover, then mouseout
+
+function over(no)
+{
+	if (document.images && select != no)
+	{
+		document.images[stuff[no]].src = omo[no].src;
+	}
+}
+
+function out(no)
+{
+	if (document.images && select != no)
+	{
+		document.images[stuff[no]].src = nrm[no].src;
+	}
+}
+
+function clic(no)
+{
+	if (document.images)
+	{
+		document.images[stuff[no]].src = ocl[no].src;
+		temp = select;
+		select = no;
+		if (temp != -1) 
+		{
+			out(temp);
+			document.getElementById( stuff[temp] + "_div" ).style.display = 'none';
+			document.getElementById( stuff[no] + "_div" ).style.display = 'block';			
+		}
+	}
+	
+	return false;
+}
+
+</script>
+</head>
+<body topmargin="20">
+<p><font face="Arial" style="font-size: 20pt">Getting started with <font color="#FF8000">
+		Flex and PHP using WebORB</font></font></p>
+<div align="center">
+  <center>
+<table width="670" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse" bordercolor="#111111">
+                  <tr valign="top">
+                    <td >WebORB for PHP provides a
+                          Flex Remoting and Flex Messaging implementation. Using WebORB, PHP developers can
+							integrate Flex client applications with objects
+							deployed in PHP applications. Additionally, WebORB
+							for PHP can function as a Flash Remoting gateway
+							thus supporting Flash client applications.</span><p>
+                    This guide provides an overview of creating a Flex client 
+                    using Flex Builder 2 and 3 and connecting it with a PHP
+							application. The result of the walkthrough is a
+						Flex application communicating with a PHP object
+						exposed through WebORB for PHP.</td>
+                  </tr>
+					<tr>
+                    <td align="left" height="32" ><b>GETTING STARTED -
+					WEBORB INSTALLATION</b></td>
+                  </tr>
+					<tr>
+                        <td align="center">
+						<p align="left">WebORB for PHP installation has the
+                        following directory structure:</p>
+						<table border="0" style="border-style:dotted; border-collapse: collapse; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px;" cellpadding="5" bgcolor="#D7E8E6" id="table7" width="600">
+							<tr>
+								<td style="font-size:8pt"><font face="Courier New">
+								<font color="#000099">&#9516;&nbsp; WEBORB
+                                Installation directory<br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; index.php </font>------- management console
+                                point of entry<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; weborb.php </font>------- 
+                                main PHP script - place it into the same 
+                                directory <br>
+                                <font color="#000099">&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </font>where your compiled SWF are located and 
+                                adjust paths in the<font color="#000099"><br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </font>require_once calls in the file<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /Services </font>------- contains deployed 'remotable'
+								PHP classes<font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /examples </font>------- contains examples shipped
+								with WebORB<font color="#000099"><br>
+								&#9474;<br>
+                                &#9500;&#9472;&#9472; /Console&nbsp; </font>------- contains
+                                WebORB Management Console<font color="#000099"> <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9500;&#9472;
+                                index.php&nbsp; </font>----- main console page<font color="#000099"><br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; weborb.php&nbsp; </font>
+                                ----- remoting entry point for the console <font color="#000099"><br>
+								&#9474;<br>
+								&#9500;&#9472;&#9472; /weborbassets<br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; 
+                                weborb.swc&nbsp; </font>----- client-side class 
+                                library, required for messaging apps<font color="#000099"><br>
+								&#9474;<br>
+								&#9492;&#9472;&#9472; /Weborb&nbsp;&nbsp; </font>------- contains
+								configuration, log and WebORB for PHP source code<font color="#000099"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9500;&#9472; weborb-config.xml&nbsp; </font>----- contains a
+								reference to the /Services folder,<font color="#000099"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</font>as well as other important weborb configuration<font color="#000099">&nbsp;
+								<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472; /WEB-INF<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#9492;&#9472;
+								/flex<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&#9474;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&#9500;&#9472; remoting-config.xml
+								</font>&nbsp;--
+								configures Flex destinations<font color="#000099"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&#9500;&#9472; messaging-config.xml </font>
+								&nbsp;--
+								configures Flex messaging destinations<font color="#000099"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&#9492;&#9472; services-config.xml&nbsp; </font>
+								-- configures Flex RPC endpoint<br>
+&nbsp;</font></td>
+							</tr>
+						</table>
+						<p align="left">
+						If you are deploying on a Windows computer with IIS,
+						make sure to grant Read/Write permissions to the IUSR_&lt;machinename&gt;
+						account for the /Weborb folder.<br>
+						<br>
+						You can verify the installation by running WebORB
+                        Management Console included with the WebORB
+						distribution.&nbsp; Open http://localhost/[WEBORB
+                        INSTALL PATH]/index.php in a
+						browser. When the console is loaded, you can inspect
+                        available PHP remoting services using the Management tab
+                        or run the examples included with the product.</td>
+                      </tr>
+                  <tr>
+                    <td align="left" height="32"><b>GETTING STARTED -
+					CREATING A FLEX APPLICATION</b></td>
+                  </tr>
+					<tr>
+    <td width="100%" valign="bottom" cellpadding="0" style="padding: 0">
+<img name="fb3" onMouseOver="over(0)" onMouseOut="out(0)" onClick="clic(0)" border="0" src="images/fb3_clic.gif"  style="margin-bottom:-1px;padding-bottom:0px;margin-left:5px" align="absbottom" width="136" height="40" >
+<img name="fb2" onMouseOver="over(1)" onMouseOut="out(1)" onClick="clic(1)" border="0" src="images/fb2.gif"  style="margin-bottom:-1px;padding-bottom:0px;margin-left:0px" align="absbottom" width="137" height="40"  >
+    </td>
+                  </tr>
+                  <tr>
+                    <td align="left" bordercolor="#C46100" style="border-style: solid; border-width: 1;border-color: #75A0AD;padding:3px">
+   <div id="fb3_div">
+						<p align="left">The instructions below will guide you through the process of creating and running a remoting-enabled Flex application using Flex Builder 3. At the end of the walkthrough you will 
+						have a Flex application communicating with a PHP object exposed through WebORB.<p align="left">
+	Run Flex Builder 3 and select File -&gt; New -&gt; Flex Project.&nbsp; The dialog window shown below will appear. Enter &quot;SampleFlexToDotNetProject&quot; 
+	as the project name. Make sure to select &quot;PHP&quot; as the Application server type. Make other selections as shown 
+	below and click &quot;Next &gt;&quot;.<p>
+						<img border="0" src="images/gettin4.jpg" width="455" height="549"><p align="left">
+						The next step is very important as it establishes the 
+                        configuration paths. For the simplicity of instructions, 
+                        assume WebORB is installed in the
+                        <font face="Courier New">c:\dev\WeborbPHP\</font> 
+                        folder. The WeborbPHP folder is also mapped as a virtual 
+                        directory in the webserver. There are two paths to 
+                        specify in the next step: Web root and Root URL:<blockquote>
+                          <p align="left">
+						<b>Web root</b> - this is a directory that contains an 
+                        installation of WebORB. <br>
+                        <b>Root URL</b> - this is a URL corresponding to the 
+                        &quot;Web root&quot; directory.</blockquote>
+                        <p>
+						<img border="0" src="images/gettin6.jpg" width="458" height="406"><p align="left">
+						Click &quot;Finish&quot; to continue. Flex Builder creates a default (blank) Flex application. <p align="left">
+						Right click the project node in the &quot;Flex Navigator&quot; panel and open Properties. Select &quot;Flex 
+						Compiler&quot; and enter the following parameter into the &quot;Additional compiler arguments&quot; as shown in 
+						the image below:<blockquote>
+                          <p align="left">
+						<font face="Courier New">-services c:\[WEBORB_PATH]\Weborb\web-inf\flex\services-config.xml</font></blockquote>
+                          <p align="left">
+						In case when WebORB is installed in c:\dev\WeborbPHP, 
+                        the path would be:<blockquote>
+                          <p align="left">
+						<font face="Courier New">-services c:\dev\WeborbPHP\Weborb\web-inf\flex\services-config.xml</font></blockquote>
+                        <p>
+						<img border="0" src="images/gettin3.gif" width="681" height="536"><p align="left">
+						Click OK to close the window. 
+                        </div>
+					   <div id="fb2_div" style="display:none">                        
+						<p align="left">Start Flex Builder
+						2.0 and select File -&gt; New -&gt; Flex Project. A
+						dialog window shown below will appear. Make the
+						selections as shown below and click &quot;Next &gt;&quot;.<p align="left">
+						<img border="0" src="gettin5.jpg" width="368" height="321"><p align="left">
+						The next step is very important as it establishes the
+						configuration paths. Uncheck the 'Use default
+						location..' checkbox. The 'Root folder' field must
+						contain the path to the /Weborb folder from the WebORB
+						for PHP distribution. The 'Root URL' field must contain
+						a URL pointing to the same /Weborb folder:<p align="left">&nbsp;Click
+						&quot;Next &gt;&quot; to continue.<p align="left">
+						<img border="0" src="gettin1.jpg" width="438" height="408"><p align="left">
+						The next step is to assign a name to the Flex project.
+						Enter&nbsp; &quot;SampleFlexToPHPProject&quot; for the
+						project the name as shown below and click 'Next' to
+						continue.<p align="left">
+						<img border="0" src="gettin2.jpg" width="364" height="335"><p align="left">
+						The final step in Flex project creation is to set the
+						output folder path and output folder url. Both of these
+						values must point to a folder in the web server
+						hierarchy. It is important that both 'Output folder' and
+						'Output folder URL' point to the same directory.<p align="left">
+						Click 'Finish' to finalize project construction.<p align="left">
+						<img border="0" src="gettin3.jpg" width="402" height="554"><p align="left">
+						Flex Builder creates an empty Flex application. The
+						steps below will guide through building a Flex
+						application and connecting it with a PHP object. <br></div>
+					</td>
+                      </tr>
+					<tr>
+                    <td align="left" height="32"><b>CONFIGURATION - FLEX
+					BUILDER</b></td>
+                  </tr>
+					<tr>
+                        <td align="center" height="151">
+						<p align="left"> WebORB for PHP product distribution contains a
+						finished Flex application demonstrating Flex to WebORB
+						connectivity and a remoting invocation. Copy and paste the
+						contents of the <b>example.mxml</b>
+						file located at<p align="left">
+						<font face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp; \Examples\SampleApp\</font><p align="left"> into the mxml file created in Flex
+						Builder. The code in the application connects to a PHP
+						object and retrieves some basic information about the
+						computer where the object is running.<br>
+&nbsp;</td>
+                      </tr>
+					<tr>
+                    <td align="left" height="32"><b>CONFIGURATION -
+					WEBORB</b></td>
+                  </tr>
+					<tr>
+                        <td align="center">
+						<p align="left">Flex applications require a declaration
+						of the exposed classes as &quot;destinations&quot;.
+						Destinations must be configured in <b>remoting-config.xml</b>
+						located in the <b>[WEBORB_PATH]\Weborb\WEB-INF\flex</b> folder. The
+						application in this example uses the &quot;InfoService&quot;
+						destination defined as:</p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table1" width="400">
+							<tr>
+								<td><font face="Courier New">&nbsp;&lt;destination
+								id=&quot;InfoServiceDestination&quot;&gt;<br>
+&nbsp;&nbsp; &lt;properties&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;source&gt;InfoService&lt;/source&gt;<br>
+&nbsp;&nbsp; &lt;/properties&gt;<br>
+								&lt;/destination&gt;</font></td>
+							</tr>
+						</table>
+						<p align="left">Flex Builder loads the configuration
+						file during the compile time. </p>
+						<p align="left"><font color="#FF0000"><b><font size="4">IMPORTANT:</font></b></font><font size="4"> Make sure to locate
+                        the directory where Flex Builder places the compiled
+                        client application. It is very important to place a copy
+                        of weborb.php into the same directory. weborb.php must
+                        contain the following PHP code:</font></p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table8" width="400">
+							<tr>
+								<td>
+<font face="Courier New">&lt;?php&nbsp; <br>
+<b>&nbsp;&nbsp; require_once(&quot;../Weborb/ORBHttpHandler.php&quot;);<br>
+</b><br>
+&nbsp;&nbsp;
+
+      $m_ORBHttpHandler = new ORBHttpHandler();<br>
+&nbsp;&nbsp;
+      $m_ORBHttpHandler-&gt;processRequest();
+<br>
+?&gt; </font>                                </td>
+							</tr>
+						</table>
+						<p align="left"><font size="4"><b><font color="#FF0000">
+                        VERY IMPORTANT:</font></b> The first line must be
+                        edited to  point to the Weborb directory from the
+                        product distribution. For example, look at weborb.php
+                        located in the /Console folder<br>
+&nbsp;</font></td>
+                      </tr>
+					<tr>
+                    <td align="center" height="32">
+                    <p align="left"><b>RUNNING FLEX
+					APPLICATION</b></td>
+                  </tr>
+					<tr>
+                        <td align="center">
+						<p align="left">When you run the application in Flex 
+                        Builder, it opens a browser and loads the application. The application connects to the backend
+						service upon the startup or when user clicks the &quot;Send
+						Request&quot; button:<br>
+&nbsp;</p>
+						</td>
+                      </tr>
+					<tr>
+                    <td align="left" height="32"><b>CODE REVIEW</b></td>
+                  </tr>
+					<tr>
+                        <td align="center">
+						<p align="left">Flex application declares a remote
+						object using the RemoteObject API:</p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table3" width="600">
+							<tr>
+								<td><font face="Courier New">remoteObject = new
+								RemoteObject();<br>
+								remoteObject.destination = &quot;InfoServiceDestination&quot;;<br>
+								remoteObject.getComputerInfo.addEventListener(&quot;result&quot;,
+								onResult);<br>
+								remoteObject.addEventListener(&quot;fault&quot;, onFault);</font></td>
+							</tr>
+						</table>
+						<p align="left">Notice the destination name matches the
+						destination entered in remoting-config.xml. When a user
+						clicks the 'Get Computer Info' button, the following
+						function executes a remote method invocation:</p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table4" width="600">
+							<tr>
+								<td><font face="Courier New">private function
+								getInfo():void <br>
+								{<br>
+&nbsp; invokeButton.enabled = false;<br>
+&nbsp; currentUserText.text = &quot;&quot;;<br>
+&nbsp; processIdText.text = &quot;&quot;;<br>
+&nbsp; osText.text = &quot;&quot;;<br>
+&nbsp; phpVersionText.text = &quot;&quot;;<br>
+&nbsp; remoteObject.getComputerInfo();<br>
+								}</font></td>
+							</tr>
+						</table>
+						<p align="left">When an invocation response is
+						available, Flex invokes a response handler specified in
+						the &lt;RemoteObject&gt; tag. The response handler in the
+						example, populates the text fields with the data
+						available in the returned object:</p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table5" width="600">
+							<tr>
+								<td><font face="Courier New">private function
+								onResult(event:ResultEvent):void <br>
+								{<br>
+&nbsp; var computerInfo:Object = event.result;<br>
+&nbsp; currentUserText.text = computerInfo.currentUser;<br>
+&nbsp; processIdText.text = computerInfo.phpProcessId;<br>
+&nbsp; osText.text = computerInfo.operatingSystem;<br>
+&nbsp; phpVersionText.text = computerInfo.phpVersion;<br>
+&nbsp; invokeButton.enabled = true;<br>
+								}</font></td>
+							</tr>
+						</table>
+						<p align="left">The source code for the server-side
+						object is below:</p>
+						<table border="0" cellspacing="3" cellpadding="2" bgcolor="#D7E8E6" id="table6" width="600">
+							<tr>
+								<td><font face="Courier New">class InfoService<br>
+								{<br>
+&nbsp; public function getComputerInfo()<br>
+&nbsp; {<br>
+&nbsp;&nbsp;&nbsp; $compInfo = new ComputerInfo();<br>
+&nbsp;&nbsp;&nbsp; $compInfo-&gt;currentUser = get_current_user();<br>
+&nbsp;&nbsp;&nbsp; $compInfo-&gt;phpProcessId = getmypid();<br>
+&nbsp;&nbsp;&nbsp; $compInfo-&gt;operatingSystem = php_uname( 'a' );<br>
+&nbsp;&nbsp;&nbsp; $compInfo-&gt;phpVersion = phpversion();<br>
+&nbsp;&nbsp;&nbsp; return $compInfo;<br>
+&nbsp; }<br>
+								}<br>
+								<br>
+								class ComputerInfo<br>
+								{<br>
+&nbsp; public $currentUser;<br>
+&nbsp; public $phpProcessId;<br>
+&nbsp; public $operatingSystem;<br>
+&nbsp; public $phpVersion;<br>
+								}</font></td>
+							</tr>
+						</table>
+						<p align="left">&nbsp;</td>
+                      </tr>
+                  </table>
+  </center>
+</div>
+</body>
+<!-- InstanceEnd --></html>

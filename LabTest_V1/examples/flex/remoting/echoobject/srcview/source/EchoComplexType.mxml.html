@@ -1,0 +1,98 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>EchoComplexType.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; xmlns=&quot;<span class="mxmlString">*</span>&quot;
+    pageTitle=&quot;<span class="mxmlString">Database Administration Tool</span>&quot;
+    width=&quot;<span class="mxmlString">679</span>&quot; height=&quot;<span class="mxmlString">256</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot;
+    creationComplete=&quot;init<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            
+            <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+            <span class="asReserved">private</span> <span class="asVar">var</span> eyeColors<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span><span class="asString">&quot;Blue&quot;</span>, <span class="asString">&quot;Brown&quot;</span>, <span class="asString">&quot;Green&quot;</span>, <span class="asString">&quot;Transparent&quot;</span>, <span class="asString">&quot;Red&quot;</span><span class="asBracket">]</span>;
+            <span class="asReserved">private</span> <span class="asVar">var</span> identityService<span class="asOperator">:</span>RemoteObject;
+            <span class="asReserved">private</span> <span class="asVar">var</span> invokeTime<span class="asOperator">:</span>Number;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                identityService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                identityService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.IdentityService&quot;</span>;
+                identityService.HideIdentity.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                identityService.HideIdentity.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, gotNewIdentity <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> invokeService<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> myIdentity<span class="asOperator">:</span>Object <span class="asOperator">=</span> <span class="asReserved">new</span> Object<span class="asBracket">()</span>;
+                myIdentity.name <span class="asOperator">=</span> nameFieldClient.text;
+                myIdentity.age <span class="asOperator">=</span> ageClient.value;
+                myIdentity.sex <span class="asOperator">=</span> genderGroup.selectedValue;
+                myIdentity.eyeColor <span class="asOperator">=</span> eyeColorClient.selectedItem;
+                
+                invokeTime <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">()</span>.getTime<span class="asBracket">()</span>;
+                                
+                identityService.HideIdentity<span class="asBracket">(</span> myIdentity <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotNewIdentity<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                invTime.text <span class="asOperator">=</span> <span class="asBracket">(</span><span class="asReserved">new</span> Date<span class="asBracket">()</span>.getTime<span class="asBracket">()</span> <span class="asOperator">-</span> invokeTime<span class="asBracket">)</span> <span class="asOperator">+</span> <span class="asString">&quot; ms&quot;</span>;
+                <span class="asVar">var</span> myNewIdentity<span class="asOperator">:</span>Object <span class="asOperator">=</span> result.result;
+                nameField.text <span class="asOperator">=</span> myNewIdentity.name;
+                 ageField.text <span class="asOperator">=</span> myNewIdentity.age;
+                sexField.text <span class="asOperator">=</span> myNewIdentity.sex;
+                eyeColor.text <span class="asOperator">=</span> myNewIdentity.eyeColor;                
+            <span class="asBracket">}</span>            
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> width=&quot;<span class="mxmlString">657</span>&quot; height=&quot;<span class="mxmlString">232</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Send and Receive ActionScript Object</span>&quot; cornerRadius=&quot;<span class="mxmlString">0</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">292</span>&quot; y=&quot;<span class="mxmlString">-23</span>&quot; text=&quot;<span class="mxmlString">Flex Remoting with WebORB</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">138</span>&quot; y=&quot;<span class="mxmlString">160</span>&quot; label=&quot;<span class="mxmlString">Server, Hide My Identity!</span>&quot; click=&quot;invokeService<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">329</span>&quot; y=&quot;<span class="mxmlString">18</span>&quot; width=&quot;<span class="mxmlString">297</span>&quot; height=&quot;<span class="mxmlString">134</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Name</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; y=&quot;<span class="mxmlString">19</span>&quot; x=&quot;<span class="mxmlString">16</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">45</span>&quot; text=&quot;<span class="mxmlString">Age</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">71</span>&quot; text=&quot;<span class="mxmlString">Sex</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">97</span>&quot; text=&quot;<span class="mxmlString">Eye color</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; width=&quot;<span class="mxmlString">180</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a5beb9</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; id=&quot;<span class="mxmlString">nameField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">46</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; width=&quot;<span class="mxmlString">180</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a5beb9</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; id=&quot;<span class="mxmlString">ageField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">72</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; width=&quot;<span class="mxmlString">180</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a5beb9</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; id=&quot;<span class="mxmlString">sexField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">98</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; width=&quot;<span class="mxmlString">180</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a5beb9</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; id=&quot;<span class="mxmlString">eyeColor</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">341</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; text=&quot;<span class="mxmlString">Server response</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">18</span>&quot; width=&quot;<span class="mxmlString">297</span>&quot; height=&quot;<span class="mxmlString">134</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Name</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; y=&quot;<span class="mxmlString">19</span>&quot; x=&quot;<span class="mxmlString">16</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">45</span>&quot; text=&quot;<span class="mxmlString">Age</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">71</span>&quot; text=&quot;<span class="mxmlString">Sex</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">15</span>&quot; y=&quot;<span class="mxmlString">97</span>&quot; text=&quot;<span class="mxmlString">Eye color</span>&quot; fontSize=&quot;<span class="mxmlString">13</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; editable=&quot;<span class="mxmlString">true</span>&quot; width=&quot;<span class="mxmlString">180</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a5beb9</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; id=&quot;<span class="mxmlString">nameFieldClient</span>&quot; text=&quot;<span class="mxmlString">James Bond</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:RadioButtonGroup</span> id=&quot;<span class="mxmlString">genderGroup</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:RadioButton</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">75</span>&quot; label=&quot;<span class="mxmlString">Male</span>&quot; groupName=&quot;<span class="mxmlString">genderGroup</span>&quot; selected=&quot;<span class="mxmlString">true</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:RadioButton</span> x=&quot;<span class="mxmlString">162</span>&quot; y=&quot;<span class="mxmlString">75</span>&quot; label=&quot;<span class="mxmlString">Female</span>&quot; groupName=&quot;<span class="mxmlString">genderGroup</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:ComboBox</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">98</span>&quot; id=&quot;<span class="mxmlString">eyeColorClient</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>eyeColors<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">&gt;</span><span class="mxmlComponent">&lt;/mx:ComboBox&gt;</span>
+            <span class="mxmlComponent">&lt;mx:NumericStepper</span> x=&quot;<span class="mxmlString">102</span>&quot; y=&quot;<span class="mxmlString">47</span>&quot; width=&quot;<span class="mxmlString">80</span>&quot; id=&quot;<span class="mxmlString">ageClient</span>&quot; value=&quot;<span class="mxmlString">30</span>&quot; minimum=&quot;<span class="mxmlString">16</span>&quot; maximum=&quot;<span class="mxmlString">120</span>&quot; stepSize=&quot;<span class="mxmlString">2</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">22</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; text=&quot;<span class="mxmlString">Client object</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">329</span>&quot; y=&quot;<span class="mxmlString">164</span>&quot; text=&quot;<span class="mxmlString">Invocation time:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">434</span>&quot; y=&quot;<span class="mxmlString">164</span>&quot; id=&quot;<span class="mxmlString">invTime</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

@@ -1,0 +1,73 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>OrderView.mxml</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:VBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; label=&quot;<span class="mxmlString">Products</span>&quot; xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot;<span class="mxmlComponent">&gt;</span>
+  <span class="mxmlTag">&lt;mx:Script&gt;</span><span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.events.CollectionEvent;
+            <span class="asReserved">import</span> FoodAndDrinks.Order;
+            <span class="asReserved">import</span> FoodAndDrinks.ActiveRecords;
+            <span class="asReserved">import</span> mx.collections.ArrayCollection;
+
+            <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+            <span class="asReserved">private</span> <span class="asVar">var</span> _searchResult<span class="asOperator">:</span>ArrayCollection;
+
+            <span class="asReserved">private</span> <span class="asVar">var</span> _pageSize<span class="asOperator">:</span>int;
+
+            <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> pageSize<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+            _pageSize <span class="asOperator">=</span> value;
+
+            _searchResult <span class="asOperator">=</span> ActiveRecords.Order.findAll<span class="asBracket">({</span>PageSize<span class="asOperator">:</span>_pageSize<span class="asBracket">})</span>;
+            <span class="asBracket">}</span>
+
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> pageSize<span class="asBracket">()</span><span class="asOperator">:</span>int
+            <span class="asBracket">{</span>
+              <span class="asReserved">return</span> _pageSize;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> onAddClick<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                OrderAddView.ShowDialog<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+          <span class="asBracket">]]</span><span class="asOperator">&gt;</span><span class="mxmlTag">&lt;/mx:Script&gt;</span>
+  <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Add New</span>&quot; click=&quot;onAddClick<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+  <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Table records:</span>&quot; <span class="mxmlComponent">/&gt;</span>
+  <span class="mxmlComponent">&lt;mx:DataGrid</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>_searchResult<span class="mxmlString">}</span>&quot; editable=&quot;<span class="mxmlString">true</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> width=&quot;<span class="mxmlString">70</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:itemRenderer&gt;</span>
+          <span class="mxmlTag">&lt;mx:Component&gt;</span>
+            <span class="mxmlComponent">&lt;mx:HBox</span> horizontalAlign=&quot;<span class="mxmlString">center</span>&quot;<span class="mxmlComponent">&gt;</span>
+              <span class="mxmlComponent">&lt;mx:Button</span> height=&quot;<span class="mxmlString">15</span>&quot; label=&quot;<span class="mxmlString">save</span>&quot; enabled=&quot;<span class="mxmlString">{</span>data.IsDirty<span class="mxmlString">}</span>&quot; click=&quot;<span class="asBracket">{</span>data.save<span class="asBracket">()}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+          <span class="mxmlTag">&lt;/mx:Component&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:itemRenderer&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:DataGridColumn&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> width=&quot;<span class="mxmlString">80</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:itemRenderer&gt;</span>
+          <span class="mxmlTag">&lt;mx:Component&gt;</span>
+            <span class="mxmlComponent">&lt;mx:HBox</span> horizontalAlign=&quot;<span class="mxmlString">center</span>&quot;<span class="mxmlComponent">&gt;</span>
+              <span class="mxmlComponent">&lt;mx:Button</span> height=&quot;<span class="mxmlString">15</span>&quot; label=&quot;<span class="mxmlString">remove</span>&quot; enabled=&quot;<span class="mxmlString">{</span><span class="asOperator">!</span>data.IsLocked<span class="mxmlString">}</span>&quot; click=&quot;<span class="asBracket">{</span>data.remove<span class="asBracket">()}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+          <span class="mxmlTag">&lt;/mx:Component&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:itemRenderer&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:DataGridColumn&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">OrderId</span>&quot; dataField=&quot;<span class="mxmlString">OrderId</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">OrderDate</span>&quot; dataField=&quot;<span class="mxmlString">OrderDate</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">DeliveryDate</span>&quot; dataField=&quot;<span class="mxmlString">DeliveryDate</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">DeliveryAddress</span>&quot; dataField=&quot;<span class="mxmlString">DeliveryAddress</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Status</span>&quot; dataField=&quot;<span class="mxmlString">Status</span>&quot; <span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+  <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+  <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Total records: {</span>_searchResult.length<span class="mxmlString">}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+<span class="mxmlComponent">&lt;/mx:VBox&gt;</span></pre></body>
+</html>

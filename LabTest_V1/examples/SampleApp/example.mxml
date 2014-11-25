@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	creationComplete="onCreationComplete()">
+	
+	<mx:Script>
+    <![CDATA[
+    	import mx.rpc.remoting.*;
+    	import mx.controls.*;
+        import mx.rpc.events.*
+
+		private var remoteObject:RemoteObject;
+		
+    	public function onCreationComplete():void
+   		{
+   			remoteObject = new RemoteObject();
+   			remoteObject.destination = "InfoServiceDestination";
+   			remoteObject.getComputerInfo.addEventListener("result", onResult);
+   			remoteObject.addEventListener("fault", onFault);
+   			getInfo();
+   		}
+   		
+   		public static function onFault(event:FaultEvent):void 
+        {
+            Alert.show(event.fault.faultString, 'Error');
+        }
+        
+        private function onResult(event:ResultEvent):void 
+    	{
+    		var computerInfo:Object = event.result;
+    		currentUserText.text = computerInfo.currentUser;
+    		processIdText.text = computerInfo.phpProcessId;
+    		osText.text = computerInfo.operatingSystem;
+    		phpVersionText.text = computerInfo.phpVersion;
+    		invokeButton.enabled = true;
+    	}
+    	
+    	private function getInfo():void 
+    	{
+    		invokeButton.enabled = false;
+    		currentUserText.text = "";
+    		processIdText.text = "";
+    		osText.text = "";
+    		phpVersionText.text = "";
+    		remoteObject.getComputerInfo();
+    	}
+	]]>
+    </mx:Script>
+	<mx:Panel x="10" y="10" width="329" height="189" layout="absolute" title="Info Service Example">
+		<mx:Label x="10" y="10" text="Current user:"/>
+		<mx:Label x="10" y="36" text="PHP Process ID:"/>
+		<mx:Label x="10" y="62" text="OS/Architecture:"/>
+		<mx:Label x="10" y="88" text="PHP Version:"/>
+		<mx:TextInput x="113" y="8" width="186" editable="false" id="currentUserText"/>
+		<mx:TextInput x="113" y="34" width="186" editable="false" id="processIdText"/>
+		<mx:TextInput x="113" y="60" width="186" editable="false" id="osText"/>
+		<mx:TextInput x="113" y="86" width="186" editable="false" id="phpVersionText"/>
+		<mx:Button id="invokeButton" x="166" y="116" label="Get Computer Info" click="getInfo()" />
+	</mx:Panel>
+	
+</mx:Application>

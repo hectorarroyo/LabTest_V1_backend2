@@ -1,0 +1,89 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>update.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot; width=&quot;<span class="mxmlString">513</span>&quot; height=&quot;<span class="mxmlString">388</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> weborb.data.ActiveCollection;
+            <span class="asReserved">import</span> FoodAndDrinks.Product;
+            <span class="asReserved">import</span> FoodAndDrinks.ActiveRecords;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> OnSave<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> selectedProduct<span class="asOperator">:</span>Product <span class="asOperator">=</span> Product<span class="asBracket">(</span>grdProducts.selectedItem<span class="asBracket">)</span>;
+                
+                <span class="asComment">// [ProductInstance].save() is a WDMF API to persist an instance of a managed object.
+</span>                <span class="asComment">// once the record is saved, WDMF notifies all other clients about the change using data push.
+</span>                selectedProduct.save<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;txtName.text&quot; destination=&quot;grdProducts.selectedItem.Name&quot; <span class="mxmlTag">/&gt;</span>
+    <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;txtPrice.text&quot; destination=&quot;grdProducts.selectedItem.Price&quot; <span class="mxmlTag">/&gt;</span>
+    <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;cbImages.selectedItem&quot; destination=&quot;grdProducts.selectedItem.PictureFileName&quot; <span class="mxmlTag">/&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> title=&quot;<span class="mxmlString">WebORB Data Management for Flex - Data Update Example</span>&quot; width=&quot;<span class="mxmlString">493</span>&quot; height=&quot;<span class="mxmlString">368</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>    
+        <span class="mxmlComment">&lt;!--</span><span class="mxmlComment">
+        The dataProvider for the datagrid is a result of the findAll() method call. 
+        The method fetches all records from the Product table. The data is retrieved 
+        asynchronously, but the method returns a bindable place holder result value
+        right away. When the data arrives from the server, WDMF populates the placeholder
+        with the actual data. Each item in the collection is an instance of the Product 
+        class
+        </span><span class="mxmlComment">--&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> id=&quot;<span class="mxmlString">grdProducts</span>&quot;   dataProvider=&quot;<span class="mxmlString">{</span>ActiveRecords.Product.findAll<span class="asBracket">()</span><span class="mxmlString">}</span>&quot; editable=&quot;<span class="mxmlString">true</span>&quot; x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">453</span>&quot; height=&quot;<span class="mxmlString">160</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">ID</span>&quot; dataField=&quot;<span class="mxmlString">ProductId</span>&quot; width=&quot;<span class="mxmlString">30</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Name</span>&quot; dataField=&quot;<span class="mxmlString">Name</span>&quot; width=&quot;<span class="mxmlString">100</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Price</span>&quot; dataField=&quot;<span class="mxmlString">Price</span>&quot; width=&quot;<span class="mxmlString">100</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Picture</span>&quot; dataField=&quot;<span class="mxmlString">PictureFileName</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> editable=&quot;<span class="mxmlString">false</span>&quot; width=&quot;<span class="mxmlString">60</span>&quot;<span class="mxmlComponent">&gt;</span>
+                    <span class="mxmlComponent">&lt;mx:itemRenderer&gt;</span>
+                        <span class="mxmlTag">&lt;mx:Component&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Save</span>&quot; enabled=&quot;<span class="mxmlString">{</span>data.IsDirty<span class="mxmlString">}</span>&quot; click=&quot;<span class="asBracket">{</span>data.save<span class="asBracket">()}</span>&quot; height=&quot;<span class="mxmlString">15</span>&quot; <span class="mxmlComponent">/&gt;</span>                            
+                        <span class="mxmlTag">&lt;/mx:Component&gt;</span>                        
+                    <span class="mxmlComponent">&lt;/mx:itemRenderer&gt;</span>
+                <span class="mxmlComponent">&lt;/mx:DataGridColumn&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+    
+        <span class="mxmlComponent">&lt;mx:Form</span> x=&quot;<span class="mxmlString">209</span>&quot; y=&quot;<span class="mxmlString">178</span>&quot; height=&quot;<span class="mxmlString">110</span>&quot; backgroundColor=&quot;<span class="mxmlString">#e6eff2</span>&quot; width=&quot;<span class="mxmlString">254</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; verticalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot; horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComment">&lt;!--</span><span class="mxmlComment">
+            Use data binding to populate form fields. Both text fields, combo box 
+            and the image get the values from the currently selected item in the data grid. 
+            </span><span class="mxmlComment">--&gt;</span>
+            <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Name</span>&quot; required=&quot;<span class="mxmlString">true</span>&quot;<span class="mxmlComponent">&gt;</span>
+                <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">txtName</span>&quot; text=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.Name<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+            <span class="mxmlComponent">&lt;mx:FormItem</span>  label=&quot;<span class="mxmlString">Price</span>&quot; required=&quot;<span class="mxmlString">true</span>&quot;<span class="mxmlComponent">&gt;</span>
+                <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">txtPrice</span>&quot; text=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.Price<span class="mxmlString">}</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+            <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Picture</span>&quot;<span class="mxmlComponent">&gt;</span>
+                <span class="mxmlComponent">&lt;mx:ComboBox</span> id=&quot;<span class="mxmlString">cbImages</span>&quot; selectedItem=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.PictureFileName<span class="mxmlString">}</span>&quot; width=&quot;<span class="mxmlString">160</span>&quot; <span class="mxmlComponent">&gt;</span>
+                    <span class="mxmlComponent">&lt;mx:dataProvider&gt;</span>
+                        <span class="mxmlComponent">&lt;mx:Array&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">apples.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">bananas.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">dole.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">grapes.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">green_leaf_lettuce.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">orange.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                            <span class="mxmlComponent">&lt;mx:String&gt;</span><span class="mxmlCdata">strawberries.jpg</span><span class="mxmlComponent">&lt;/mx:String&gt;</span>
+                        <span class="mxmlComponent">&lt;/mx:Array&gt;</span>
+                    <span class="mxmlComponent">&lt;/mx:dataProvider&gt;</span>
+                <span class="mxmlComponent">&lt;/mx:ComboBox&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Form&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Box</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">178</span>&quot;  borderStyle=&quot;<span class="mxmlString">solid</span>&quot; height=&quot;<span class="mxmlString">110</span>&quot; verticalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot; horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Image</span> id=&quot;<span class="mxmlString">imgPreview</span>&quot; width=&quot;<span class="mxmlString">191</span>&quot; height=&quot;<span class="mxmlString">109</span>&quot; source=&quot;<span class="mxmlString">images/{</span>grdProducts.selectedItem.PictureFileName<span class="mxmlString">}</span>&quot;  <span class="mxmlComponent">/&gt;</span>            
+        <span class="mxmlComponent">&lt;/mx:Box&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Save Changes</span>&quot; enabled=&quot;<span class="mxmlString">{</span>grdProducts.selectedItem.IsDirty<span class="mxmlString">}</span>&quot; width=&quot;<span class="mxmlString">97</span>&quot; x=&quot;<span class="mxmlString">366</span>&quot; y=&quot;<span class="mxmlString">296</span>&quot; click=&quot;OnSave<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

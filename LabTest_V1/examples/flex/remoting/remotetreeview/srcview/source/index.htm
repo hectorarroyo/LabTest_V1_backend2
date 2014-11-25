@@ -1,0 +1,107 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Using Flex client security API</title>
+<LINK href="..\..\..\orbexamples.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Flex Tree View with Remote Data</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Usage of Flex Remoting to populate tree view control with a
+			remote set of data</li>
+			<li>Mapping hierarchical server-side data model to the client
+			objects</li>
+			<li>Lazy (delayed) data loading of tree view</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/RemoteTreeView.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td><a href="server-code">Browse</a>&nbsp;
+		<a href="server-code/FileSystemBrowserSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Product edition
+		availability:</td>
+		<td>
+		  	<ul>
+				<li>WebORB Standard Edition (localhost clients only)</li>
+				<li>WebORB Professional Edition</li>
+				<li>WebORB Enterprise Edition</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="RemoteTreeView" width="680" height="405"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="RemoteTreeView.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#869ca7" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="RemoteTreeView.swf" quality="high" bgcolor="#869ca7"
+				width="680" height="405" name="RemoteTreeView" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed>
+	</object>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>Server-side class returns a hierarchy of folders and files, one
+			level at a time. The model of the value objects is as shown below:<p>
+			<img border="0" src="servermodel.gif" width="502" height="260"></p>
+			The client-side object model directly maps with the one from the
+			server. So the client code does not need to do anything special to
+			recreate the data model other than map the server classes to the
+			ones on the client.<br><br>
+</li>
+			<li>Since there is no XML involved in rendering the data in the tree
+			control, the code uses a custom implementation of
+			ITreeDataDescriptor (see the FileSystemTreeDataDescriptor class)</li>
+			<li>There are two event handlers registered with the tree view to
+			handle lazy node initialization. See the &quot;change&quot; and &quot;itemOpenning&quot;
+			events (implemented in the handleTreeChange and handleRetrieve
+			methods)</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Make a folder and restrict its access to the ASPNET user. Try to
+			access the folder from the Flex client</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

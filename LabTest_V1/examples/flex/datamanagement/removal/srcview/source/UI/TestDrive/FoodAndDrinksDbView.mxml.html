@@ -1,0 +1,76 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FoodAndDrinksDbView.mxml</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Canvas</span> width=&quot;<span class="mxmlString">726</span>&quot; height=&quot;<span class="mxmlString">650</span>&quot; creationComplete=&quot;onCreationComplete<span class="asBracket">()</span>&quot; xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; xmlns:controls=&quot;<span class="mxmlString">UI.TestDrive.*</span>&quot;<span class="mxmlComponent">&gt;</span>
+  <span class="mxmlTag">&lt;mx:Script&gt;</span><span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+          <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+          <span class="asReserved">private</span> <span class="asVar">var</span> currentRecordName<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+
+          <span class="asReserved">private</span> <span class="asFunction">function</span> changeTable<span class="asBracket">(</span>index<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+            vsActiveRecords.selectedIndex <span class="asOperator">=</span> index;
+            currentRecordName <span class="asOperator">=</span> vsActiveRecords.selectedChild.label;
+            Object<span class="asBracket">(</span>vsActiveRecords.selectedChild<span class="asBracket">)</span>.pageSize <span class="asOperator">=</span> Number<span class="asBracket">(</span>cbPageSize.selectedItem<span class="asBracket">)</span>;
+          <span class="asBracket">}</span>
+
+          <span class="asReserved">private</span> <span class="asFunction">function</span> onCreationComplete<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+            cbPageSize.selectedItem <span class="asOperator">=</span> 40;
+            changeTable<span class="asBracket">(</span>0<span class="asBracket">)</span>;
+          <span class="asBracket">}</span>
+          <span class="asBracket">]]</span><span class="asOperator">&gt;</span><span class="mxmlTag">&lt;/mx:Script&gt;</span>
+  <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;cbPageSize.selectedItem&quot; destination=&quot;Object<span class="asBracket">(</span>vsActiveRecords.selectedChild<span class="asBracket">)</span>.pageSize&quot; <span class="mxmlTag">/&gt;</span>
+  <span class="mxmlComponent">&lt;mx:HBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlComponent">&lt;mx:VBox</span> height=&quot;<span class="mxmlString">100%</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; paddingBottom=&quot;<span class="mxmlString">10</span>&quot; paddingTop=&quot;<span class="mxmlString">10</span>&quot; shadowDistance=&quot;<span class="mxmlString">3</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot; dropShadowEnabled=&quot;<span class="mxmlString">true</span>&quot; borderThickness=&quot;<span class="mxmlString">2</span>&quot; backgroundColor=&quot;<span class="mxmlString">#769dbe</span>&quot; borderColor=&quot;<span class="mxmlString">#294074</span>&quot; shadowDirection=&quot;<span class="mxmlString">right</span>&quot;<span class="mxmlComponent">&gt;</span>
+      <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Active Records</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:Spacer</span> <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:Canvas</span> bottom=&quot;<span class="mxmlString">10</span>&quot; top=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">250</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:VBox</span> horizontalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot; verticalScrollPolicy=&quot;<span class="mxmlString">off</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+          <span class="mxmlComponent">&lt;mx:LinkButton</span> textAlign=&quot;<span class="mxmlString">left</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; color=&quot;<span class="mxmlString">#ffffff</span>&quot; label=&quot;<span class="mxmlString">Account</span>&quot; click=&quot;<span class="asBracket">{</span>changeTable<span class="asBracket">(</span>0<span class="asBracket">)}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+          <span class="mxmlComponent">&lt;mx:LinkButton</span> textAlign=&quot;<span class="mxmlString">left</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; color=&quot;<span class="mxmlString">#ffffff</span>&quot; label=&quot;<span class="mxmlString">Order</span>&quot; click=&quot;<span class="asBracket">{</span>changeTable<span class="asBracket">(</span>1<span class="asBracket">)}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+          <span class="mxmlComponent">&lt;mx:LinkButton</span> textAlign=&quot;<span class="mxmlString">left</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; color=&quot;<span class="mxmlString">#ffffff</span>&quot; label=&quot;<span class="mxmlString">OrderLine</span>&quot; click=&quot;<span class="asBracket">{</span>changeTable<span class="asBracket">(</span>2<span class="asBracket">)}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+          <span class="mxmlComponent">&lt;mx:LinkButton</span> textAlign=&quot;<span class="mxmlString">left</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; color=&quot;<span class="mxmlString">#ffffff</span>&quot; label=&quot;<span class="mxmlString">Product</span>&quot; click=&quot;<span class="asBracket">{</span>changeTable<span class="asBracket">(</span>3<span class="asBracket">)}</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+    <span class="mxmlComponent">&lt;mx:VBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; paddingBottom=&quot;<span class="mxmlString">10</span>&quot; paddingLeft=&quot;<span class="mxmlString">10</span>&quot; paddingRight=&quot;<span class="mxmlString">10</span>&quot; paddingTop=&quot;<span class="mxmlString">10</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; borderThickness=&quot;<span class="mxmlString">2</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot; shadowDirection=&quot;<span class="mxmlString">right</span>&quot; shadowDistance=&quot;<span class="mxmlString">3</span>&quot; dropShadowEnabled=&quot;<span class="mxmlString">true</span>&quot; backgroundColor=&quot;<span class="mxmlString">#769dbe</span>&quot; borderColor=&quot;<span class="mxmlString">#294074</span>&quot;<span class="mxmlComponent">&gt;</span>
+      <span class="mxmlComponent">&lt;mx:HBox&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Active Record:</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; fontSize=&quot;<span class="mxmlString">17</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">{</span>currentRecordName<span class="mxmlString">}</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; fontSize=&quot;<span class="mxmlString">17</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+      <span class="mxmlComponent">&lt;mx:HBox</span> width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Spacer</span> width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:VBox&gt;</span>
+          <span class="mxmlComponent">&lt;mx:HBox&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> text=&quot;<span class="mxmlString">Page size:</span>&quot; <span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:ComboBox</span> id=&quot;<span class="mxmlString">cbPageSize</span>&quot;<span class="mxmlComponent">&gt;</span>
+              <span class="mxmlComponent">&lt;mx:dataProvider&gt;</span>
+                <span class="mxmlComponent">&lt;mx:Array&gt;</span>
+                  <span class="mxmlComponent">&lt;mx:Number&gt;</span><span class="mxmlCdata">10</span><span class="mxmlComponent">&lt;/mx:Number&gt;</span>
+                  <span class="mxmlComponent">&lt;mx:Number&gt;</span><span class="mxmlCdata">20</span><span class="mxmlComponent">&lt;/mx:Number&gt;</span>
+                  <span class="mxmlComponent">&lt;mx:Number&gt;</span><span class="mxmlCdata">30</span><span class="mxmlComponent">&lt;/mx:Number&gt;</span>
+                  <span class="mxmlComponent">&lt;mx:Number&gt;</span><span class="mxmlCdata">40</span><span class="mxmlComponent">&lt;/mx:Number&gt;</span>
+                  <span class="mxmlComponent">&lt;mx:Number&gt;</span><span class="mxmlCdata">50</span><span class="mxmlComponent">&lt;/mx:Number&gt;</span>
+                <span class="mxmlComponent">&lt;/mx:Array&gt;</span>
+              <span class="mxmlComponent">&lt;/mx:dataProvider&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:ComboBox&gt;</span>
+          <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+      <span class="mxmlComponent">&lt;mx:ViewStack</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot; id=&quot;<span class="mxmlString">vsActiveRecords</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;controls:AccountView</span> label=&quot;<span class="mxmlString">Account</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;controls:OrderView</span> label=&quot;<span class="mxmlString">Order</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;controls:OrderLineView</span> label=&quot;<span class="mxmlString">OrderLine</span>&quot; <span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;controls:ProductView</span> label=&quot;<span class="mxmlString">Product</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:ViewStack&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+  <span class="mxmlComponent">&lt;/mx:HBox&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Canvas&gt;</span></pre></body>
+</html>

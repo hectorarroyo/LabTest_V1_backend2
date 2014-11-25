@@ -1,0 +1,203 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataBinding.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">730</span>&quot; height=&quot;<span class="mxmlString">355</span>&quot;
+    creationComplete=&quot;init<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Style&gt;</span>
+        <span class="cssSelector">.myTextInput </span><span class="cssSymbol">{</span>            
+            <span class="cssPropName">backgroundColor </span><span class="cssSymbol">:</span> <span class="cssPropValue">#e2e9eb</span><span class="cssSymbol">;</span>
+            <span class="cssPropName">borderStyle </span><span class="cssSymbol">:</span> <span class="cssPropValue">solid</span><span class="cssSymbol">;</span>
+            <span class="cssPropName">borderColor</span><span class="cssSymbol">:</span><span class="cssPropValue">#334655</span><span class="cssSymbol">;</span>
+            <span class="cssPropName">borderThickness</span><span class="cssSymbol">:</span><span class="cssPropValue">1</span><span class="cssSymbol">;</span>
+            <span class="cssPropName">editable</span><span class="cssSymbol">:</span><span class="cssPropValue">true</span><span class="cssSymbol">;</span>
+            <span class="cssPropName">color</span><span class="cssSymbol">:</span><span class="cssPropValue">#000000</span><span class="cssSymbol">;</span>
+        <span class="cssSymbol">}</span>
+    <span class="mxmlTag">&lt;/mx:Style&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.rpc.AsyncToken;
+            <span class="asReserved">import</span> flash.events.Event;
+            <span class="asReserved">import</span> mx.controls.TextInput;
+            <span class="asReserved">import</span> mx.events.DataGridEventReason;
+            <span class="asReserved">import</span> mx.events.DataGridEvent;
+            <span class="asReserved">import</span> mx.collections.ArrayCollection;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            <span class="asReserved">private</span> <span class="asVar">var</span> customersDataService<span class="asOperator">:</span>RemoteObject;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                customersDataService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                customersDataService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.DataBinding&quot;</span>;
+                customersDataService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                customersDataService.getCustomers.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, receivedCustomerRecords <span class="asBracket">)</span>;
+                customersDataService.updateCustomer.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, customerRecordUpdated <span class="asBracket">)</span>;
+                customersDataService.getCustomers<span class="asBracket">()</span>;                
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString, <span class="asString">&quot;Error&quot;</span> <span class="asBracket">)</span>; 
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> receivedCustomerRecords<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                customersGrid.dataProvider <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">(</span> result.result <span class="asReserved">as</span> Array <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> customerRecordUpdated<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                mainPanel.status <span class="asOperator">=</span> <span class="asString">&quot;Record has been saved&quot;</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> handleItemEditEnd<span class="asBracket">(</span> event<span class="asOperator">:</span>DataGridEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> newData<span class="asOperator">:</span>String<span class="asOperator">=</span> TextInput<span class="asBracket">(</span> customersGrid.itemEditorInstance <span class="asBracket">)</span>.text;
+                <span class="asVar">var</span> oldData<span class="asOperator">:</span>String <span class="asOperator">=</span> customersGrid.dataProvider<span class="asBracket">[</span> event.rowIndex <span class="asBracket">][</span> event.dataField <span class="asBracket">]</span>;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> event.dataField <span class="asOperator">==</span> <span class="asString">&quot;CustomerID&quot;</span> <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    mainPanel.status <span class="asOperator">=</span> <span class="asString">&quot;Cannot change customer ID&quot;</span>;
+                    event.preventDefault<span class="asBracket">()</span>;
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> newData <span class="asOperator">==</span> oldData <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    mainPanel.status <span class="asOperator">=</span> <span class="asString">&quot;Record not saved - no changes detected&quot;</span>;                
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+
+                <span class="asReserved">if</span><span class="asBracket">(</span> newData <span class="asOperator">!=</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>
+                    handleUpdate<span class="asBracket">(</span> customersGrid.dataProvider<span class="asBracket">[</span> event.rowIndex <span class="asBracket">]</span>, event.dataField, newData <span class="asBracket">)</span>;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> event.reason <span class="asOperator">==</span> DataGridEventReason.OTHER <span class="asOperator">||</span> event.reason <span class="asOperator">==</span> DataGridEventReason.CANCELLED <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    <span class="asComment">//customersGrid.invalidateDisplayList();
+</span>                    event.preventDefault<span class="asBracket">()</span>;
+                    
+                    <span class="asReserved">if</span><span class="asBracket">(</span> newData <span class="asOperator">!=</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>
+                    <span class="asBracket">{</span>
+                        customersGrid.dataProvider<span class="asBracket">[</span> event.rowIndex <span class="asBracket">][</span> event.dataField <span class="asBracket">]</span> <span class="asOperator">=</span> newData;
+                        customersGrid.invalidateList<span class="asBracket">()</span>;
+                    <span class="asBracket">}</span>
+                        
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+                <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> newData <span class="asOperator">==</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    mainPanel.status <span class="asOperator">=</span> <span class="asString">&quot;Cannot update with no data. Enter a valid string&quot;</span>;
+                    event.preventDefault<span class="asBracket">()</span>;
+                    TextInput<span class="asBracket">(</span>customersGrid.itemEditorInstance<span class="asBracket">)</span>.errorString <span class="asOperator">=</span> <span class="asString">&quot;Enter a valid string.&quot;</span>;
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> handleUpdate<span class="asBracket">(</span> updatedRowObject<span class="asOperator">:</span>Object, fieldName<span class="asOperator">:</span>String, newData<span class="asOperator">:</span>String <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+            <span class="asBracket">{</span>
+                customersDataService.updateCustomer<span class="asBracket">(</span> updatedRowObject, fieldName, newData <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> handleSelectionChange<span class="asBracket">(</span> event<span class="asOperator">:</span>Event <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> currentSelection<span class="asOperator">:</span>Object <span class="asOperator">=</span> customersGrid.selectedItem;
+                customerID.text <span class="asOperator">=</span> currentSelection.CustomerID;
+                contactName.text <span class="asOperator">=</span> currentSelection.ContactName;
+                contactTitle.text <span class="asOperator">=</span> currentSelection.ContactTitle;
+                companyName.text <span class="asOperator">=</span> currentSelection.CompanyName;
+                address.text <span class="asOperator">=</span> currentSelection.Address;
+                city.text <span class="asOperator">=</span> currentSelection.City;
+                country.text <span class="asOperator">=</span> currentSelection.Country;
+                postalCode.text <span class="asOperator">=</span> currentSelection.PostalCode;    
+                updateButton.enabled <span class="asOperator">=</span> <span class="asReserved">true</span>;            
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> doUpdateWithForm<span class="asBracket">(</span> event<span class="asOperator">:</span>MouseEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> contactName.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                contactTitle.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                companyName.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                address.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                city.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                country.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span>
+                postalCode.text.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    Alert.show<span class="asBracket">(</span> <span class="asString">&quot;All fields are required&quot;</span>, <span class="asString">&quot;Incomplete Form&quot;</span> <span class="asBracket">)</span>;
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+                
+                <span class="asVar">var</span> updateObject<span class="asOperator">:</span>Object <span class="asOperator">=</span> <span class="asReserved">new</span> Object<span class="asBracket">()</span>;
+                updateObject.CustomerID <span class="asOperator">=</span> customerID.text;
+                updateObject.ContactName <span class="asOperator">=</span> contactName.text;
+                updateObject.ContactTitle <span class="asOperator">=</span> contactTitle.text;
+                updateObject.CompanyName <span class="asOperator">=</span> companyName.text;
+                updateObject.Address <span class="asOperator">=</span> address.text;
+                updateObject.City <span class="asOperator">=</span> city.text;
+                updateObject.Country <span class="asOperator">=</span> country.text;
+                updateObject.PostalCode <span class="asOperator">=</span> postalCode.text;
+                <span class="asVar">var</span> asyncToken<span class="asOperator">:</span>AsyncToken <span class="asOperator">=</span> customersDataService.updateCustomer<span class="asBracket">(</span> updateObject <span class="asBracket">)</span>;
+                
+                asyncToken.addResponder<span class="asBracket">(</span> <span class="asReserved">new</span> mx.rpc.Responder<span class="asBracket">(</span>
+                    <span class="asFunction">function</span><span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                    <span class="asBracket">{</span>
+                        customersGrid.dataProvider<span class="asBracket">[</span> customersGrid.selectedIndex <span class="asBracket">]</span> <span class="asOperator">=</span> updateObject;
+                        Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Record has been saved&quot;</span>, <span class="asString">&quot;Success&quot;</span> <span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>,
+                    <span class="asFunction">function</span><span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+                    <span class="asBracket">{</span>
+                        gotError<span class="asBracket">(</span> fault <span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                <span class="asBracket">))</span>;    
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">710</span>&quot; height=&quot;<span class="mxmlString">335</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Flex DataGrid Data Binding using Remoting</span>&quot; id=&quot;<span class="mxmlString">mainPanel</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> 
+            x=&quot;<span class="mxmlString">0</span>&quot; y=&quot;<span class="mxmlString">0</span>&quot; width=&quot;<span class="mxmlString">690</span>&quot; height=&quot;<span class="mxmlString">146</span>&quot; 
+            id=&quot;<span class="mxmlString">customersGrid</span>&quot; editable=&quot;<span class="mxmlString">true</span>&quot; 
+            itemEditEnd=&quot;handleItemEditEnd<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot;
+            change=&quot;handleSelectionChange<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Customer ID</span>&quot; dataField=&quot;<span class="mxmlString">CustomerID</span>&quot; backgroundColor=&quot;<span class="mxmlString">0xe2e9eb</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Contact Name</span>&quot; dataField=&quot;<span class="mxmlString">ContactName</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Contact Title</span>&quot; dataField=&quot;<span class="mxmlString">ContactTitle</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Company Name</span>&quot; dataField=&quot;<span class="mxmlString">CompanyName</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Address</span>&quot; dataField=&quot;<span class="mxmlString">Address</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">City</span>&quot; dataField=&quot;<span class="mxmlString">City</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Country</span>&quot; dataField=&quot;<span class="mxmlString">Country</span>&quot; <span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">PostalCode</span>&quot; dataField=&quot;<span class="mxmlString">PostalCode</span>&quot; <span class="mxmlComponent">/&gt;</span>                
+            <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">158</span>&quot; width=&quot;<span class="mxmlString">670</span>&quot; height=&quot;<span class="mxmlString">129</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">68</span>&quot; y=&quot;<span class="mxmlString">17</span>&quot; text=&quot;<span class="mxmlString">Customer ID:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">68</span>&quot; y=&quot;<span class="mxmlString">43</span>&quot; text=&quot;<span class="mxmlString">Contact Name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">68</span>&quot; y=&quot;<span class="mxmlString">69</span>&quot; text=&quot;<span class="mxmlString">Contact Title:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">68</span>&quot; y=&quot;<span class="mxmlString">95</span>&quot; text=&quot;<span class="mxmlString">Company Name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">170</span>&quot; y=&quot;<span class="mxmlString">41</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">contactName</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">170</span>&quot; y=&quot;<span class="mxmlString">15</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; backgroundColor=&quot;<span class="mxmlString">#ffffff</span>&quot; borderStyle=&quot;<span class="mxmlString">none</span>&quot; borderThickness=&quot;<span class="mxmlString">1</span>&quot; editable=&quot;<span class="mxmlString">true</span>&quot; color=&quot;<span class="mxmlString">#000000</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; id=&quot;<span class="mxmlString">customerID</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">170</span>&quot; y=&quot;<span class="mxmlString">67</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">contactTitle</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">170</span>&quot; y=&quot;<span class="mxmlString">95</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">companyName</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">343</span>&quot; y=&quot;<span class="mxmlString">17</span>&quot; text=&quot;<span class="mxmlString">Address:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">343</span>&quot; y=&quot;<span class="mxmlString">43</span>&quot; text=&quot;<span class="mxmlString">City:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">343</span>&quot; y=&quot;<span class="mxmlString">69</span>&quot; text=&quot;<span class="mxmlString">Country:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">343</span>&quot; y=&quot;<span class="mxmlString">95</span>&quot; text=&quot;<span class="mxmlString">Postal Code:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">428</span>&quot; y=&quot;<span class="mxmlString">41</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">city</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">428</span>&quot; y=&quot;<span class="mxmlString">15</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">address</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">428</span>&quot; y=&quot;<span class="mxmlString">67</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">country</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> styleName=&quot;<span class="mxmlString">myTextInput</span>&quot; x=&quot;<span class="mxmlString">428</span>&quot; y=&quot;<span class="mxmlString">95</span>&quot; width=&quot;<span class="mxmlString">131</span>&quot; id=&quot;<span class="mxmlString">postalCode</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">591</span>&quot; y=&quot;<span class="mxmlString">95</span>&quot; label=&quot;<span class="mxmlString">Update</span>&quot; id=&quot;<span class="mxmlString">updateButton</span>&quot; enabled=&quot;<span class="mxmlString">false</span>&quot; click=&quot;doUpdateWithForm<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">22</span>&quot; y=&quot;<span class="mxmlString">150</span>&quot; text=&quot;<span class="mxmlString">Update Selected Row</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

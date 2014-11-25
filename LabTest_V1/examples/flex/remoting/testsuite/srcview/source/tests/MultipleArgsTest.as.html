@@ -1,0 +1,172 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MultipleArgsTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+
+    <span class="asReserved">public</span> <span class="asClass">class</span> MultipleArgsTest
+    <span class="asBracket">{</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> remoteObject<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        <span class="asReserved">private</span> <span class="asVar">var</span> TEST_SIZE<span class="asOperator">:</span>Number <span class="asOperator">=</span> 2;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> MultipleArgsTest<span class="asBracket">(</span>application<span class="asOperator">:</span>Object<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+            remoteObject <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               remoteObject.destination <span class="asOperator">=</span> <span class="asString">&quot;MultipleArgsTest&quot;</span>;
+               remoteObject.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, onFault<span class="asBracket">)</span>;
+               
+               remoteObject.echoInts.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoInts_Result<span class="asBracket">)</span>;
+               remoteObject.echoShorts.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoShorts_Result<span class="asBracket">)</span>;
+               remoteObject.echoIntLongs.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoIntLongs_Result<span class="asBracket">)</span>;
+               remoteObject.echoIntString.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoIntString_Result<span class="asBracket">)</span>;
+               remoteObject.echoIntNullString.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoIntNullString_Result<span class="asBracket">)</span>;
+               remoteObject.echoCharString.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoCharString_Result<span class="asBracket">)</span>;
+               remoteObject.echoStringBuilderDouble.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoStringBuilderDouble_Result<span class="asBracket">)</span>;
+               remoteObject.echoNullStringBuilderDouble.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoNullStringBuilderDouble_Result<span class="asBracket">)</span>;
+               remoteObject.echoLotsOfArgs.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoLotsOfArgs_Result<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runMultipleArgsTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            remoteObject.echoInts<span class="asBracket">(</span> 21, 0, <span class="asOperator">-</span>12312, 11111111 <span class="asBracket">)</span>;
+<span class="asComment">//            remoteObject.echoShorts( 2, 222, -201 );
+</span><span class="asComment">//            remoteObject.echoIntLongs( 21, 21 );
+</span>            
+<span class="asComment">//            remoteObject.echoIntString( 21, &quot;foobar&quot; );
+</span><span class="asComment">//            remoteObject.echoIntNullString( 21, null );
+</span><span class="asComment">//            remoteObject.echoCharString( &apos;a&apos;, &quot;s&quot; );    
+</span><span class="asComment">//            remoteObject.echoStringBuilderDouble( &quot;flashorb rocks&quot;, 21 );
+</span>            remoteObject.echoNullStringBuilderDouble<span class="asBracket">(</span> <span class="asReserved">null</span>, 21 <span class="asBracket">)</span>;
+            
+            
+            <span class="asVar">var</span> compArray<span class="asOperator">:</span>Array <span class="asOperator">=</span> ComplexType.getComplexArray<span class="asBracket">(</span> TEST_SIZE <span class="asBracket">)</span>;
+            
+<span class="asComment">//            remoteObject.echoLotsOfArgs( ComplexType.getArray( TEST_SIZE ),
+</span><span class="asComment">//                            compArray,
+</span><span class="asComment">//                            ComplexType.getMap( TEST_SIZE ),
+</span><span class="asComment">//                            new ComplexType( TEST_SIZE ),
+</span><span class="asComment">//                            21,
+</span><span class="asComment">//                            &quot;21&quot;, 
+</span><span class="asComment">//                            null, 
+</span><span class="asComment">//                            new Date( 2004, 1, 1, 1, 1, 1, 1 ), 
+</span><span class="asComment">//                            &apos;a&apos; );
+</span>            
+        <span class="asBracket">}</span>    
+        
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoInts_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> 0 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 2 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asOperator">-</span>12312 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 3 <span class="asBracket">]</span> <span class="asOperator">==</span> 11111111 <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoInts&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoInts&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+        
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoShorts_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> 2 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> 222 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 2 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asOperator">-</span>201 <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoShorts&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoShorts&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoIntLongs_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoIntLongs&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoIntLongs&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoIntString_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&quot;foobar&quot;</span> <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoIntString&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoIntString&quot;</span> <span class="asBracket">)</span>;                
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoIntNullString_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoIntNullString&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoIntNullString&quot;</span> <span class="asBracket">)</span>;            
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoCharString_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&apos;a&apos;</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&quot;s&quot;</span> <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoCharString&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoCharString&quot;</span> <span class="asBracket">)</span>;                
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoStringBuilderDouble_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&quot;flashorb rocks&quot;</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoStringBuilderDouble&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoStringBuilderDouble&quot;</span> <span class="asBracket">)</span>;                
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoNullStringBuilderDouble_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asBracket">)</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoNullStringBuilderDouble&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoNullStringBuilderDouble&quot;</span> <span class="asBracket">)</span>;                
+         
+     application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> echoLotsOfArgs_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> ObjectComparator.equals<span class="asBracket">(</span> ComplexType.getArray<span class="asBracket">(</span> TEST_SIZE <span class="asBracket">)</span>, event.result<span class="asBracket">[</span> 0 <span class="asBracket">]</span> <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+            ObjectComparator.equals<span class="asBracket">(</span> ComplexType.getComplexArray<span class="asBracket">(</span> TEST_SIZE <span class="asBracket">)</span>, event.result<span class="asBracket">[</span> 1 <span class="asBracket">]</span> <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+            ObjectComparator.equals<span class="asBracket">(</span> ComplexType.getMap<span class="asBracket">(</span> TEST_SIZE <span class="asBracket">)</span>, event.result<span class="asBracket">[</span> 2 <span class="asBracket">]</span> <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+            ObjectComparator.equals<span class="asBracket">(</span> <span class="asReserved">new</span> ComplexType<span class="asBracket">(</span> TEST_SIZE <span class="asBracket">)</span>, event.result<span class="asBracket">[</span> 3 <span class="asBracket">]</span>  <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 4 <span class="asBracket">]</span> <span class="asOperator">==</span> 21 <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 5 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&quot;21&quot;</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 6 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asOperator">&amp;&amp;</span>            
+            event.result<span class="asBracket">[</span> 7 <span class="asBracket">]</span>.getTime<span class="asBracket">()</span> <span class="asOperator">==</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004, 1, 1, 1, 1, 1, 1 <span class="asBracket">)</span>.getTime<span class="asBracket">()</span> <span class="asOperator">&amp;&amp;</span>
+            event.result<span class="asBracket">[</span> 8 <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asString">&apos;a&apos;</span> <span class="asBracket">)</span>            
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: multiple args test - echoLotsOfArgs&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+         summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: multiple args test - echoLotsOfArgs&quot;</span> <span class="asBracket">)</span>;    
+         
+     application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;            
+    <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

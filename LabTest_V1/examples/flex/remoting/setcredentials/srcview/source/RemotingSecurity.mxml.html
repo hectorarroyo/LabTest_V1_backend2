@@ -1,0 +1,88 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>RemotingSecurity.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; 
+                layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">465</span>&quot; height=&quot;<span class="mxmlString">298</span>&quot;
+                creationComplete=&quot;init<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlComponent">&lt;mx:states&gt;</span>
+        <span class="mxmlComponent">&lt;mx:State</span> name=&quot;<span class="mxmlString">LoggedIn</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:SetProperty</span> target=&quot;<span class="mxmlString">{</span>status<span class="mxmlString">}</span>&quot; name=&quot;<span class="mxmlString">text</span>&quot; value=&quot;<span class="mxmlString">Logged In</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:SetProperty</span> target=&quot;<span class="mxmlString">{</span>loginLogoutButton<span class="mxmlString">}</span>&quot; name=&quot;<span class="mxmlString">label</span>&quot; value=&quot;<span class="mxmlString">Log Out</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:SetEventHandler</span> target=&quot;<span class="mxmlString">{</span>loginLogoutButton<span class="mxmlString">}</span>&quot; name=&quot;<span class="mxmlString">click</span>&quot; handler=&quot;doLogout<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:State&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:states&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.core.IFlexDisplayObject;
+            <span class="asReserved">import</span> mx.managers.PopUpManager;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> flash.profiler.showRedrawRegions;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            
+            <span class="asReserved">private</span> <span class="asVar">var</span> accountService<span class="asOperator">:</span>RemoteObject;            
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                accountService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;AccountBalanceDestination&quot;</span> <span class="asBracket">)</span>;
+                accountService.CheckBalance.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, gotBalance <span class="asBracket">)</span>;
+                accountService.CheckBalance.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                accountService.logout<span class="asBracket">()</span>; 
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> setCredentials<span class="asBracket">(</span> username<span class="asOperator">:</span>String, password<span class="asOperator">:</span>String<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                accountService.setCredentials<span class="asBracket">(</span> username, password <span class="asBracket">)</span>;
+                currentState <span class="asOperator">=</span> <span class="asString">&quot;LoggedIn&quot;</span>
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> checkBalance<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                accountService.CheckBalance<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotBalance<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                balance.text <span class="asOperator">=</span> result.result.toString<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reporter an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> doLogin<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> popup<span class="asOperator">:</span>IFlexDisplayObject <span class="asOperator">=</span> PopUpManager.createPopUp<span class="asBracket">(</span> <span class="asReserved">this</span>, LoginForm, <span class="asReserved">true</span> <span class="asBracket">)</span>;
+                PopUpManager.centerPopUp<span class="asBracket">(</span> popup <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> doLogout<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                accountService.logout<span class="asBracket">()</span>;
+                currentState <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">447</span>&quot; height=&quot;<span class="mxmlString">275</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Remoting Security Example</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">116</span>&quot; y=&quot;<span class="mxmlString">169</span>&quot; text=&quot;<span class="mxmlString">Current status:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">213</span>&quot; y=&quot;<span class="mxmlString">167</span>&quot; text=&quot;<span class="mxmlString">Not Logged In</span>&quot; id=&quot;<span class="mxmlString">status</span>&quot; fontSize=&quot;<span class="mxmlString">12</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot; color=&quot;<span class="mxmlString">#ff0000</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">62.5</span>&quot; y=&quot;<span class="mxmlString">30</span>&quot; width=&quot;<span class="mxmlString">302</span>&quot; height=&quot;<span class="mxmlString">105</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">59</span>&quot; y=&quot;<span class="mxmlString">23</span>&quot; label=&quot;<span class="mxmlString">Check Account Balance</span>&quot; width=&quot;<span class="mxmlString">182</span>&quot; click=&quot;checkBalance<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">59</span>&quot; y=&quot;<span class="mxmlString">61</span>&quot; text=&quot;<span class="mxmlString">Account Balance: $</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">168</span>&quot; y=&quot;<span class="mxmlString">59</span>&quot; width=&quot;<span class="mxmlString">73</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; id=&quot;<span class="mxmlString">balance</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; backgroundColor=&quot;<span class="mxmlString">#a9c0b7</span>&quot; borderColor=&quot;<span class="mxmlString">#408080</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">82.5</span>&quot; y=&quot;<span class="mxmlString">21</span>&quot; text=&quot;<span class="mxmlString">Checking Account</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> id=&quot;<span class="mxmlString">loginLogoutButton</span>&quot; x=&quot;<span class="mxmlString">171</span>&quot; y=&quot;<span class="mxmlString">195</span>&quot; label=&quot;<span class="mxmlString">Log In</span>&quot; click=&quot;doLogin<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

@@ -1,0 +1,117 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Using Flex client security API</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+    <tr>
+        <td width="181" valign="top" class="boldCell">Example name:</td>
+        <td><b>Custom Authentication</b></td>
+    </tr>
+    <tr>
+        <td width="181" valign="top" class="boldCell">Description:</td>
+        <td>This example demonstrates authentication handling when the user 
+        credentials and roles are stored in a database. The example showcases 
+        the following concepts:<ul>
+          <li>Custom authentication handler class</li>
+          <li>Custom roles provider class</li>
+          <li>Usage of the RemoteObject.setCredentials API</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td width="181" valign="top" class="boldCell">Client-side code:</td>
+        <td><a target="_blank" href="srcview/index.html">Browse</a>&nbsp;
+        <a href="srcview/Login.zip">Download</a></td>
+    </tr>
+    <tr>
+        <td width="181" valign="top" class="boldCell">Server-side code:</td>
+        <td><a target="_blank" href="server-code/index.html">Browse</a>&nbsp;
+        <a href="server-code/CustomSecurity.zip">Download</a></td>
+    </tr>
+
+    <tr>
+        <td width="181" valign="top" class="boldCell">Configuration steps:</td>
+        <td>The following configuration steps are required before running the 
+        example:<ol>
+		  <li><b>Enable data base support:</b> Open php.ini, and register the 
+          following extensions:<br>&nbsp;&nbsp;&nbsp;php_extension=php_pdo.dll<br>&nbsp;&nbsp;&nbsp;php_extension=php_sqlite.dll
+</b><br>
+&nbsp;</li>
+          <li><b>Register authentication handler:</b> Open weborb-config.xml 
+          from the Weborb directory and modify the &lt;authenticationHandler&gt; 
+          element to register custom authentication handler:<br>
+          <br>
+          <font face="Courier New">&lt;authenticationHandler&gt;Weborb.Examples.Security.CustomAuthHandler&lt;/authenticationHandler&gt;
+          <br>
+&nbsp;</font></li>
+          <li><b>Register roles provider:</b> Modify weborb-config.xml to 
+          register custom roles provider:<br>
+          <br>
+          <font face="Courier New">&lt;rolesProvider&gt;Weborb.Examples.Security.CustomRolesProvider&lt;/rolesProvider&gt;<br>
+&nbsp;</font></li>
+          <li><b>Reload Management Console</b> in the browser<br>
+&nbsp;</li>
+          <li><b>Secure the PHP class invoked by the Flex example.</b> <br>
+&nbsp;&nbsp;&nbsp; Open 
+          management console and select the Management tab. <br>
+&nbsp;&nbsp;&nbsp; Navigate to and 
+          select Weborb.Examples.Security.SecureProducts service. <br>
+&nbsp;&nbsp;&nbsp; Select the Security tab.<br>
+&nbsp;&nbsp;&nbsp; <b>Grant</b> access to the class for the &quot;FlexUser&quot; role.<br>
+&nbsp;&nbsp;&nbsp; Select &quot;Single IP&quot; from the Restriction type list.<br>
+&nbsp;&nbsp;&nbsp; <b>Deny</b> access to the class for the *.*.*.* IP mask.<br>
+&nbsp;</li>
+          <li><b>Invoke the service </b>using the Flex client below. Click the 
+          &quot;Load Products&quot; button first. You should get an error. Click &quot;Login&quot; 
+          and login, then click the Load Products again.
+          </li>
+        </ol>
+      </td>
+    </tr>
+
+    <tr>
+        <td width="181" valign="top" class="boldCell">Run example:</td>
+        <td>
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="Login" width="446" height="221"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="Login.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#869ca7" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="Login.swf" quality="high" bgcolor="#869ca7"
+				width="446" height="221" name="Login" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed></object>     
+        </td>
+    </tr>
+    <tr>
+        <td width="181" valign="top" class="boldCell">Key points:</td>
+        <td>
+        <ul>
+            <li>Custom authentication handler verifies user credentials against 
+            the database</li>
+            <li>Roles provider class provides a list of roles from the database 
+            to the console as well as WebORB security system to handle 
+            authorization<br></li>
+        </ul>
+        </td>
+    </tr>
+    </table>
+
+</body>
+
+</html>

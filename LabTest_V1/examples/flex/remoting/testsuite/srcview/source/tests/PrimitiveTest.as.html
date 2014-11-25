@@ -1,0 +1,178 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>PrimitiveTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent
+    <span class="asReserved">import</span> mx.collections.ArrayCollection;
+
+    <span class="asReserved">public</span> <span class="asClass">class</span> PrimitiveTest
+    <span class="asBracket">{</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>ArrayCollection;
+        <span class="asReserved">private</span> <span class="asVar">var</span> remotePrimitiveTest<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        
+        <span class="asReserved">private</span> <span class="asVar">var</span> date<span class="asOperator">:</span>Date <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">()</span>;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> PrimitiveTest<span class="asBracket">(</span>application<span class="asOperator">:</span>Object<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+            remotePrimitiveTest <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               remotePrimitiveTest.destination <span class="asOperator">=</span> <span class="asString">&quot;PrimitiveTest&quot;</span>;
+               remotePrimitiveTest.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, onFault<span class="asBracket">)</span>;
+
+               remotePrimitiveTest.unknownMethod.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, unknownMethod_Fault<span class="asBracket">)</span>;               
+               remotePrimitiveTest.echoInt.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoInt_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoLong.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoLong_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoShort.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoShort_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoByte.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoByte_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoDouble.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoDouble_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoChar.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoChar_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoBoolean.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoBoolean_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoDate.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoDate_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoNull.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoNull_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.getDateTime.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoDateTime_Result<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> unknownMethod_Fault<span class="asBracket">(</span> event<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - expected unknownMethod fault&quot;</span> <span class="asBracket">)</span>;        
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runPrimitiveTests<span class="asBracket">(</span>log<span class="asOperator">:</span>ArrayCollection<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj <span class="asOperator">=</span> log;
+            
+
+            remotePrimitiveTest.echoInt<span class="asBracket">(</span> 7 <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoLong<span class="asBracket">(</span> 7777777 <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoShort<span class="asBracket">(</span> 7 <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoByte<span class="asBracket">(</span> 7 <span class="asBracket">)</span>; 
+            remotePrimitiveTest.echoDouble<span class="asBracket">(</span> 7777.7777 <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoChar<span class="asBracket">(</span> <span class="asString">&apos;a&apos;</span> <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoBoolean<span class="asBracket">(</span> <span class="asReserved">true</span> <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoDate<span class="asBracket">(</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004, 1, 1, 1, 1, 1, 1  <span class="asBracket">)</span> <span class="asBracket">)</span>;
+            <span class="asComment">//remotePrimitiveTest.echoNullableDate( new Date( 2004, 1, 1, 1, 1, 1, 1  ) );
+</span>            remotePrimitiveTest.echoNull<span class="asBracket">(</span> <span class="asReserved">null</span> <span class="asBracket">)</span>;
+            remotePrimitiveTest.getDateTime<span class="asBracket">(</span>date<span class="asBracket">)</span>;<span class="asComment">//&quot;2004-05-15 03:45:12&quot;); 
+</span>            remotePrimitiveTest.unknownMethod<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoDateTime_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+<span class="asComment">//        var date:Date = event.result as Date;
+</span>        <span class="asVar">var</span> resultDate<span class="asOperator">:</span>Date <span class="asOperator">=</span> event.result <span class="asReserved">as</span> Date;
+        <span class="asReserved">if</span><span class="asBracket">(</span> resultDate.fullYear <span class="asOperator">==</span> date.fullYear <span class="asOperator">&amp;&amp;</span> resultDate.month <span class="asOperator">==</span> date.month <span class="asOperator">&amp;&amp;</span> resultDate.date <span class="asOperator">==</span> date.date <span class="asOperator">&amp;&amp;</span> resultDate.hours <span class="asOperator">==</span> date.hours <span class="asOperator">&amp;&amp;</span> resultDate.minutes <span class="asOperator">==</span> date.minutes <span class="asOperator">&amp;&amp;</span> resultDate.seconds <span class="asOperator">==</span> date.seconds<span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoDateTime&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoDateTime&quot;</span> <span class="asBracket">)</span>;
+    <span class="asBracket">}</span>        
+
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoInt_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> 7 <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoInt&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoInt&quot;</span> <span class="asBracket">)</span>;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoLong_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> 7777777 <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoLong&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoLong&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoShort_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> 7 <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoShort&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoShort&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoByte_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> 7 <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoByte&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoByte&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoDouble_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> 7777.7777 <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoDouble&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoDouble&quot;</span> <span class="asBracket">)</span>;        
+        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoChar_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> <span class="asString">&apos;a&apos;</span> <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoChar&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoChar&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoBoolean_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoBoolean&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoBoolean&quot;</span> <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoDate_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> dateObj<span class="asOperator">:</span>Date <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004, 1, 1, 1, 1, 1, 1 <span class="asBracket">)</span>;
+        <span class="asTrace">trace</span><span class="asBracket">(</span> event.result.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>;
+        <span class="asTrace">trace</span><span class="asBracket">(</span> dateObj.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>;
+        
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result.getTime<span class="asBracket">()</span> <span class="asOperator">==</span> dateObj.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoDate&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoDate&quot;</span> <span class="asBracket">)</span>;                
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoNullableDate_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> dateObj<span class="asOperator">:</span>Date <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004, 1, 1, 1, 1, 1, 1 <span class="asBracket">)</span>;
+        <span class="asTrace">trace</span><span class="asBracket">(</span> event.result.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>;
+        <span class="asTrace">trace</span><span class="asBracket">(</span> dateObj.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>;
+        
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result.getTime<span class="asBracket">()</span> <span class="asOperator">==</span> dateObj.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoNullableDate&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoNullableDate &quot;</span> <span class="asOperator">+</span> event.result.getTime<span class="asBracket">()</span> <span class="asOperator">+</span> <span class="asString">&quot;   &quot;</span> <span class="asOperator">+</span>  dateObj.getTime<span class="asBracket">()</span> <span class="asBracket">)</span>;                
+    <span class="asBracket">}</span>    
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoNull_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+          summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;success: primitives test - echoNull&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.addItem<span class="asBracket">(</span> <span class="asString">&quot;failure: primitives test - echoNull&quot;</span> <span class="asBracket">)</span>;    
+            
+    <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

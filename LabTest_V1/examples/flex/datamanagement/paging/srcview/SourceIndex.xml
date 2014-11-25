@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of paging</title>
+	<nodes>
+		<node label="FoodAndDrinks" icon="packageIcon" expanded="true">
+			<node label="Account.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Account.as.html"/>
+			<node label="AccountDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/AccountDataMapper.as.html"/>
+			<node label="ActiveRecords.as" icon="actionScriptIcon" url="source/FoodAndDrinks/ActiveRecords.as.html"/>
+			<node label="DataMapperRegistry.as" icon="actionScriptIcon" url="source/FoodAndDrinks/DataMapperRegistry.as.html"/>
+			<node label="FoodAndDrinksDb.as" icon="actionScriptIcon" url="source/FoodAndDrinks/FoodAndDrinksDb.as.html"/>
+			<node label="Order.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Order.as.html"/>
+			<node label="OrderDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/OrderDataMapper.as.html"/>
+			<node label="OrderLine.as" icon="actionScriptIcon" url="source/FoodAndDrinks/OrderLine.as.html"/>
+			<node label="OrderLineDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/OrderLineDataMapper.as.html"/>
+			<node label="Product.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Product.as.html"/>
+			<node label="ProductDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/ProductDataMapper.as.html"/>
+		</node>
+		<node label="FoodAndDrinks.Codegen" icon="packageIcon" expanded="true">
+			<node label="_Account.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_Account.as.html"/>
+			<node label="_AccountDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_AccountDataMapper.as.html"/>
+			<node label="_DataMapperRegistry.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_DataMapperRegistry.as.html"/>
+			<node label="_FoodAndDrinksDb.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_FoodAndDrinksDb.as.html"/>
+			<node label="_Order.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_Order.as.html"/>
+			<node label="_OrderDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_OrderDataMapper.as.html"/>
+			<node label="_OrderLine.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_OrderLine.as.html"/>
+			<node label="_OrderLineDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_OrderLineDataMapper.as.html"/>
+			<node label="_Product.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_Product.as.html"/>
+			<node label="_ProductDataMapper.as" icon="actionScriptIcon" url="source/FoodAndDrinks/Codegen/_ProductDataMapper.as.html"/>
+		</node>
+		<node label="images">
+			<node label="apples.jpg" icon="imageIcon" url="source/images/apples.jpg.html"/>
+			<node label="bananas.jpg" icon="imageIcon" url="source/images/bananas.jpg.html"/>
+			<node label="dole.jpg" icon="imageIcon" url="source/images/dole.jpg.html"/>
+			<node label="grapes.jpg" icon="imageIcon" url="source/images/grapes.jpg.html"/>
+			<node label="green_leaf_lettuce.jpg" icon="imageIcon" url="source/images/green_leaf_lettuce.jpg.html"/>
+			<node label="orange.jpg" icon="imageIcon" url="source/images/orange.jpg.html"/>
+			<node label="strawberries.jpg" icon="imageIcon" url="source/images/strawberries.jpg.html"/>
+		</node>
+		<node label="lib">
+			<node label="generated">
+			</node>
+			<node label="weborb.swc" url="source/lib/weborb.swc"/>
+		</node>
+		<node label="UI.TestDrive" icon="packageIcon" expanded="true">
+			<node label="AccountAddView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/AccountAddView.mxml.html"/>
+			<node label="AccountView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/AccountView.mxml.html"/>
+			<node label="FoodAndDrinksDbView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/FoodAndDrinksDbView.mxml.html"/>
+			<node label="OrderAddView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/OrderAddView.mxml.html"/>
+			<node label="OrderLineAddView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/OrderLineAddView.mxml.html"/>
+			<node label="OrderLineView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/OrderLineView.mxml.html"/>
+			<node label="OrderView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/OrderView.mxml.html"/>
+			<node label="ProductAddView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/ProductAddView.mxml.html"/>
+			<node label="ProductView.mxml" icon="mxmlIcon" url="source/UI/TestDrive/ProductView.mxml.html"/>
+		</node>
+		<node label="index.htm" icon="htmlIcon" url="source/index.htm"/>
+		<node selected="true" label="paging.mxml" icon="mxmlAppIcon" url="source/paging.mxml.html"/>
+		<node label="testdrive.mxml" icon="mxmlIcon" url="source/testdrive.mxml.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 126K)" url="paging.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

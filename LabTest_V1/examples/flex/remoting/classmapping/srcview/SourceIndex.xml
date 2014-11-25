@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of ClassMapping</title>
+	<nodes>
+		<node label="PhoneBook" icon="packageIcon" expanded="true">
+			<node label="PhoneBookEntryVO.as" icon="actionScriptIcon" url="source/PhoneBook/PhoneBookEntryVO.as.html"/>
+		</node>
+		<node selected="true" label="ClassMapping.mxml" icon="mxmlAppIcon" url="source/ClassMapping.mxml.html"/>
+		<node label="Roster.mxml" icon="mxmlIcon" url="source/Roster.mxml.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 4K)" url="ClassMapping.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="381" height="339"
+	creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.messaging.messages.AsyncMessage;
+			import mx.messaging.events.MessageEvent;
+			import weborb.messaging.WeborbConsumer;
+			import weborb.messaging.WeborbProducer;
+			
+			private var producer:WeborbProducer;
+			private var consumer:WeborbConsumer;
+		
+			private function init():void
+			{
+				// create a producer and configure it to talk to ChatDestination
+				producer = new WeborbProducer( "ChatDestination" );
+				
+				// create a consumer and configure it to talk to the 
+				// same destination as the producer
+				consumer = new WeborbConsumer( "ChatDestination" );
+				
+				// add listener to the consumer. The listener is invoked when 
+				// a message from the destination is available
+				consumer.addEventListener( MessageEvent.MESSAGE, gotMessage );
+				
+				// subscribe to the destination to connect and start polling
+				consumer.subscribe();
+			}
+			
+			public function gotMessage( event:MessageEvent ):void
+			{
+				// received message is always AsyncMessage, so cast it
+	            var msg:AsyncMessage = AsyncMessage( event.message );
+	            
+	            // if the producer set the logical id (see the line 
+	            // where it does: "producer.producerId = userID.text", then
+	            // get the id and show it with the incoming message in the chat log
+	            var sender:String = msg.headers[ "WebORBClientId" ];
+	            
+	            // if no name was assigned to the producer, make it an anonymous message
+	            if( sender == "" )
+	            	sender = "Anonymous"
+	            	
+	            // display the message in the chat log
+		        chatLog.text = sender + ": " + msg.body + "\n" + chatLog.text;
+			}
+			
+			public function sendMessage():void
+			{
+				// set the logical id for the producer
+				producer.producerId = userID.text;
+				
+				// create AsyncMessage - this is a wrapper for the outgoing message
+	            var message:AsyncMessage = new AsyncMessage();
+	            
+	            // set the body property with the payload
+	            message.body = messageText.text;
+	            
+	            // send the message out
+	            producer.send( message );	
+	            
+	            // chat message sent - clear the IM text
+	            messageText.text = "";			
+			}
+		]]>
+	</mx:Script>
+	<mx:Panel x="10" y="10" width="360" height="315" layout="absolute" title="WebORB Chat Client">
+		<mx:Label x="10" y="10" text="User ID:"/>
+		<mx:TextInput x="70" y="8" width="260" id="userID"/>
+		<mx:TextArea x="10" y="36" width="320" height="200" id="chatLog"/>
+		<mx:Label x="10" y="244" text="Message:"/>
+		<mx:TextInput x="77" y="242" width="191" id="messageText" enter="sendMessage()"/>
+		<mx:Button x="276" y="242" label="Send" click="sendMessage()"/>
+	</mx:Panel>
+	
+</mx:Application>

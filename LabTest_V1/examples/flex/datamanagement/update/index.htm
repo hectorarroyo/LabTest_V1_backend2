@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Basic Flex Remoting using RemotObject MXML</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td valign="top"  colspan="2">
+<div style="border-style: solid; border-width: 2;border-color: #e8e8e8;padding:2px">
+For an overview of WebORB Data Management, watch a video available at:<br>
+<a href="http://www.themidnightcoders.com/weborb/php/videos/wdmf/overview/">
+http://www.themidnightcoders.com/weborb/php/videos/wdmf/overview/</a></div>		
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>WebORB Data Management for Flex - Data Update</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td >The example demonstrates the usage of the WDMF API to update data in the database. All WDMF managed objects 
+		monitor changes to their internal state. Saving the changes requires one method call: activeRecordInstance.save(). 
+		For example, the code below saves the currently selected item in the datagrid:<p>
+		<font face="Courier New" size="2">	var selectedProduct:Product = Product( gridProducts.selectedItem );<br>
+			selectedProduct.<b>save()</b>;</font></p>
+		<p>Additionally, all active record instances contain the IsDirty flag which can be queried to check if the 
+		instance has any pending changes.</p>
+		<p>The example displays a list of all products from the Product table. The Name and Price columns are editable. 
+		A product can be modified either directly in the data grid or using the data-bound text fields. The Save buttons 
+		are bound to the IsDirty flag of the corresponding Product instance.</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a><font size="1"> (use Back button to go back)</font>&nbsp;
+		<a href="srcview/update.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td>No custom server-side code is required for this example</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Open multiple instances of the client application in several 
+			windows. Remove a product and notice the change in all instances of the example.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="update" width="513" height="388"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="update.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#869ca7" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="update.swf" quality="high" bgcolor="#869ca7"
+				width="513" height="388" name="update" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed></object>
+	</td>
+	</tr>
+	</table>
+
+</body>
+
+</html>

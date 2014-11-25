@@ -1,0 +1,63 @@
+Application {
+padding-top:10;
+padding-left:10;
+padding-bottom:10;
+padding-right:10;
+layout: vertical;
+cornerRadius: 5;
+}
+
+TabNavigator { 
+   cornerRadius: 11;
+   horizontalGap: -1;
+   horizontalAlign: left;
+   paddingLeft: 13;
+   paddingRight: 5;
+   textIndent: 0;
+   backgroundAlpha: 1;
+   backgroundColor: #ffffff;
+   borderStyle: solid;
+   borderColor: #ff9900;
+   borderThickness: 1;
+   dropShadowEnabled: true;
+   shadowDirection: right;
+   shadowDistance: 2;
+   tabStyleName: "myTabs";
+}
+
+.myTabs {
+   cornerRadius: 14;
+   highlightAlphas: 0.55, 0.14;
+   fillAlphas: 0.63, 0.4;
+   fillColors: #ffffcc, #ffcc99;
+   backgroundColor: #ffffff;
+   borderColor: #ff9900;
+} 
+
+Panel { 
+   cornerRadius: 12;
+   headerHeight: 24;
+   borderThickness: 13;
+   shadowDistance: 4;
+   shadowDirection: right;
+   roundedBottomCorners: false;
+   textAlign: left;
+   borderAlpha: 0.78;
+   borderThicknessLeft: 10;
+   borderThicknessRight: 10;
+   borderThicknessTop: 2;
+   borderThicknessBottom: 10;
+   highlightAlphas: 0.2, 0;
+   borderColor: #ffcc99;
+   titleStyleName: "myTitleStyle";
+} 
+
+.myTitleStyle {
+   fontWeight: bold;
+   }	
+   
+.SubPanel {
+   borderThickness: 4;
+   borderStyle: solid;
+   shadowDistance: 2;   
+} 

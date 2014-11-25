@@ -1,0 +1,68 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Controller.as</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="asPackage">package</span>
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.messaging.messages.ErrorMessage;
+    <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+    
+    <span class="asReserved">public</span> <span class="asClass">class</span> Controller
+    <span class="asBracket">{</span>        
+        <span class="asReserved">private</span> <span class="asVar">var</span> loginService<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> model<span class="asOperator">:</span>Model;
+        <span class="asReserved">private</span> <span class="asVar">var</span> view<span class="asOperator">:</span>Login;
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> init<span class="asBracket">(</span> model<span class="asOperator">:</span>Model, view<span class="asOperator">:</span>Login <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.model <span class="asOperator">=</span> model;
+            <span class="asReserved">this</span>.view <span class="asOperator">=</span> view;
+            loginService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+            loginService.source <span class="asOperator">=</span> <span class="asString">&quot;weborb.examples.security.SecureProducts&quot;</span>;
+            loginService.getProducts.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, onResult <span class="asBracket">)</span>;
+            loginService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, onError <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>        
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onError<span class="asBracket">(</span>fault<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span>ErrorMessage<span class="asBracket">(</span>fault.message<span class="asBracket">)</span>.extendedData  <span class="asOperator">!=</span> <span class="asReserved">null</span> <span class="asOperator">&amp;&amp;</span> int<span class="asBracket">(</span>ErrorMessage<span class="asBracket">(</span>fault.message<span class="asBracket">)</span>.extendedData <span class="asBracket">)</span> <span class="asOperator">==</span> 401<span class="asBracket">)</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Access denied&quot;</span>,<span class="asString">&quot;Error&quot;</span> <span class="asBracket">)</span>;
+            <span class="asReserved">else</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString, <span class="asString">&quot;Error&quot;</span> <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onResult<span class="asBracket">(</span>result<span class="asOperator">:</span>ResultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            model.products <span class="asOperator">=</span> result.result <span class="asReserved">as</span> Array;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> login<span class="asBracket">(</span> userid<span class="asOperator">:</span>String, password<span class="asOperator">:</span>String <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            loginService.setCredentials<span class="asBracket">(</span>userid, password<span class="asBracket">)</span>;
+            view.currentState <span class="asOperator">=</span> <span class="asString">&quot;loggedin&quot;</span>;
+            <span class="asComment">//loginService.getProducts();
+</span>        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> getProducts<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            loginService.getProducts<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> logout<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            loginService.logout<span class="asBracket">()</span>;
+            model.products <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            view.currentState <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+        <span class="asBracket">}</span>        
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

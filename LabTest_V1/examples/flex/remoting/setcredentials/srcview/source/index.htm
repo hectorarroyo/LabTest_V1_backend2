@@ -1,0 +1,135 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Using Flex client security API</title>
+<LINK href="..\..\..\orbexamples.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Using Flex Remoting client security API</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Usage of the setCredentials( userid, password ) and logout() 
+			methods in the RemoteObject class</li>
+			<li>Error handling caused by the server-side security constraints</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/RemotingSecurity.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td><a href="server-code">Browse</a>&nbsp;
+		<a href="server-code/AccountBalanceSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Product edition 
+		availability:</td>
+		<td>
+		  	<ul>
+				<li>WebORB Standard Edition (localhost clients only)</li>
+				<li>WebORB Professional Edition</li>
+				<li>WebORB Enterprise Edition</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+		  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+					id="RemotingSecurity" width="465" height="298"
+					codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+					<param name="movie" value="RemotingSecurity.swf" />
+					<param name="quality" value="high" />
+					<param name="bgcolor" value="#869ca7" />
+					<param name="allowScriptAccess" value="sameDomain" />
+					<embed src="RemotingSecurity.swf" quality="high" bgcolor="#869ca7"
+						width="465" height="298" name="RemotingSecurity" align="middle"
+						play="true"
+						loop="false"
+						quality="high"
+						allowScriptAccess="sameDomain"
+						type="application/x-shockwave-flash"
+						pluginspage="http://www.adobe.com/go/getflashplayer">
+					</embed>
+			</object>		
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>The server-side class is exposed as &quot;AccountBalanceDestination&quot; 
+			destination through a registration in WEB-INF/flex/remoting-config.xml:<br>
+			<br>
+&nbsp;<table border="1" style="border-collapse: collapse" cellpadding="3" bgcolor="#E5E5E5" id="table5" bordercolor="#999999">
+				<tr>
+					<td><font face="Courier New">&lt;destination id=&quot;AccountBalanceDestination&quot;&gt;<br>
+&nbsp; &lt;properties&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;source&gt;Weborb.Examples.AccountBalance&lt;/source&gt;<br>
+&nbsp; &lt;/properties&gt;<br>
+&nbsp; &lt;security&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;security-constraint&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;auth-method&gt;Custom&lt;/auth-method&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;roles&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt;examplesuser&lt;/role&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/roles&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/security-constraint&gt; <br>
+&nbsp; &lt;/security&gt; <br>
+					&lt;/destination&gt; </font></td>
+				</tr>
+			</table><br></li>
+			<li>Notice the security declaration in the destination. The role 
+			name in the &lt;role&gt; element above refers to the roles configured in 
+			weborb.config (located in the root of the web application):<br>
+			<br>
+&nbsp;<table border="1" style="border-collapse: collapse" cellpadding="3" bgcolor="#E5E5E5" id="table6" bordercolor="#999999">
+				<tr>
+					<td><font face="Courier New">&lt;acl&gt;<br>
+&nbsp; &lt;user&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;name&gt;admin&lt;/name&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;password&gt;password&lt;/password&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;role&gt;examplesuser&lt;/role&gt;<br>
+&nbsp; &lt;/user&gt;<br>
+					&lt;/acl&gt;</font></td>
+				</tr>
+			</table><br></li>
+			<li>When client application performs an invocation without userid 
+			and password, WebORB rejects access by throwing an exception.</li>
+			<li>Userid and password can be associated with a remote object using 
+			the setCredentials( userid, password ) API</li>
+			<li>Once logged in, the same invocation works and client gets a 
+			result back.</li>
+			<li>The logout() method in the RemoteObject class removes 
+			credentials associated with the remote object</li>
+			<li>The client application uses two Flex states to manage logged in 
+			and logged out views<br></li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Invoke &quot;Check Account Balance&quot; when in logged in and logged out 
+			states. See the difference in the invocation result</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

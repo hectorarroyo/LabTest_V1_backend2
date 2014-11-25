@@ -1,0 +1,126 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Example name</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Mapping client and server-side objects between Flex and PHP</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Usage of the flash.net.registerClassAlias API as well as the RemoteObject
+			class attribute. Both approaches establish a mapping between server-
+			and client-side value object</li>
+			<li>Server-side class uses Application scope, so only one instance
+			of the class will be created for all connected clients</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/ClassMapping.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td><a href="server-code/listing.htm">Browse</a>&nbsp;
+		<a href="server-code/PhoneBookSource.zip">Download</a></td>
+	</tr>
+
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="ClassMapping" width="680" height="409"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="ClassMapping.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#869ca7" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="ClassMapping.swf" quality="high" bgcolor="#869ca7"
+				width="680" height="409" name="ClassMapping" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed></object>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>The mapping between client and server class takes place in the
+			init() method registered as the applications creationComplete
+			handler:<br>
+			<font face="Courier New">flash.net.registerClassAlias( &quot;Weborb.Examples.PhoneBookRecord&quot;,
+			PhoneBookEntryVO );<br>
+&nbsp;</font></li>
+			<li>Client class PhoneBookEntryVO corresponds to the server class
+			Weborb.Examples.PhoneBookRecord. The classes are shown below:<br>
+&nbsp;<table border="1" style="border-collapse: collapse" cellpadding="3" bgcolor="#E5E5E5" id="table3" bordercolor="#999999">
+				<tr>
+					<td width="395">Client class</td>
+					<td>Server class</td>
+				</tr>
+				<tr>
+					<td class="bottomCell" style="border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px" width="395"><font face="Courier New">package
+					PhoneBook<br>
+					{<br>
+&nbsp; [RemoteClass(alias=&quot;Weborb.Examples.PhoneBookRecord&quot;)]<br>
+&nbsp; public class PhoneBookEntryVO<br>
+&nbsp; {<br>
+&nbsp;&nbsp;&nbsp; public var firstName:String;<br>
+&nbsp;&nbsp;&nbsp; public var lastName:String;<br>
+&nbsp;&nbsp;&nbsp; public var phoneNumber:String; <br>
+&nbsp; }<br>
+					}</font></td>
+					<td class="bottomCell"><font face="Courier New">
+class PhoneBookRecord<br>
+{<br>
+	&nbsp;&nbsp;var $firstName;<br>
+    &nbsp;&nbsp;var $lastName;<br>
+    &nbsp;&nbsp;var $phoneNumber;<br>
+}
+</font></td>
+				</tr>
+			</table><br>
+			</li>
+			<li>Notice how client class fields correspond to the server class
+			property names</li>
+			<li>Notice the [RemoteObject] attribute in the client class
+			definition. The attribute maps the class to the remote counter part.
+			The attribute is commented out in the example's source, since an
+			alternative approach is used.</li>
+			
+
+			 
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Add an entry that starts with a number or any symbol that does
+			not have a matching tab</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

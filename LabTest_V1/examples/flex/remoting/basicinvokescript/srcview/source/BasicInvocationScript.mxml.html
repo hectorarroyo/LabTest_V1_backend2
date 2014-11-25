@@ -1,0 +1,89 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>BasicInvocationScript.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; 
+                layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">416</span>&quot; height=&quot;<span class="mxmlString">276</span>&quot; 
+                creationComplete=&quot;init<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.utils.UIDUtil;
+            <span class="asReserved">import</span> mx.messaging.Channel;
+            <span class="asReserved">import</span> mx.messaging.channels.AMFChannel;
+            <span class="asReserved">import</span> mx.messaging.ChannelSet;
+            <span class="asReserved">import</span> mx.rpc.events.InvokeEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+            <span class="asReserved">public</span> <span class="asVar">var</span> opsList<span class="asOperator">:</span> Array <span class="asOperator">=</span> <span class="asBracket">[</span> <span class="asBracket">{</span>label<span class="asOperator">:</span><span class="asString">&quot;+&quot;</span>, data<span class="asOperator">:</span>1<span class="asBracket">}</span>, 
+                                          <span class="asBracket">{</span>label<span class="asOperator">:</span><span class="asString">&quot;-&quot;</span>, data<span class="asOperator">:</span>2<span class="asBracket">}</span>, 
+                                          <span class="asBracket">{</span>label<span class="asOperator">:</span><span class="asString">&quot;*&quot;</span>, data<span class="asOperator">:</span>3<span class="asBracket">}</span>,
+                                          <span class="asBracket">{</span>label<span class="asOperator">:</span><span class="asString">&quot;/&quot;</span>, data<span class="asOperator">:</span>4<span class="asBracket">}</span> <span class="asBracket">]</span>;
+            <span class="asReserved">private</span> <span class="asVar">var</span> invokeTime<span class="asOperator">:</span>Number;                                          
+            <span class="asReserved">private</span> <span class="asVar">var</span> calculatorService<span class="asOperator">:</span>RemoteObject;
+                                          
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                calculatorService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                calculatorService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.BasicService&quot;</span>;
+                calculatorService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                calculatorService.Calculate.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, gotCalculationResult <span class="asBracket">)</span>;                
+            <span class="asBracket">}</span>                              
+                                          
+            <span class="asReserved">private</span> <span class="asFunction">function</span> sendRequest<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> arg1.text.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    arg1.setFocus<span class="asBracket">()</span>;
+                    Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Argument 1 is missing&quot;</span>, <span class="asString">&quot;Incomplete Data&quot;</span> <span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+                <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> arg2.text.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    arg2.setFocus<span class="asBracket">()</span>;
+                    Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Argument 2 is missing&quot;</span>, <span class="asString">&quot;Incomplete Data&quot;</span> <span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+                <span class="asReserved">else</span>
+                <span class="asBracket">{</span>
+                    invokeTime <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">()</span>.getTime<span class="asBracket">()</span>;
+                    calculatorService.Calculate<span class="asBracket">(</span> arg1.text, op.selectedItem.data, arg2.text <span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                invTime.text <span class="asOperator">=</span> <span class="asBracket">(</span><span class="asReserved">new</span> Date<span class="asBracket">()</span>.getTime<span class="asBracket">()</span> <span class="asOperator">-</span> invokeTime<span class="asBracket">)</span> <span class="asOperator">+</span> <span class="asString">&quot; ms&quot;</span>;                
+                serverResult.text <span class="asOperator">=</span> <span class="asString">&quot;Error&quot;</span>;
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString, <span class="asString">&quot;Error&quot;</span> <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>   
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotCalculationResult<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                invTime.text <span class="asOperator">=</span> <span class="asBracket">(</span><span class="asReserved">new</span> Date<span class="asBracket">()</span>.getTime<span class="asBracket">()</span> <span class="asOperator">-</span> invokeTime<span class="asBracket">)</span> <span class="asOperator">+</span> <span class="asString">&quot; ms&quot;</span>;
+                serverResult.text <span class="asOperator">=</span> result.result.toString<span class="asBracket">()</span>;                
+            <span class="asBracket">}</span>                      
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">396</span>&quot; height=&quot;<span class="mxmlString">253</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Basic Remoting Invocation Example</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">30</span>&quot; text=&quot;<span class="mxmlString">Argument 1:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">120</span>&quot; label=&quot;<span class="mxmlString">Calculate result on the server</span>&quot; click=&quot;sendRequest<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">arg1</span>&quot; restrict=&quot;<span class="mxmlString">0-9</span>&quot; x=&quot;<span class="mxmlString">126</span>&quot; y=&quot;<span class="mxmlString">28</span>&quot; width=&quot;<span class="mxmlString">59</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">88</span>&quot; text=&quot;<span class="mxmlString">Argument 2:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">162</span>&quot; text=&quot;<span class="mxmlString">Server responded:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">arg2</span>&quot; restrict=&quot;<span class="mxmlString">0-9</span>&quot; x=&quot;<span class="mxmlString">126</span>&quot; y=&quot;<span class="mxmlString">86</span>&quot; width=&quot;<span class="mxmlString">59</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">58</span>&quot; text=&quot;<span class="mxmlString">Operation:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:ComboBox</span> id=&quot;<span class="mxmlString">op</span>&quot; x=&quot;<span class="mxmlString">126</span>&quot; y=&quot;<span class="mxmlString">56</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>opsList<span class="mxmlString">}</span>&quot; width=&quot;<span class="mxmlString">59</span>&quot;<span class="mxmlComponent">&gt;</span><span class="mxmlComponent">&lt;/mx:ComboBox&gt;</span>
+        <span class="mxmlComponent">&lt;mx:HRule</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">152</span>&quot; width=&quot;<span class="mxmlString">298</span>&quot; height=&quot;<span class="mxmlString">1</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">159.5</span>&quot; y=&quot;<span class="mxmlString">162</span>&quot; id=&quot;<span class="mxmlString">serverResult</span>&quot; fontWeight=&quot;<span class="mxmlString">bold</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">50</span>&quot; y=&quot;<span class="mxmlString">185</span>&quot; text=&quot;<span class="mxmlString">Invocation time:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">161.5</span>&quot; y=&quot;<span class="mxmlString">185</span>&quot; id=&quot;<span class="mxmlString">invTime</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

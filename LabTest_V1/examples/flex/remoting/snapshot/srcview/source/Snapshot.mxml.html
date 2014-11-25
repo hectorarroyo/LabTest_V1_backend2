@@ -1,0 +1,82 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Snapshot.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; creationComplete=&quot;init<span class="asBracket">()</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">615</span>&quot; height=&quot;<span class="mxmlString">394</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+<span class="mxmlTag">&lt;mx:Script&gt;</span>
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.utils.URLUtil;
+        <span class="asReserved">import</span> mx.collections.ArrayCollection;
+        <span class="asReserved">import</span> mx.utils.UIDUtil;
+        <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+        <span class="asReserved">import</span> mx.controls.Alert;
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+        <span class="asReserved">import</span> com.adobe.images.PNGEncoder;
+        <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+        
+        <span class="asReserved">private</span> <span class="asVar">var</span> snapshotService<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> fileName<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;    
+
+        <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> listSnapshots<span class="asOperator">:</span>ArrayCollection <span class="asOperator">=</span> <span class="asReserved">new</span> ArrayCollection<span class="asBracket">()</span>;
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            snapshotService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+            snapshotService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.Snapshot&quot;</span>;
+            snapshotService.getImage.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, onResult <span class="asBracket">)</span>;
+            snapshotService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, onError <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onError<span class="asBracket">(</span>result<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>result.toString<span class="asBracket">())</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onResult<span class="asBracket">(</span>result<span class="asOperator">:</span>ResultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>    
+            <span class="asVar">var</span> url<span class="asOperator">:</span>String <span class="asOperator">=</span> URLUtil.getFullURL<span class="asBracket">(</span>Application.application.url,<span class="asString">&quot;/examples/snapshot/&quot;</span> <span class="asOperator">+</span> result.result.toString<span class="asBracket">())</span>;
+            img.source <span class="asOperator">=</span> url;
+            listSnapshots.addItem<span class="asBracket">({</span>fileName<span class="asOperator">:</span>fileName, url<span class="asOperator">:</span>url<span class="asBracket">})</span>;
+            snapshotsDG.selectedIndex <span class="asOperator">=</span> listSnapshots.length;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onItemClickSnapshotsDG<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span> <span class="asBracket">(</span>snapshotsDG.selectedItems.length <span class="asOperator">&gt;</span> 0<span class="asBracket">)</span>
+                img.source <span class="asOperator">=</span> snapshotsDG.selectedItem.url;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">private</span> <span class="asFunction">function</span> makeSnapshot<span class="asBracket">(</span>comp<span class="asOperator">:</span>DisplayObject<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> bitmapData<span class="asOperator">:</span>BitmapData <span class="asOperator">=</span> <span class="asReserved">new</span> BitmapData<span class="asBracket">(</span>comp.width, comp.height, <span class="asReserved">true</span>, 0xffffff<span class="asBracket">)</span>;
+            bitmapData.draw<span class="asBracket">(</span>comp<span class="asBracket">)</span>;
+            
+            <span class="asVar">var</span> bytes<span class="asOperator">:</span>ByteArray <span class="asOperator">=</span> PNGEncoder.encode<span class="asBracket">(</span>bitmapData<span class="asBracket">)</span>;
+
+            fileName <span class="asOperator">=</span> UIDUtil.createUID<span class="asBracket">()</span><span class="asOperator">+</span><span class="asString">&quot;.png&quot;</span>;
+            snapshotService.getImage<span class="asBracket">(</span>bytes, fileName<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+<span class="mxmlTag">&lt;/mx:Script&gt;</span>
+
+    <span class="mxmlComponent">&lt;mx:Panel</span> width=&quot;<span class="mxmlString">250</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">List of snapshots</span>&quot; top=&quot;<span class="mxmlString">0</span>&quot; bottom=&quot;<span class="mxmlString">40</span>&quot; shadowDistance=&quot;<span class="mxmlString">0</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:DataGrid</span> id=&quot;<span class="mxmlString">snapshotsDG</span>&quot; itemClick=&quot;onItemClickSnapshotsDG<span class="asBracket">()</span>&quot; dataProvider=&quot;<span class="mxmlString">{</span>listSnapshots<span class="mxmlString">}</span>&quot; x=&quot;<span class="mxmlString">0</span>&quot; y=&quot;<span class="mxmlString">0</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:columns&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">Snapshots</span>&quot; dataField=&quot;<span class="mxmlString">fileName</span>&quot;<span class="mxmlComponent">/&gt;</span>
+                <span class="mxmlComponent">&lt;mx:DataGridColumn</span> headerText=&quot;<span class="mxmlString">url</span>&quot; dataField=&quot;<span class="mxmlString">url</span>&quot; visible=&quot;<span class="mxmlString">false</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:columns&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:DataGrid&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">257</span>&quot; width=&quot;<span class="mxmlString">358</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Preview</span>&quot; top=&quot;<span class="mxmlString">0</span>&quot; bottom=&quot;<span class="mxmlString">40</span>&quot; shadowDistance=&quot;<span class="mxmlString">0</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Image</span> id=&quot;<span class="mxmlString">img</span>&quot; horizontalAlign=&quot;<span class="mxmlString">center</span>&quot; verticalAlign=&quot;<span class="mxmlString">middle</span>&quot; right=&quot;<span class="mxmlString">5</span>&quot; left=&quot;<span class="mxmlString">5</span>&quot; top=&quot;<span class="mxmlString">5</span>&quot; bottom=&quot;<span class="mxmlString">5</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Button</span> click=&quot;makeSnapshot<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>&quot; label=&quot;<span class="mxmlString">Make snapshot</span>&quot; bottom=&quot;<span class="mxmlString">10</span>&quot; right=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">/&gt;</span>
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

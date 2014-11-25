@@ -1,0 +1,202 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>_Account.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+      <span class="asPackage">package</span> FoodAndDrinks.Codegen
+      <span class="asBracket">{</span>
+      <span class="asReserved">import</span> weborb.data.<span class="asOperator">*</span>;
+      <span class="asReserved">import</span> FoodAndDrinks.<span class="asOperator">*</span>;
+      <span class="asReserved">import</span> mx.collections.ArrayCollection;
+      <span class="asReserved">import</span> flash.utils.ByteArray;
+
+      <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+      <span class="asReserved">public</span> <span class="asReserved">dynamic</span> <span class="asClass">class</span> _Account <span class="asReserved">extends</span> ActiveRecord
+      <span class="asBracket">{</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> ActiveRecordUID<span class="asBracket">()</span><span class="asOperator">:</span>String
+        <span class="asBracket">{</span>
+          <span class="asReserved">return</span> _activeRecordId;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> ActiveRecordUID<span class="asBracket">(</span>value<span class="asOperator">:</span>String<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+          _activeRecordId <span class="asOperator">=</span> value;
+        <span class="asBracket">}</span>
+      
+      <span class="asReserved">private</span> <span class="asVar">var</span> _uri<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asReserved">null</span>;
+
+      
+        <span class="asReserved">protected</span> <span class="asVar">var</span> _accountId<span class="asOperator">:</span> int;
+      
+        <span class="asReserved">protected</span> <span class="asVar">var</span> _login<span class="asOperator">:</span> String;
+      
+        <span class="asReserved">protected</span> <span class="asVar">var</span> _password<span class="asOperator">:</span> String;
+      
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span>  AccountId<span class="asBracket">()</span><span class="asOperator">:</span> int
+            <span class="asBracket">{</span>
+              <span class="asReserved">return</span> _accountId;
+            <span class="asBracket">}</span>
+
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span>  AccountId<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+            
+              _isPrimaryKeyAffected <span class="asOperator">=</span> <span class="asReserved">true</span>;
+              _uri <span class="asOperator">=</span> <span class="asReserved">null</span>;
+
+              <span class="asReserved">if</span><span class="asBracket">(</span>IsLoaded <span class="asOperator">||</span> IsLoading<span class="asBracket">)</span>
+              <span class="asBracket">{</span>
+                <span class="asTrace">trace</span><span class="asBracket">(</span><span class="asString">&quot;Critical error: attempt to modify primary key in initialized object &quot;</span> <span class="asOperator">+</span> getURI<span class="asBracket">())</span>;
+                <span class="asReserved">return</span>;
+              <span class="asBracket">}</span>
+            
+            _accountId <span class="asOperator">=</span> value;
+            <span class="asBracket">}</span>
+          
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span>  Login<span class="asBracket">()</span><span class="asOperator">:</span> String
+            <span class="asBracket">{</span>
+              <span class="asReserved">return</span> _login;
+            <span class="asBracket">}</span>
+
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span>  Login<span class="asBracket">(</span>value<span class="asOperator">:</span>String<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+            
+            _login <span class="asOperator">=</span> value;
+            <span class="asBracket">}</span>
+          
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span>  Password<span class="asBracket">()</span><span class="asOperator">:</span> String
+            <span class="asBracket">{</span>
+              <span class="asReserved">return</span> _password;
+            <span class="asBracket">}</span>
+
+            <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span>  Password<span class="asBracket">(</span>value<span class="asOperator">:</span>String<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+            
+            _password <span class="asOperator">=</span> value;
+            <span class="asBracket">}</span>
+          
+
+                <span class="asComment">// one to many relation
+</span>                <span class="asReserved">protected</span> <span class="asVar">var</span> _relatedOrder<span class="asOperator">:</span>ActiveCollection;
+                <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">(</span>event<span class="asOperator">=</span><span class="asString">&quot;loaded&quot;</span><span class="asBracket">)]</span>
+                <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> RelatedOrder<span class="asBracket">()</span><span class="asOperator">:</span>ActiveCollection
+                <span class="asBracket">{</span>
+                  _relatedOrder <span class="asOperator">=</span> onChildRelationRequest<span class="asBracket">(</span><span class="asString">&quot;relatedOrder&quot;</span>,_relatedOrder<span class="asBracket">)</span>;
+                  
+                  <span class="asReserved">return</span> _relatedOrder;
+                <span class="asBracket">}</span>
+                
+            
+
+
+
+      <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> prepareToSend<span class="asBracket">(</span>identityMap<span class="asOperator">:</span>IdentityMap, cascade<span class="asOperator">:</span>Boolean <span class="asOperator">=</span> <span class="asReserved">false</span><span class="asBracket">)</span><span class="asOperator">:</span>Object
+      <span class="asBracket">{</span>
+
+      <span class="asReserved">if</span><span class="asBracket">(</span> identityMap.exists<span class="asBracket">(</span> ActiveRecordUID <span class="asBracket">)</span> <span class="asBracket">)</span>
+      <span class="asReserved">return</span> identityMap.extract<span class="asBracket">(</span> ActiveRecordUID <span class="asBracket">)</span>;
+
+      <span class="asVar">var</span> activeRecord<span class="asOperator">:</span>Account <span class="asOperator">=</span> <span class="asReserved">new</span> Account<span class="asBracket">()</span>;
+
+      activeRecord.ActiveRecordUID <span class="asOperator">=</span> <span class="asReserved">this</span>.ActiveRecordUID;
+
+      identityMap.add<span class="asBracket">(</span> activeRecord , <span class="asReserved">false</span><span class="asBracket">)</span>;
+
+      
+      activeRecord.AccountId <span class="asOperator">=</span> <span class="asReserved">this</span>.AccountId;
+    
+      activeRecord.Login <span class="asOperator">=</span> <span class="asReserved">this</span>.Login;
+    
+      activeRecord.Password <span class="asOperator">=</span> <span class="asReserved">this</span>.Password;
+    
+      <span class="asReserved">if</span><span class="asBracket">(</span>cascade<span class="asBracket">)</span>
+      <span class="asBracket">{</span>
+      
+                      <span class="asReserved">for</span> <span class="asReserved">each</span><span class="asBracket">(</span><span class="asVar">var</span> order1 <span class="asOperator">:</span>Order <span class="asReserved">in</span> _relatedOrder<span class="asBracket">)</span>
+                      <span class="asBracket">{</span>
+                        <span class="asReserved">if</span><span class="asBracket">(</span>order1.IsDirty<span class="asBracket">)</span>
+                        <span class="asBracket">{</span>
+                          <span class="asVar">var</span> order1Extract<span class="asOperator">:</span>Object <span class="asOperator">=</span> order1.prepareToSend<span class="asBracket">(</span>identityMap, <span class="asReserved">true</span><span class="asBracket">)</span>;
+                      order1Extract._relatedAccount <span class="asOperator">=</span> activeRecord;
+
+                          activeRecord.RelatedOrder.addItem<span class="asBracket">(</span>order1Extract<span class="asBracket">)</span>;
+                        <span class="asBracket">}</span>
+                      <span class="asBracket">}</span>
+                    
+            <span class="asBracket">}</span>
+          
+
+
+
+      <span class="asReserved">return</span> activeRecord;
+      <span class="asBracket">}</span>
+
+      
+          <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> extractChilds<span class="asBracket">()</span><span class="asOperator">:</span>Array
+          <span class="asBracket">{</span>
+          <span class="asVar">var</span> childs<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+
+          
+                    <span class="asReserved">if</span><span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">[</span><span class="asString">&quot;relatedOrder&quot;</span><span class="asBracket">])</span>
+                    <span class="asBracket">{</span>
+                      <span class="asReserved">for</span> <span class="asReserved">each</span><span class="asBracket">(</span><span class="asVar">var</span> order1 <span class="asOperator">:</span>ActiveRecord <span class="asReserved">in</span> <span class="asReserved">this</span><span class="asBracket">[</span><span class="asString">&quot;relatedOrder&quot;</span><span class="asBracket">]</span> <span class="asReserved">as</span> Array<span class="asBracket">)</span>
+                      childs.push<span class="asBracket">(</span>order1<span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                  
+
+          <span class="asReserved">return</span> childs;
+          <span class="asBracket">}</span>
+        
+
+      <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> applyFields<span class="asBracket">(</span>object<span class="asOperator">:</span>Object<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+      <span class="asBracket">{</span>
+        <span class="asReserved">try</span>
+        <span class="asBracket">{</span>
+        disableLazyLoading<span class="asBracket">()</span>;
+
+        
+                  <span class="asReserved">if</span><span class="asBracket">(</span><span class="asOperator">!</span>IsPrimaryKeyInitialized<span class="asBracket">)</span>
+                    AccountId <span class="asOperator">=</span> object.AccountId;
+                Login <span class="asOperator">=</span> object.Login;
+                Password <span class="asOperator">=</span> object.Password;
+                
+        
+            _uri <span class="asOperator">=</span> <span class="asReserved">null</span>;
+            _isPrimaryKeyAffected <span class="asOperator">=</span> <span class="asReserved">true</span>;
+            IsDirty <span class="asOperator">=</span> <span class="asReserved">false</span>;
+          <span class="asBracket">}</span>
+          <span class="asReserved">finally</span>
+          <span class="asBracket">{</span>
+            enableLazyLoading<span class="asBracket">()</span>;
+          <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">protected</span> <span class="asReserved">override</span> <span class="asFunction">function</span> <span class="asReserved">get</span> dataMapper<span class="asBracket">()</span><span class="asOperator">:</span>DataMapper
+        <span class="asBracket">{</span>
+          <span class="asReserved">return</span> DataMapperRegistry.Instance.Account;
+        <span class="asBracket">}</span>
+        
+       
+        <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> getURI<span class="asBracket">()</span><span class="asOperator">:</span>String
+        <span class="asBracket">{</span>
+
+          <span class="asReserved">if</span><span class="asBracket">(</span>_uri <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+          <span class="asBracket">{</span>
+           _uri <span class="asOperator">=</span> <span class="asString">&quot;FoodAndDrinks.Account&quot;</span> 
+            
+              <span class="asOperator">+</span> <span class="asString">&quot;.&quot;</span> <span class="asOperator">+</span> AccountId.toString<span class="asBracket">()</span>
+            ;
+          <span class="asBracket">}</span>
+           
+          <span class="asReserved">return</span> _uri;
+        <span class="asBracket">}</span>
+      <span class="asBracket">}</span>
+
+      <span class="asBracket">}</span>
+    </pre></body>
+</html>

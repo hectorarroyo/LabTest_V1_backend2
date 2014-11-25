@@ -1,0 +1,169 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ClassMapping.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot;
+    creationComplete=&quot;init<span class="asBracket">()</span>&quot; width=&quot;<span class="mxmlString">680</span>&quot; height=&quot;<span class="mxmlString">409</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> flash.net.registerClassAlias;
+            <span class="asReserved">import</span> PhoneBook.PhoneBookEntryVO;
+            <span class="asReserved">import</span> mx.events.ResizeEvent;
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+            <span class="asReserved">import</span> mx.containers.Canvas;
+            
+            <span class="asReserved">private</span> <span class="asVar">var</span> phoneBookService<span class="asOperator">:</span>RemoteObject;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asComment">// The line of code below is the essence of the example. The first argument is the name 
+</span>                <span class="asComment">// of the .NET class used in the example. The server-side class is mapped to the 
+</span>                <span class="asComment">// PhoneBookEntryVO class. When WebORB returns an instance of Weborb.Examples.PhoneBookRecord, 
+</span>                <span class="asComment">// as a result of the mapping below, Flex automatically maps it to PhoneBookEntryVO
+</span>                <span class="asComment">// There are two alternative approaches to this solution:
+</span>                <span class="asComment">// 1. Use RemoteObject attribute in PhoneBookEntryVO (it is commented out at the top of the class)
+</span>                <span class="asComment">// 2. Use class mapping in WebORB configuration file (see &lt;classMappings&gt; in weborb.config
+</span>                flash.net.registerClassAlias<span class="asBracket">(</span> <span class="asString">&quot;Weborb.Examples.PhoneBookRecord&quot;</span>, PhoneBookEntryVO <span class="asBracket">)</span>;
+                
+                phoneBookTabs.removeAllChildren<span class="asBracket">()</span>;
+                
+                <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>Number <span class="asOperator">=</span> <span class="asString">&quot;A&quot;</span>.charCodeAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span>; i <span class="asOperator">&lt;=</span> <span class="asString">&quot;Z&quot;</span>.charCodeAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span>; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    <span class="asVar">var</span> tab<span class="asOperator">:</span>Roster <span class="asOperator">=</span> <span class="asReserved">new</span> Roster<span class="asBracket">()</span>;
+                    tab.percentWidth <span class="asOperator">=</span> 100;
+                    tab.percentHeight <span class="asOperator">=</span> 100;
+                    tab.label <span class="asOperator">=</span> String.fromCharCode<span class="asBracket">(</span> i <span class="asBracket">)</span>;
+                    tab.enabled <span class="asOperator">=</span> <span class="asReserved">false</span>;
+                    phoneBookTabs.addChild<span class="asBracket">(</span> tab <span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+                
+                phoneBookService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                phoneBookService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.PhoneBook&quot;</span>;
+                phoneBookService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;
+                phoneBookService.addEntry.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, newEntryAdded <span class="asBracket">)</span>;
+                phoneBookService.getEntries.addEventListener<span class="asBracket">(</span> ResultEvent.RESULT, gotEntries <span class="asBracket">)</span>;
+                phoneBookService.getEntries<span class="asBracket">()</span>;
+                firstNameField.setFocus<span class="asBracket">()</span>;            
+            <span class="asBracket">}</span>
+            
+            <span class="asComment">/*
+            This function is called when a user clicks on the Add Entry button. The
+            function creates an instance of the PhoneBookEntryVO object and sends to the
+            remote service
+            */</span>
+            <span class="asReserved">private</span> <span class="asFunction">function</span> addEntry<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> firstNameField.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span> lastNameField.text.length <span class="asOperator">==</span> 0 <span class="asOperator">||</span> phoneNumberField.text.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    Alert.show<span class="asBracket">(</span> <span class="asString">&quot;All fields are required&quot;</span>, <span class="asString">&quot;Missing form data&quot;</span> <span class="asBracket">)</span>;
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+                
+                <span class="asVar">var</span> newEntry<span class="asOperator">:</span>PhoneBookEntryVO <span class="asOperator">=</span> <span class="asReserved">new</span> PhoneBookEntryVO<span class="asBracket">()</span>;
+                newEntry.firstName <span class="asOperator">=</span> firstNameField.text.charAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span>.toUpperCase<span class="asBracket">()</span>;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> firstNameField.text.length <span class="asOperator">&gt;</span> 1 <span class="asBracket">)</span>
+                    newEntry.firstName <span class="asOperator">+=</span> firstNameField.text.substr<span class="asBracket">(</span> 1 <span class="asBracket">)</span>;
+                
+                newEntry.lastName <span class="asOperator">=</span> lastNameField.text.charAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span>.toUpperCase<span class="asBracket">()</span>;
+                
+                <span class="asReserved">if</span><span class="asBracket">(</span> lastNameField.text.length <span class="asOperator">&gt;</span> 1 <span class="asBracket">)</span>
+                    newEntry.lastName <span class="asOperator">+=</span> lastNameField.text.substr<span class="asBracket">(</span> 1 <span class="asBracket">)</span>;
+                
+                newEntry.phoneNumber <span class="asOperator">=</span> phoneNumberField.text;
+                firstNameField.text <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+                lastNameField.text <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+                phoneNumberField.text <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;
+                
+                phoneBookService.addEntry<span class="asBracket">(</span> newEntry <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asComment">/*
+            This is a callback from the remote method invocation when a new entry is added
+            to the phonebook
+            */</span>
+            <span class="asReserved">private</span> <span class="asFunction">function</span> newEntryAdded<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asVar">var</span> addedEntry<span class="asOperator">:</span>PhoneBookEntryVO <span class="asOperator">=</span> result.result <span class="asReserved">as</span> PhoneBookEntryVO;
+                processEntry<span class="asBracket">(</span> addedEntry <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asComment">/*
+            This is a callback for the remote invocation initiated in the init() method.
+            The result argument contains a list of all PhoneBook entries accumulated thus far
+            */</span>
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotEntries<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> result.result.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    <span class="asVar">var</span> entry<span class="asOperator">:</span>PhoneBookEntryVO <span class="asOperator">=</span> <span class="asReserved">new</span> PhoneBookEntryVO<span class="asBracket">()</span>;
+                    entry.firstName <span class="asOperator">=</span> <span class="asString">&quot;Midnight&quot;</span>;
+                    entry.lastName <span class="asOperator">=</span> <span class="asString">&quot;Coders&quot;</span>;
+                    entry.phoneNumber <span class="asOperator">=</span> <span class="asString">&quot;972.342.6908&quot;</span>;
+                    phoneBookService.addEntry<span class="asBracket">(</span> entry <span class="asBracket">)</span>;
+                    <span class="asReserved">return</span>;                
+                <span class="asBracket">}</span>
+                
+                <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>Number <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> result.result.length; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+                    processEntry<span class="asBracket">(</span> result.result<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asReserved">as</span> PhoneBookEntryVO <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asComment">/*
+            This is a general &apos;catch-all&apos; callback for any error sent from the server
+            */</span>            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString <span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> processEntry<span class="asBracket">(</span> entry<span class="asOperator">:</span>PhoneBookEntryVO <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>                
+                <span class="asComment">// determine which tab to add the entry to
+</span>                <span class="asVar">var</span> tabIndex<span class="asOperator">:</span>Number <span class="asOperator">=</span> entry.lastName.charCodeAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span> <span class="asOperator">-</span> <span class="asString">&quot;A&quot;</span>.charCodeAt<span class="asBracket">(</span> 0 <span class="asBracket">)</span>;
+
+                <span class="asReserved">if</span><span class="asBracket">(</span> tabIndex <span class="asOperator">&lt;</span> 0 <span class="asOperator">||</span> tabIndex <span class="asOperator">&gt;</span> 26 <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Sorry, cannot add entry for &quot;</span> <span class="asOperator">+</span> entry.firstName <span class="asOperator">+</span> <span class="asString">&quot;, &quot;</span> <span class="asOperator">+</span> entry.lastName <span class="asOperator">+</span> <span class="asString">&quot;. No tab to put it to&quot;</span>, <span class="asString">&quot;Missing tab&quot;</span> <span class="asBracket">)</span>;                
+                    <span class="asReserved">return</span>;
+                <span class="asBracket">}</span>
+
+                <span class="asVar">var</span> tab<span class="asOperator">:</span>Roster <span class="asOperator">=</span> phoneBookTabs.getChildAt<span class="asBracket">(</span> tabIndex <span class="asBracket">)</span> <span class="asReserved">as</span> Roster;
+                tab.enabled <span class="asOperator">=</span> <span class="asReserved">true</span>;
+                tab.addPhoneBookEntry<span class="asBracket">(</span> entry <span class="asBracket">)</span>;
+                phoneBookTabs.selectedIndex <span class="asOperator">=</span> tabIndex;                
+            <span class="asBracket">}</span>            
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">661</span>&quot; height=&quot;<span class="mxmlString">386</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Client Server Class Mapping Example</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">6</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; text=&quot;<span class="mxmlString">Phone book:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TabNavigator</span> id=&quot;<span class="mxmlString">phoneBookTabs</span>&quot; historyManagementEnabled=&quot;<span class="mxmlString">false</span>&quot; x=&quot;<span class="mxmlString">6</span>&quot; y=&quot;<span class="mxmlString">36</span>&quot; width=&quot;<span class="mxmlString">627</span>&quot; height=&quot;<span class="mxmlString">157</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Canvas</span> label=&quot;<span class="mxmlString">Tab 1</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:TabNavigator&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">6</span>&quot; y=&quot;<span class="mxmlString">201</span>&quot; width=&quot;<span class="mxmlString">269</span>&quot; height=&quot;<span class="mxmlString">135</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; cornerRadius=&quot;<span class="mxmlString">10</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">12</span>&quot; y=&quot;<span class="mxmlString">21</span>&quot; text=&quot;<span class="mxmlString">First name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">12</span>&quot; y=&quot;<span class="mxmlString">47</span>&quot; text=&quot;<span class="mxmlString">Last name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">12</span>&quot; y=&quot;<span class="mxmlString">73</span>&quot; text=&quot;<span class="mxmlString">Phone number:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">114</span>&quot; y=&quot;<span class="mxmlString">19</span>&quot; width=&quot;<span class="mxmlString">140</span>&quot; backgroundColor=&quot;<span class="mxmlString">#b5cccb</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; borderThickness=&quot;<span class="mxmlString">1</span>&quot; borderColor=&quot;<span class="mxmlString">#79aa98</span>&quot; id=&quot;<span class="mxmlString">firstNameField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">114</span>&quot; y=&quot;<span class="mxmlString">45</span>&quot; width=&quot;<span class="mxmlString">140</span>&quot; backgroundColor=&quot;<span class="mxmlString">#b5cccb</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; borderThickness=&quot;<span class="mxmlString">1</span>&quot; borderColor=&quot;<span class="mxmlString">#79aa98</span>&quot; id=&quot;<span class="mxmlString">lastNameField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">114</span>&quot; y=&quot;<span class="mxmlString">71</span>&quot; width=&quot;<span class="mxmlString">140</span>&quot; backgroundColor=&quot;<span class="mxmlString">#b5cccb</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot; borderThickness=&quot;<span class="mxmlString">1</span>&quot; borderColor=&quot;<span class="mxmlString">#79aa98</span>&quot; id=&quot;<span class="mxmlString">phoneNumberField</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">171</span>&quot; y=&quot;<span class="mxmlString">101</span>&quot; label=&quot;<span class="mxmlString">Add Entry</span>&quot; click=&quot;addEntry<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">17</span>&quot; y=&quot;<span class="mxmlString">194</span>&quot; text=&quot;<span class="mxmlString">New Entry</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextArea</span> x=&quot;<span class="mxmlString">311</span>&quot; y=&quot;<span class="mxmlString">210</span>&quot; width=&quot;<span class="mxmlString">322</span>&quot; height=&quot;<span class="mxmlString">113</span>&quot; fontSize=&quot;<span class="mxmlString">16</span>&quot; editable=&quot;<span class="mxmlString">false</span>&quot; borderStyle=&quot;<span class="mxmlString">none</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:text&gt;</span>Add a new entry. It will be stored on the server and then returned back to the client. Each entry shows up in the corresponding tab (based on the first letter of the last name)<span class="mxmlComponent">&lt;/mx:text&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:TextArea&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

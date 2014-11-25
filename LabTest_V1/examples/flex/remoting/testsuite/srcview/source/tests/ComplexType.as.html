@@ -1,0 +1,317 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ComplexType.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">public</span> <span class="asClass">class</span> ComplexType
+    <span class="asBracket">{</span>
+    <span class="asReserved">public</span> <span class="asVar">var</span> number <span class="asOperator">:</span> Number;
+    <span class="asReserved">public</span> <span class="asVar">var</span> date <span class="asOperator">:</span> Date;
+    <span class="asReserved">public</span> <span class="asVar">var</span> nullableDate<span class="asOperator">:</span>Date;
+    <span class="asReserved">public</span> <span class="asVar">var</span> str <span class="asOperator">:</span> String;
+    <span class="asReserved">public</span> <span class="asVar">var</span> array <span class="asOperator">:</span> Array;
+    <span class="asReserved">public</span> <span class="asVar">var</span> complexArray <span class="asOperator">:</span> Array;
+    <span class="asReserved">public</span> <span class="asVar">var</span> map <span class="asOperator">:</span> Object;
+    <span class="asReserved">public</span> <span class="asVar">var</span> complexType <span class="asOperator">:</span> ComplexType;
+        
+      <span class="asComment">// primitive fields
+</span>
+      <span class="asReserved">public</span> <span class="asVar">var</span> intField<span class="asOperator">:</span>Number;
+      <span class="asReserved">public</span> <span class="asVar">var</span> floatField<span class="asOperator">:</span>Number;
+      <span class="asReserved">public</span> <span class="asVar">var</span> longField<span class="asOperator">:</span>Number;
+      <span class="asReserved">public</span> <span class="asVar">var</span> shortField<span class="asOperator">:</span>Number;
+      <span class="asReserved">public</span> <span class="asVar">var</span> byteField<span class="asOperator">:</span>Number;
+      <span class="asReserved">public</span> <span class="asVar">var</span> doubleField<span class="asOperator">:</span>Number;
+      
+      <span class="asComment">// primitive wrappers fields
+</span>      <span class="asReserved">public</span> <span class="asVar">var</span> intWrapperField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> floatWrapperField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> longWrapperField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> shortWrapperField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> byteWrapperField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> doubleWrapperField<span class="asOperator">:</span>Object;
+      <span class="asComment">// string
+</span>      <span class="asReserved">public</span> <span class="asVar">var</span> stringField<span class="asOperator">:</span>String;
+      <span class="asReserved">public</span> <span class="asVar">var</span> stringBufferField<span class="asOperator">:</span>String;
+
+      <span class="asComment">// arrays of primitives
+</span>      <span class="asReserved">public</span> <span class="asVar">var</span> intArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> shortArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> longArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> byteArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> doubleArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> floatArrayField<span class="asOperator">:</span>Object;
+      <span class="asComment">// arrays of wrappers
+</span>      <span class="asReserved">public</span> <span class="asVar">var</span> intWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> shortWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> longWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> byteWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> doubleWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> floatWrapperArrayField<span class="asOperator">:</span>Object;
+      <span class="asComment">// collections
+</span>      <span class="asReserved">public</span> <span class="asVar">var</span> collectionField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> abstractCollectionField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> listCollectionField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> abstractListField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> abstractSequentialListField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> stackField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> vectorField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> linkedLIstField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> arrayListField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> setField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> sortedSetField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> abstractSetField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> treeSetField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> mapSetField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> abstractMapField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> propertiesField<span class="asOperator">:</span>Object;
+      <span class="asReserved">public</span> <span class="asVar">var</span> treeMapField<span class="asOperator">:</span>Object;    
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> ComplexType<span class="asBracket">(</span> depth <span class="asOperator">:</span> Number <span class="asBracket">)</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">this</span>.number <span class="asOperator">=</span> depth;
+        <span class="asReserved">this</span>.date <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004 <span class="asOperator">-</span> depth <span class="asBracket">)</span>;
+        <span class="asReserved">this</span>.nullableDate <span class="asOperator">=</span> <span class="asReserved">new</span> Date<span class="asBracket">(</span> 2004 <span class="asOperator">-</span> depth <span class="asBracket">)</span>;
+        <span class="asReserved">this</span>.str <span class="asOperator">=</span> depth <span class="asOperator">+</span> <span class="asString">&quot; &quot;</span>;
+        <span class="asReserved">this</span>.array <span class="asOperator">=</span> getArray<span class="asBracket">(</span> depth <span class="asBracket">)</span>;
+        <span class="asReserved">this</span>.complexArray <span class="asOperator">=</span> getComplexArray<span class="asBracket">(</span> depth <span class="asBracket">)</span>;
+        <span class="asReserved">this</span>.map <span class="asOperator">=</span> getMap<span class="asBracket">(</span> depth <span class="asBracket">)</span>;
+        
+      <span class="asComment">// primitive fields
+</span>
+          intField <span class="asOperator">=</span> depth; 
+        floatField <span class="asOperator">=</span> depth;
+        longField <span class="asOperator">=</span> depth;
+        shortField <span class="asOperator">=</span> depth;
+        byteField <span class="asOperator">=</span> depth;
+        doubleField <span class="asOperator">=</span> depth;
+      <span class="asComment">// primitive wrappers fields
+</span>        intWrapperField <span class="asOperator">=</span> depth;
+        floatWrapperField <span class="asOperator">=</span> depth;
+        longWrapperField <span class="asOperator">=</span> depth;
+        shortWrapperField <span class="asOperator">=</span> depth;
+        byteWrapperField <span class="asOperator">=</span> depth;
+        doubleWrapperField <span class="asOperator">=</span> depth;
+      <span class="asComment">// string
+</span>        stringField <span class="asOperator">=</span> depth <span class="asOperator">+</span> <span class="asString">&quot;&quot;</span>;
+        stringBufferField <span class="asOperator">=</span> depth <span class="asOperator">+</span> <span class="asString">&quot;&quot;</span>;
+      <span class="asComment">// arrays of primitives
+</span>        intArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        shortArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        longArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        byteArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        doubleArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        floatArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+      <span class="asComment">// arrays of wrappers
+</span>        intWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        shortWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        longWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        byteWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        doubleWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        floatWrapperArrayField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+    
+      <span class="asComment">// collections
+</span>        collectionField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;      
+        abstractCollectionField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        listCollectionField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        abstractListField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        
+        abstractSequentialListField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        stackField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        vectorField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        linkedLIstField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        
+        arrayListField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        
+        setField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        sortedSetField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        abstractSetField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;
+        treeSetField <span class="asOperator">=</span> <span class="asReserved">this</span>.array;        
+        
+        mapSetField <span class="asOperator">=</span> <span class="asReserved">this</span>.map;        
+        abstractMapField <span class="asOperator">=</span> <span class="asReserved">this</span>.map;
+        propertiesField <span class="asOperator">=</span> <span class="asReserved">this</span>.map;
+        treeMapField <span class="asOperator">=</span> <span class="asReserved">this</span>.map    ;
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span> depth <span class="asOperator">&gt;</span> 0 <span class="asBracket">)</span>
+          <span class="asReserved">this</span>.complexType <span class="asOperator">=</span> getComplexType<span class="asBracket">(</span> depth <span class="asOperator">-</span> 1 <span class="asBracket">)</span>;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> equals<span class="asBracket">(</span> compType <span class="asOperator">:</span> Object <span class="asBracket">)</span> <span class="asOperator">:</span> Boolean
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> compType.number <span class="asOperator">==</span> number <span class="asOperator">&amp;&amp;</span>
+           compType.date.getTime<span class="asBracket">()</span> <span class="asOperator">==</span> date.getTime<span class="asBracket">()</span> <span class="asOperator">&amp;&amp;</span>
+           compType.nullableDate.getTime<span class="asBracket">()</span> <span class="asOperator">==</span> date.getTime<span class="asBracket">()</span> <span class="asOperator">&amp;&amp;</span>
+           compType.str <span class="asOperator">==</span> str <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.array, array <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.complexArray, complexArray <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.map, map <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> complexType, compType.complexType <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+
+           compType.intField <span class="asOperator">==</span> intField <span class="asOperator">&amp;&amp;</span>
+           compType.floatField <span class="asOperator">==</span> floatField <span class="asOperator">&amp;&amp;</span>
+           compType.longField <span class="asOperator">==</span> longField <span class="asOperator">&amp;&amp;</span>
+           compType.shortField <span class="asOperator">==</span> shortField <span class="asOperator">&amp;&amp;</span>
+           compType.byteField <span class="asOperator">==</span> byteField <span class="asOperator">&amp;&amp;</span>
+           compType.doubleField <span class="asOperator">==</span> doubleField <span class="asOperator">&amp;&amp;</span>
+           compType.intWrapperField <span class="asOperator">==</span> intWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.floatWrapperField <span class="asOperator">==</span> floatWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.longWrapperField <span class="asOperator">==</span> longWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.shortWrapperField <span class="asOperator">==</span> shortWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.byteWrapperField <span class="asOperator">==</span> byteWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.doubleWrapperField <span class="asOperator">==</span> doubleWrapperField <span class="asOperator">&amp;&amp;</span>
+           compType.stringField <span class="asOperator">==</span> stringField <span class="asOperator">&amp;&amp;</span>
+           compType.stringBufferField <span class="asOperator">==</span> stringBufferField <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.intArrayField, intArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.shortArrayField, shortArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.longArrayField, longArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.byteArrayField, byteArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.doubleArrayField, doubleArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.floatArrayField, floatArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+           ObjectComparator.equals<span class="asBracket">(</span> compType.intWrapperArrayField, intWrapperArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.shortWrapperArrayField, shortWrapperArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.longWrapperArrayField, longWrapperArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.byteWrapperArrayField, byteWrapperArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.doubleWrapperArrayField, doubleWrapperArrayField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+
+              ObjectComparator.equals<span class="asBracket">(</span> compType.collectionField, collectionField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.abstractCollectionField, abstractCollectionField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.listCollectionField, listCollectionField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.abstractListField, abstractListField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              compType.stackField.length <span class="asOperator">==</span> stackField.length <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.vectorField, vectorField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.linkedLIstField, linkedLIstField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.arrayListField, arrayListField <span class="asBracket">)</span>  <span class="asOperator">&amp;&amp;</span>
+              compType.setField.length <span class="asOperator">==</span> setField.length  <span class="asOperator">&amp;&amp;</span>
+           compType.sortedSetField.length <span class="asOperator">==</span> sortedSetField.length <span class="asOperator">&amp;&amp;</span>
+           compType.treeSetField.length <span class="asOperator">==</span> treeSetField.length <span class="asOperator">&amp;&amp;</span>                   
+              ObjectComparator.equals<span class="asBracket">(</span> compType.mapSetField, mapSetField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.propertiesField, propertiesField <span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+              ObjectComparator.equals<span class="asBracket">(</span> compType.treeMapField, treeMapField <span class="asBracket">))</span>
+        <span class="asReserved">return</span> <span class="asReserved">true</span>;
+    <span class="asReserved">else</span>
+        <span class="asReserved">return</span> <span class="asReserved">false</span>;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asReserved">static</span> <span class="asFunction">function</span> getComplexType<span class="asBracket">(</span> i<span class="asOperator">:</span>int <span class="asBracket">)</span><span class="asOperator">:*</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> Cache.complexTypes<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asReserved">undefined</span> <span class="asBracket">)</span>
+            Cache.complexTypes<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asReserved">new</span> ComplexType<span class="asBracket">(</span> i <span class="asBracket">)</span>;
+
+        <span class="asReserved">return</span> Cache.complexTypes<span class="asBracket">[</span> i <span class="asBracket">]</span>;          
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asReserved">static</span> <span class="asFunction">function</span> getArray<span class="asBracket">(</span> size<span class="asOperator">:</span>int <span class="asBracket">)</span><span class="asOperator">:</span>Array
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> array<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> size; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+          array.push<span class="asBracket">(</span> i <span class="asBracket">)</span>;
+          
+        <span class="asReserved">return</span> array;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asReserved">static</span> <span class="asFunction">function</span> getComplexArray<span class="asBracket">(</span> size<span class="asOperator">:</span>int <span class="asBracket">)</span><span class="asOperator">:</span>Array
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> Cache.complexArrays<span class="asBracket">[</span> size <span class="asBracket">]</span> <span class="asOperator">!=</span> <span class="asReserved">undefined</span> <span class="asBracket">)</span>
+          <span class="asReserved">return</span> Cache.complexArrays<span class="asBracket">[</span> size <span class="asBracket">]</span>;
+          
+        <span class="asVar">var</span> complexArray<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> size; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 2 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+              complexArray.push<span class="asBracket">(</span> i <span class="asOperator">+</span> <span class="asString">&quot; string object&quot;</span> <span class="asBracket">)</span>;
+            <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 3 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+              complexArray.push<span class="asBracket">(</span> getMap<span class="asBracket">(</span> i <span class="asBracket">)</span> <span class="asBracket">)</span>;
+            <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 5 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+              complexArray.push<span class="asBracket">(</span> getArray<span class="asBracket">(</span> i <span class="asBracket">)</span> <span class="asBracket">)</span>;
+            <span class="asReserved">else</span>
+              complexArray.push<span class="asBracket">(</span> getComplexType<span class="asBracket">(</span> i <span class="asBracket">)</span> <span class="asBracket">)</span>;    
+        <span class="asBracket">}</span>
+        
+        Cache.complexArrays<span class="asBracket">[</span> size <span class="asBracket">]</span> <span class="asOperator">=</span> complexArray;
+        <span class="asReserved">return</span> complexArray;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asReserved">static</span> <span class="asFunction">function</span> getMap<span class="asBracket">(</span> size<span class="asOperator">:</span>int <span class="asBracket">)</span><span class="asOperator">:</span>Object
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> Cache.maps<span class="asBracket">[</span> size <span class="asBracket">]</span> <span class="asOperator">!=</span> <span class="asReserved">undefined</span> <span class="asBracket">)</span>
+          <span class="asReserved">return</span> Cache.maps<span class="asBracket">[</span> size <span class="asBracket">]</span>;
+        
+        <span class="asVar">var</span> map<span class="asOperator">:</span>Object <span class="asOperator">=</span> <span class="asReserved">new</span> Object<span class="asBracket">()</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> size ; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+          
+            <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 2 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                map<span class="asBracket">[</span> i <span class="asOperator">+</span> <span class="asString">&quot;item&quot;</span> <span class="asBracket">]</span> <span class="asOperator">=</span> i <span class="asOperator">+</span> <span class="asString">&quot; string object&quot;</span>;    
+            <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 3 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                map<span class="asBracket">[</span> i <span class="asOperator">+</span> <span class="asString">&quot;item&quot;</span> <span class="asBracket">]</span> <span class="asOperator">=</span> getMap<span class="asBracket">(</span> i <span class="asBracket">)</span>;    
+            <span class="asReserved">else</span> <span class="asReserved">if</span><span class="asBracket">(</span> i <span class="asOperator">%</span> 5 <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+                map<span class="asBracket">[</span> i <span class="asOperator">+</span> <span class="asString">&quot;item&quot;</span> <span class="asBracket">]</span> <span class="asOperator">=</span> getArray<span class="asBracket">(</span> i <span class="asBracket">)</span>;            
+            <span class="asReserved">else</span>
+              map<span class="asBracket">[</span> i <span class="asOperator">+</span> <span class="asString">&quot;item&quot;</span> <span class="asBracket">]</span> <span class="asOperator">=</span> getComplexType<span class="asBracket">(</span> i <span class="asBracket">)</span>;
+          
+        <span class="asBracket">}</span>
+        Cache.maps<span class="asBracket">[</span> size <span class="asBracket">]</span> <span class="asOperator">=</span> map;
+        <span class="asReserved">return</span> map;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asReserved">static</span> <span class="asFunction">function</span> getArrayOfObject<span class="asBracket">(</span> depth <span class="asOperator">:</span> Number, object<span class="asOperator">:</span>Object <span class="asBracket">)</span><span class="asOperator">:</span>Array
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> array<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> depth; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            array.push<span class="asBracket">(</span> object <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">return</span> array;
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asReserved">static</span> <span class="asFunction">function</span> get2DimArrayOfObject<span class="asBracket">(</span> depth <span class="asOperator">:</span> Number, object<span class="asOperator">:</span>Object <span class="asBracket">)</span><span class="asOperator">:</span>Array
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> array<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>depth<span class="asBracket">]</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> depth; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            array<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asBracket">[]</span>;
+            
+          <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> j<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; j <span class="asOperator">&lt;</span> depth; j<span class="asOperator">++</span> <span class="asBracket">)</span>
+          <span class="asBracket">{</span>
+            array<span class="asBracket">[</span> i <span class="asBracket">][</span> j <span class="asBracket">]</span> <span class="asOperator">=</span> object;
+          <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+            
+        <span class="asReserved">return</span> array;
+    <span class="asBracket">}</span>    
+    
+    <span class="asReserved">private</span> <span class="asReserved">static</span> <span class="asFunction">function</span> get3DimArrayOfObject<span class="asBracket">(</span> depth <span class="asOperator">:</span> Number, object<span class="asOperator">:</span>Object <span class="asBracket">)</span><span class="asOperator">:</span>Array
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> array<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>depth<span class="asBracket">]</span>;
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> depth; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            array<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asBracket">[]</span>;
+            
+          <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> j<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; j <span class="asOperator">&lt;</span> depth; j<span class="asOperator">++</span> <span class="asBracket">)</span>
+          <span class="asBracket">{</span>
+              array<span class="asBracket">[</span> i <span class="asBracket">][</span> j <span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asBracket">[]</span>;
+              
+              <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> q<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; q <span class="asOperator">&lt;</span> depth; q<span class="asOperator">++</span> <span class="asBracket">)</span>          
+                   array<span class="asBracket">[</span> i <span class="asBracket">][</span> j <span class="asBracket">][</span> q <span class="asBracket">]</span> <span class="asOperator">=</span> object;
+          <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+            
+        <span class="asReserved">return</span> array;
+    <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

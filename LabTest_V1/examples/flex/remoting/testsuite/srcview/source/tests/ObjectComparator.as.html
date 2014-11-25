@@ -1,0 +1,110 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ObjectComparator.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">public</span> <span class="asClass">class</span> ObjectComparator
+    <span class="asBracket">{</span>
+    
+    <span class="asReserved">public</span> <span class="asReserved">static</span> <span class="asFunction">function</span> equals<span class="asBracket">(</span> obj1<span class="asOperator">:*</span>, obj2<span class="asOperator">:*</span> <span class="asBracket">)</span> <span class="asOperator">:</span> Boolean
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asBracket">(</span>obj1 <span class="asOperator">==</span> <span class="asReserved">undefined</span> <span class="asOperator">||</span> obj1 <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span>
+            <span class="asBracket">(</span>obj2 <span class="asOperator">==</span> <span class="asReserved">undefined</span> <span class="asOperator">||</span> obj2 <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span> <span class="asBracket">)</span>
+          <span class="asReserved">return</span> <span class="asReserved">true</span>;
+          
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;Number&quot;</span> <span class="asOperator">&amp;&amp;</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj2 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;Number&quot;</span> <span class="asBracket">)</span>
+            <span class="asReserved">return</span> obj1 <span class="asOperator">==</span> obj2
+            
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;function&quot;</span> <span class="asOperator">&amp;&amp;</span> 
+            <span class="asReserved">typeof</span><span class="asBracket">(</span> obj2 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;function&quot;</span> <span class="asOperator">&amp;&amp;</span>
+            obj1.toString<span class="asBracket">()</span> <span class="asOperator">==</span> obj2.toString<span class="asBracket">()</span> <span class="asBracket">)</span>
+            <span class="asReserved">return</span> <span class="asReserved">true</span>;
+        
+        <span class="asComment">/*
+        if( typeof( obj1.equals ) == &quot;function&quot; )             
+          return obj1.equals( obj2 );
+        */</span>
+            
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asOperator">!=</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj2 <span class="asBracket">)</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object types do not match.&quot;</span> <span class="asBracket">)</span>;
+            <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object1 type &quot;</span> <span class="asOperator">+</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asBracket">)</span>;            
+            <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object2 type &quot;</span> <span class="asOperator">+</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj2 <span class="asBracket">)</span> <span class="asBracket">)</span>;                        
+            <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>;
+            <span class="asReserved">return</span> <span class="asReserved">false</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asComment">// array check
+</span>        <span class="asComment">//if( obj1.length != null &amp;&amp; 
+</span>        <span class="asComment">//   typeof( obj1.pop ) == &quot;function&quot; &amp;&amp;
+</span>        <span class="asComment">//   obj2.length != null &amp;&amp;
+</span>        <span class="asComment">//   typeof( obj2.pop ) == &quot;function&quot; )
+</span>        
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;Array&quot;</span> <span class="asOperator">&amp;&amp;</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj2 <span class="asBracket">)</span> <span class="asOperator">==</span> <span class="asString">&quot;Array&quot;</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asComment">// if the length of the arrays is different, the objects are not equal
+</span>            <span class="asReserved">if</span><span class="asBracket">(</span> obj1.length <span class="asOperator">!=</span> obj2.length <span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+               <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object1 and object2 are arrays of different lengths&quot;</span> <span class="asBracket">)</span>;
+              <span class="asReserved">return</span> <span class="asReserved">false</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">else</span>
+            <span class="asBracket">{</span>
+              <span class="asComment">// iterate over the array elements and recurse this function for each element
+</span>              <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> obj1.length; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+                <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asOperator">!</span>equals<span class="asBracket">(</span> obj1<span class="asBracket">[</span> i <span class="asBracket">]</span>, obj2<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asBracket">)</span> <span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                   <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;elements at index &quot;</span> <span class="asOperator">+</span> i <span class="asOperator">+</span> <span class="asString">&quot; in the object1 and object2 arrays do not match&quot;</span> <span class="asBracket">)</span>;                    
+                   <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object1 value - &quot;</span> <span class="asOperator">+</span> obj1<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asBracket">)</span>;
+                   <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object2 value - &quot;</span> <span class="asOperator">+</span> obj2<span class="asBracket">[</span> i <span class="asBracket">]</span> <span class="asBracket">)</span>;                  
+                  <span class="asReserved">return</span> <span class="asReserved">false</span>;
+                <span class="asBracket">}</span>
+              
+              <span class="asReserved">return</span> <span class="asReserved">true</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>                                          
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> name<span class="asOperator">:</span>String <span class="asReserved">in</span> obj1 <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> obj2<span class="asBracket">[</span> name <span class="asBracket">]</span> <span class="asOperator">==</span> <span class="asReserved">undefined</span> <span class="asOperator">&amp;&amp;</span> obj1<span class="asBracket">[</span> name <span class="asBracket">]</span> <span class="asOperator">!=</span> <span class="asReserved">undefined</span> <span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object2 does not have field from object1. field name &quot;</span> <span class="asOperator">+</span> name <span class="asBracket">)</span>;                
+                <span class="asReserved">return</span> <span class="asReserved">false</span>;
+            <span class="asBracket">}</span>
+    
+            <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asOperator">!</span><span class="asBracket">(</span> equals<span class="asBracket">(</span> obj1<span class="asBracket">[</span> name <span class="asBracket">]</span>, obj2<span class="asBracket">[</span> name <span class="asBracket">]</span> <span class="asBracket">)</span> <span class="asBracket">)</span> <span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;values assigned to the field &quot;</span> <span class="asOperator">+</span> name <span class="asOperator">+</span> <span class="asString">&quot; do not match&quot;</span> <span class="asBracket">)</span>;                                
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;value in object1 - &quot;</span> <span class="asOperator">+</span> obj1<span class="asBracket">[</span> name <span class="asBracket">]</span> <span class="asBracket">)</span>;                
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;value in object2 - &quot;</span> <span class="asOperator">+</span> obj2<span class="asBracket">[</span> name <span class="asBracket">]</span> <span class="asBracket">)</span>;                                
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>;
+                <span class="asReserved">return</span> <span class="asReserved">false</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+        
+        
+        <span class="asComment">// if it is not an object or array, use basic equality operator
+</span>        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asReserved">typeof</span><span class="asBracket">(</span> obj1 <span class="asBracket">)</span> <span class="asOperator">!=</span> <span class="asString">&quot;object&quot;</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> obj1 <span class="asOperator">==</span> obj2 <span class="asBracket">)</span>
+              <span class="asReserved">return</span> <span class="asReserved">true</span>;
+            <span class="asReserved">else</span>
+            <span class="asBracket">{</span>
+                <span class="asTrace">trace</span><span class="asBracket">(</span> <span class="asString">&quot;object1 and object2 are non-equal object references&quot;</span> <span class="asBracket">)</span>;
+                <span class="asReserved">return</span> <span class="asReserved">false</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+        <span class="asReserved">else</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">return</span> <span class="asReserved">true</span>;
+        <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

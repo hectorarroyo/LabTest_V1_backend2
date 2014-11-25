@@ -1,0 +1,144 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Example name</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+   <style type="text/css">
+    #silverlightControlHost {
+	    height:310;
+	    width:600;
+    }
+    </style>
+    <script type="text/javascript">
+        function onSilverlightError(sender, args) {
+
+            var appSource = "";
+            if (sender != null && sender != 0) {
+                appSource = sender.getHost().Source;
+            }
+            var errorType = args.ErrorType;
+            var iErrorCode = args.ErrorCode;
+
+            var errMsg = "Unhandled Error in Silverlight 2 Application " +  appSource + "\n" ;
+
+            errMsg += "Code: "+ iErrorCode + "    \n";
+            errMsg += "Category: " + errorType + "       \n";
+            errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+            if (errorType == "ParserError")
+            {
+                errMsg += "File: " + args.xamlFile + "     \n";
+                errMsg += "Line: " + args.lineNumber + "     \n";
+                errMsg += "Position: " + args.charPosition + "     \n";
+            }
+            else if (errorType == "RuntimeError")
+            {
+                if (args.lineNumber != 0)
+                {
+                    errMsg += "Line: " + args.lineNumber + "     \n";
+                    errMsg += "Position: " +  args.charPosition + "     \n";
+                }
+                errMsg += "MethodName: " + args.methodName + "     \n";
+            }
+
+            throw new Error(errMsg);
+        }
+    </script>
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Mapping client and server-side objects between Silverlight  and
+        PHP</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Automatic type adaptation between the type returned from the
+            server and the type used on the client</li>
+			<li>Server-side class uses Application scope, so only one instance
+			of the class is be created for all connected clients</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a target="_blank" href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/ClassMapping.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td>
+        <a target="_blank" href="../../../flex/remoting/classmapping/server-code">Browse</a>&nbsp;
+        <a href="../../../flex/remoting/classmapping/server-code/PhoneBookSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+		<div id='errorLocation' style="font-size: small;color: Gray;"></div>
+		<div id="silverlightControlHost">
+		<object data="data:application/x-silverlight," type="application/x-silverlight-2-b2" width="100%" height="100%">
+			<param name="source" value="ClientBin/ClassMapping.xap"/>
+			<param name="onerror" value="onSilverlightError" />
+			<param name="background" value="gray" />
+			<param name="initParams" value="WebORBURL=weborb.php" />
+
+			<a href="http://go.microsoft.com/fwlink/?LinkID=115261" style="text-decoration: none;">
+     			<img src="http://go.microsoft.com/fwlink/?LinkId=108181" alt="Get Microsoft Silverlight" style="border-style: none"/>
+			</a></object>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>The server method returns an instance of Weborb.Examples.PhoneBookRecord.
+            The client application uses ClassMapping.PhoneBookRecord. Since the
+            property names between the two classes match literally, WebORB can
+            provide automatic mapping.</li>
+			<li>Client class ClassMapping.PhoneBookRecord corresponds to the server class
+			Weborb.Examples.PhoneBookRecord. The classes are shown below:<br>
+&nbsp;<table border="1" style="border-collapse: collapse" cellpadding="3" bgcolor="#E5E5E5" id="table3" bordercolor="#999999" width="641">
+				<tr>
+					<td width="326">Client C# class</td>
+					<td width="300">Server PHP class</td>
+				</tr>
+				<tr>
+					<td class="bottomCell" style="border-left-width: 1px; border-right-style: solid; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px" width="326">
+                    <pre>namespace ClassMapping
+{
+    public class PhoneBookRecord
+    {
+        public string firstName {get;set;}
+        public string lastName {get;set;}
+        public string phoneNumber {get;set;}
+    }
+}</pre>
+&nbsp;</td>
+					<td class="bottomCell" width="300">
+                    <pre>class PhoneBookRecord
+{
+    var $firstName;
+    var $lastName;
+    var $phoneNumber;
+}</pre>
+                    </td>
+				</tr>
+			</table><br>
+			</li>
+			<li>Client and server class properties match literally. Class
+            name/namespace does not need to match the one on the server</li>
+		</ul>
+		</td>
+	</tr>
+	</table>
+
+</body>
+
+</html>

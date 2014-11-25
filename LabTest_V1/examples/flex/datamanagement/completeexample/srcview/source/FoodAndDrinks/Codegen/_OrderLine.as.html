@@ -1,0 +1,223 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>_OrderLine.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+   <span class="asPackage">package</span> FoodAndDrinks.Codegen
+   <span class="asBracket">{</span>
+      <span class="asReserved">import</span> weborb.data.<span class="asOperator">*</span>;
+      <span class="asReserved">import</span> FoodAndDrinks.<span class="asOperator">*</span>;
+      <span class="asReserved">import</span> mx.collections.ArrayCollection;
+      <span class="asReserved">import</span> flash.utils.ByteArray;
+
+      <span class="asBracket">[</span><span class="asMetadata">Bindable</span><span class="asBracket">]</span>
+      <span class="asReserved">public</span> <span class="asReserved">dynamic</span> <span class="asClass">class</span> _OrderLine <span class="asReserved">extends</span> ActiveRecord
+      <span class="asBracket">{</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> ActiveRecordUID<span class="asBracket">()</span><span class="asOperator">:</span>String
+        <span class="asBracket">{</span>
+          <span class="asReserved">return</span> _activeRecordId;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> ActiveRecordUID<span class="asBracket">(</span>value<span class="asOperator">:</span>String<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+          _activeRecordId <span class="asOperator">=</span> value;
+        <span class="asBracket">}</span>
+
+         <span class="asReserved">private</span> <span class="asVar">var</span> _uri<span class="asOperator">:</span>String <span class="asOperator">=</span> <span class="asReserved">null</span>;
+
+         <span class="asReserved">protected</span> <span class="asVar">var</span> _orderId<span class="asOperator">:</span>int;
+         <span class="asReserved">protected</span> <span class="asVar">var</span> _productId<span class="asOperator">:</span>int;
+         <span class="asReserved">protected</span> <span class="asVar">var</span> _quanity<span class="asOperator">:</span>Number <span class="asOperator">=</span> 0;
+         <span class="asReserved">protected</span> <span class="asVar">var</span> _price<span class="asOperator">:</span>Number <span class="asOperator">=</span> 0;
+
+         <span class="asComment">// parent tables
+</span>         <span class="asReserved">internal</span> <span class="asVar">var</span> _relatedOrder<span class="asOperator">:</span>Order <span class="asOperator">=</span> <span class="asReserved">new</span> Order<span class="asBracket">()</span>;
+
+         <span class="asComment">// parent tables
+</span>         <span class="asReserved">internal</span> <span class="asVar">var</span> _relatedProduct<span class="asOperator">:</span>Product <span class="asOperator">=</span> <span class="asReserved">new</span> Product<span class="asBracket">()</span>;
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> OrderId<span class="asBracket">()</span><span class="asOperator">:</span>int
+         <span class="asBracket">{</span>
+             <span class="asReserved">if</span><span class="asBracket">(</span>_relatedOrder <span class="asOperator">!=</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+                <span class="asReserved">return</span> _relatedOrder.OrderId;
+
+            <span class="asReserved">return</span> <span class="asReserved">undefined</span>;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">protected</span> <span class="asFunction">function</span> <span class="asReserved">set</span> OrderId<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+             <span class="asReserved">if</span><span class="asBracket">(</span>_relatedOrder <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+                _relatedOrder <span class="asOperator">=</span> <span class="asReserved">new</span> Order<span class="asBracket">()</span>;
+           
+          _relatedOrder.OrderId <span class="asOperator">=</span> value;
+           _isPrimaryKeyAffected <span class="asOperator">=</span> <span class="asReserved">true</span>;
+           _uri <span class="asOperator">=</span> <span class="asReserved">null</span>;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> ProductId<span class="asBracket">()</span><span class="asOperator">:</span>int
+         <span class="asBracket">{</span>
+             <span class="asReserved">if</span><span class="asBracket">(</span>_relatedProduct <span class="asOperator">!=</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+                <span class="asReserved">return</span> _relatedProduct.ProductId;
+
+            <span class="asReserved">return</span> <span class="asReserved">undefined</span>;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">protected</span> <span class="asFunction">function</span> <span class="asReserved">set</span> ProductId<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+             <span class="asReserved">if</span><span class="asBracket">(</span>_relatedProduct <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+                _relatedProduct <span class="asOperator">=</span> <span class="asReserved">new</span> Product<span class="asBracket">()</span>;
+           
+          _relatedProduct.ProductId <span class="asOperator">=</span> value;
+           _isPrimaryKeyAffected <span class="asOperator">=</span> <span class="asReserved">true</span>;
+           _uri <span class="asOperator">=</span> <span class="asReserved">null</span>;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> Quanity<span class="asBracket">()</span><span class="asOperator">:</span>Number
+         <span class="asBracket">{</span>
+           <span class="asReserved">return</span> _quanity;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> Quanity<span class="asBracket">(</span>value<span class="asOperator">:</span>Number<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+            _quanity <span class="asOperator">=</span> value;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> Price<span class="asBracket">()</span><span class="asOperator">:</span>Number
+         <span class="asBracket">{</span>
+           <span class="asReserved">return</span> _price;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> Price<span class="asBracket">(</span>value<span class="asOperator">:</span>Number<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+            _price <span class="asOperator">=</span> value;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> RelatedOrder<span class="asBracket">()</span><span class="asOperator">:</span>Order
+         <span class="asBracket">{</span>
+           <span class="asReserved">if</span><span class="asBracket">(</span>IsLoaded <span class="asOperator">&amp;&amp;</span> <span class="asOperator">!</span><span class="asBracket">(</span>_relatedOrder.IsLoaded <span class="asOperator">||</span> _relatedOrder.IsLoading<span class="asBracket">))</span>
+           <span class="asBracket">{</span>
+
+             <span class="asVar">var</span> oldValue<span class="asOperator">:</span>ActiveRecord <span class="asOperator">=</span> _relatedOrder;
+
+             _relatedOrder <span class="asOperator">=</span> DataMapperRegistry.Instance.Order.load<span class="asBracket">(</span>_relatedOrder<span class="asBracket">)</span>;
+
+             <span class="asReserved">if</span><span class="asBracket">(</span>oldValue <span class="asOperator">!=</span> _relatedOrder<span class="asBracket">)</span>
+               onParentChanged<span class="asBracket">(</span>oldValue, _relatedOrder<span class="asBracket">)</span>;          
+
+           <span class="asBracket">}</span>
+
+           <span class="asReserved">return</span> _relatedOrder;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> RelatedOrder<span class="asBracket">(</span>value<span class="asOperator">:</span>Order<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> value <span class="asOperator">!=</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+               <span class="asVar">var</span> oldValue<span class="asOperator">:</span>ActiveRecord <span class="asOperator">=</span> _relatedOrder;
+              
+               _relatedOrder <span class="asOperator">=</span> Order<span class="asBracket">(</span>IdentityMap.register<span class="asBracket">(</span> value <span class="asBracket">))</span>;
+
+               <span class="asReserved">if</span><span class="asBracket">(</span>oldValue <span class="asOperator">!=</span> _relatedOrder<span class="asBracket">)</span>
+                 onParentChanged<span class="asBracket">(</span>oldValue, _relatedOrder<span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">else</span>
+              _relatedOrder <span class="asOperator">=</span> <span class="asReserved">null</span>;
+         <span class="asBracket">}</span>
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">get</span> RelatedProduct<span class="asBracket">()</span><span class="asOperator">:</span>Product
+         <span class="asBracket">{</span>
+           <span class="asReserved">if</span><span class="asBracket">(</span>IsLoaded <span class="asOperator">&amp;&amp;</span> <span class="asOperator">!</span><span class="asBracket">(</span>_relatedProduct.IsLoaded <span class="asOperator">||</span> _relatedProduct.IsLoading<span class="asBracket">))</span>
+           <span class="asBracket">{</span>
+
+             <span class="asVar">var</span> oldValue<span class="asOperator">:</span>ActiveRecord <span class="asOperator">=</span> _relatedProduct;
+
+             _relatedProduct <span class="asOperator">=</span> DataMapperRegistry.Instance.Product.load<span class="asBracket">(</span>_relatedProduct<span class="asBracket">)</span>;
+
+             <span class="asReserved">if</span><span class="asBracket">(</span>oldValue <span class="asOperator">!=</span> _relatedProduct<span class="asBracket">)</span>
+               onParentChanged<span class="asBracket">(</span>oldValue, _relatedProduct<span class="asBracket">)</span>;          
+
+           <span class="asBracket">}</span>
+
+           <span class="asReserved">return</span> _relatedProduct;
+         <span class="asBracket">}</span>
+
+         <span class="asReserved">public</span> <span class="asFunction">function</span> <span class="asReserved">set</span> RelatedProduct<span class="asBracket">(</span>value<span class="asOperator">:</span>Product<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+         <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> value <span class="asOperator">!=</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+               <span class="asVar">var</span> oldValue<span class="asOperator">:</span>ActiveRecord <span class="asOperator">=</span> _relatedProduct;
+              
+               _relatedProduct <span class="asOperator">=</span> Product<span class="asBracket">(</span>IdentityMap.register<span class="asBracket">(</span> value <span class="asBracket">))</span>;
+
+               <span class="asReserved">if</span><span class="asBracket">(</span>oldValue <span class="asOperator">!=</span> _relatedProduct<span class="asBracket">)</span>
+                 onParentChanged<span class="asBracket">(</span>oldValue, _relatedProduct<span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">else</span>
+              _relatedProduct <span class="asOperator">=</span> <span class="asReserved">null</span>;
+         <span class="asBracket">}</span>
+
+        <span class="asReserved">protected</span> <span class="asReserved">override</span> <span class="asFunction">function</span> onDirtyChanged<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span>RelatedOrder <span class="asOperator">!=</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+              RelatedOrder.onChildChanged<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+            <span class="asReserved">if</span><span class="asBracket">(</span>RelatedProduct <span class="asOperator">!=</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+              RelatedProduct.onChildChanged<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+
+        <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> extractRelevant<span class="asBracket">(</span>cascade<span class="asOperator">:</span>Boolean <span class="asOperator">=</span> <span class="asReserved">false</span><span class="asBracket">)</span><span class="asOperator">:</span>Object
+        <span class="asBracket">{</span>
+          <span class="asVar">var</span> object<span class="asOperator">:</span>OrderLine <span class="asOperator">=</span> <span class="asReserved">new</span> OrderLine<span class="asBracket">()</span>;
+
+              object.OrderId <span class="asOperator">=</span> <span class="asReserved">this</span>.OrderId;
+              object.ProductId <span class="asOperator">=</span> <span class="asReserved">this</span>.ProductId;
+              object.Quanity <span class="asOperator">=</span> <span class="asReserved">this</span>.Quanity;
+              object.Price <span class="asOperator">=</span> <span class="asReserved">this</span>.Price;
+         object.ActiveRecordUID <span class="asOperator">=</span> <span class="asReserved">this</span>.ActiveRecordUID;
+         
+         <span class="asReserved">return</span> object;
+       <span class="asBracket">}</span>
+
+          <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> applyFields<span class="asBracket">(</span>object<span class="asOperator">:</span>Object<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+             <span class="asReserved">if</span><span class="asBracket">(</span><span class="asOperator">!</span>IsPrimaryKeyInitialized<span class="asBracket">)</span>
+               OrderId <span class="asOperator">=</span> object<span class="asBracket">[</span><span class="asString">&quot;OrderId&quot;</span><span class="asBracket">]</span>;
+
+             <span class="asReserved">if</span><span class="asBracket">(</span><span class="asOperator">!</span>IsPrimaryKeyInitialized<span class="asBracket">)</span>
+               ProductId <span class="asOperator">=</span> object<span class="asBracket">[</span><span class="asString">&quot;ProductId&quot;</span><span class="asBracket">]</span>;
+
+             Quanity <span class="asOperator">=</span> object<span class="asBracket">[</span><span class="asString">&quot;Quanity&quot;</span><span class="asBracket">]</span>;
+             Price <span class="asOperator">=</span> object<span class="asBracket">[</span><span class="asString">&quot;Price&quot;</span><span class="asBracket">]</span>;
+
+             RelatedOrder <span class="asOperator">=</span> object.RelatedOrder;
+
+             RelatedProduct <span class="asOperator">=</span> object.RelatedProduct;
+
+             _uri <span class="asOperator">=</span> <span class="asReserved">null</span>;
+             _isPrimaryKeyAffected <span class="asOperator">=</span> <span class="asReserved">true</span>;
+             IsDirty <span class="asOperator">=</span> <span class="asReserved">false</span>;
+          <span class="asBracket">}</span>
+
+        <span class="asReserved">protected</span> <span class="asReserved">override</span> <span class="asFunction">function</span> <span class="asReserved">get</span> dataMapper<span class="asBracket">()</span><span class="asOperator">:</span>DataMapper
+        <span class="asBracket">{</span>
+          <span class="asReserved">return</span> DataMapperRegistry.Instance.OrderLine;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asReserved">override</span> <span class="asFunction">function</span> getURI<span class="asBracket">()</span><span class="asOperator">:</span>String
+        <span class="asBracket">{</span>
+
+          <span class="asReserved">if</span><span class="asBracket">(</span>_uri <span class="asOperator">==</span> <span class="asReserved">null</span><span class="asBracket">)</span>
+          <span class="asBracket">{</span>
+             _uri <span class="asOperator">=</span> <span class="asString">&quot;.OrderLine&quot;</span> <span class="asOperator">+</span> <span class="asString">&quot;.&quot;</span> <span class="asOperator">+</span> OrderId.toString<span class="asBracket">()</span> <span class="asOperator">+</span> <span class="asString">&quot;.&quot;</span> <span class="asOperator">+</span> ProductId.toString<span class="asBracket">()</span>;
+          <span class="asBracket">}</span>
+           
+          <span class="asReserved">return</span> _uri;
+        <span class="asBracket">}</span>
+
+      <span class="asBracket">}</span>
+   <span class="asBracket">}</span></pre></body>
+</html>

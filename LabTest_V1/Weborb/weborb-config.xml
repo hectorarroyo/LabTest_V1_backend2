@@ -1,0 +1,348 @@
+<?xml version="1.0"?>
+<weborb servicePath="../Services">
+
+<!-- =============================================================================== -->
+  <!-- ===========                                                   ================= -->
+  <!-- ===========             L O G G I N G                         ================= -->
+  <!-- ===========                                                   ================= -->
+  <!-- ===============================================================================
+   WebORB logging policies and categories. Logging policies control how log events
+   are displayed or persisted. Logging categories control which events are enabled
+   To disable a category, change the 'enabled' attribute value to "no"
+  ==================================================================================== -->  
+<logging>
+  
+    <!-- enter the name of the logging policy. the name must match the value from the
+    <policyName> element from one of the logging policies listed below -->
+    <currentPolicy>Date Based Logging</currentPolicy>
+
+    <!-- File Size Threshold policy - All log events are saved in a file. As soon as the
+    file reaches the size specified in the <value> element of the fileSize parameter, the
+    policy rolls logging over to a new file -->
+    <loggingPolicy>
+      <policyName>File Size Threshold</policyName>
+      <className>Weborb.Util.Logging.Policies.SizeThresholdPolicy</className>
+      <!-- the fileSize parameter specifies the size of the file in KB before a new file is created -->
+      <parameter>
+        <name>fileSize</name>
+        <value>100</value>
+      </parameter>
+      <!-- the fileName parameter specifies the prefix of the log file name.
+      WebORB adds sequential numbers at the end of the prefix  -->
+      <parameter>
+        <name>fileName</name>
+        <value>webORB_log1.txt</value>
+      </parameter>
+    </loggingPolicy>
+
+
+    <!-- Date based logging - All log events are saved in a file corresponding to the
+    date when the events occured. When the product is restarted, the same log file is used
+    to store the log events. If the date changes while the product is running, log events
+    issued on the new date are saved in a new file -->
+    <loggingPolicy>
+      <policyName>Date Based Logging</policyName>
+      <className>Weborb.Util.Logging.Policies.DatePolicy</className>
+    </loggingPolicy>
+    
+    <loggingPolicy>
+      <policyName>Specific File</policyName>
+      <className>Weborb.Util.Logging.Policies.SpecificFilePolicy</className>
+      <parameter>
+        <name>fileName</name>
+        <value>webORB1_log.txt</value>
+      </parameter>
+    </loggingPolicy>
+  
+    <log enable="yes">WEBORB INFO</log>
+    <log enable="yes">WEBORB DEBUG</log>
+    <log enable="yes">WEBORB MYDEBUG</log>
+    <log enable="yes">WEBORB ERROR</log>
+    <log enable="no">WEBORB SERIALIZATION</log>
+    <log enable="no">WEBORB EXCEPTION</log>
+    <log enable="no">WEBORB INSTRUMENTATION</log>
+    <log enable="no">WEBORB SECURITY</log>
+    <log enable="no">WEBORB PERFORMANCE</log>
+    <log enable="no">REF COUNT</log>
+    
+</logging>
+
+<services>
+    <service>
+        <name>flashorbHttpHandler</name>
+        <serviceId>Weborb.ORBHttpHandler</serviceId>
+    </service>
+    <service>
+        <name>weborb.tests.PrimitiveTest</name>
+        <serviceId>weborb.tests.PrimitiveTest</serviceId>
+    </service>
+    <service>
+        <name>weborb.tests.DatabaseTest</name>
+        <serviceId>weborb.tests.DatabaseTestMySql</serviceId>
+    </service>
+</services>
+
+    <classMappings>    
+        <classMapping>
+            <clientClass>flex.messaging.messages.AsyncMessage</clientClass>
+            <serverClass>Weborb.V3Types.AsyncMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.messaging.messages.CommandMessage</clientClass>
+            <serverClass>Weborb.V3Types.CommandMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.messaging.messages.RemotingMessage</clientClass>
+            <serverClass>Weborb.V3Types.ReqMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.messaging.messages.AcknowledgeMessage</clientClass>
+            <serverClass>Weborb.V3Types.AckMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.data.messages.DataMessage</clientClass>
+            <serverClass>Weborb.V3Types.DataMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.data.messages.PagedMessage</clientClass>
+            <serverClass>Weborb.V3Types.PagedMessage</serverClass>
+        </classMapping>
+        <classMapping>
+            <clientClass>flex.data.messages.SequencedMessage</clientClass>
+            <serverClass>Weborb.V3Types.SeqMessage</serverClass>
+        </classMapping>        
+        <classMapping>
+            <clientClass>flex.messaging.messages.ErrorMessage</clientClass>
+            <serverClass>Weborb.V3Types.ErrMessage</serverClass>
+        </classMapping>
+        <classMapping>
+          <clientClass>flex.messaging.messages.DataErrorMessage</clientClass>
+          <serverClass>Weborb.V3Types.ErrDataMessage</serverClass>
+        </classMapping>    
+        <classMapping>
+            <clientClass>RecordSet</clientClass>
+            <serverClass>Weborb.Reader.Dataset.DataSetInfo</serverClass>
+        </classMapping>
+    </classMappings>
+    
+  <!-- =============================================================================== -->
+  <!-- ===========                                                   ================= -->
+  <!-- ===========                 S E C U R I T Y                   ================= -->
+  <!-- ===========                                                   ================= -->
+  <!-- ===============================================================================
+  Security configuration consists of declaration of protected resources and
+  access constraints. The resources are described by the <secure-resource>
+  elements, access constraints are defined with the <access-constraint>
+  element. Access constraints are not coupled to the resources, these are
+  generic definitions of access limitations. One can define multiple constraints
+  for the group of users/computers. A resource lists all the applicable
+  constraints via the <constrain-name> elements.
+  ==================================================================================== -->
+  <security>
+  <!--
+    the <deploymentMode> element controls how the classes and assemblies in the WebORB-enabled
+    application are exposed to the flash remoting clients.
+    The 'open system' deployment mode exposes ALL classes in the application to Flash clients. 
+    Security restrictions for the individual methods, classes and namespaces can still apply.
+    The 'closed system' deployment model denies access to ALL classes except for the ones explicitly
+    exposed with the <secure-resource> elements. 
+    -->
+    <deploymentMode>open</deploymentMode>
+
+    <!--
+    Authentication handler is responsible for authenticating user credentials passed along
+    with an invocation. If specified, the handler is invoked every time when the credentials
+    are passed along with an invocation. Handler invocation takes place before any WebORB 
+    does and invocation processing. If the credentials cannot be authenticated, 
+    FlashORBAuthenticationException must be thrown to indicate the failure. Error message 
+    and error code from passed into the exception constructor are delivered to the client.
+    Class specified in the authenticationHandler must implement the Weborb.Security.IAuthenticationHandler
+    interface.
+    -->
+ <authenticationHandler>Weborb.Security.WebORBAuthenticationHandler</authenticationHandler>
+    <!-- <authenticationHandler>Weborb.Examples.Security.CustomAuthHandler</authenticationHandler> -->
+    <!--
+    Authorization handler is responsible for making a decision whether a request to access a resource
+    should be allowed. The default implementation of the authorization handler checks if any of the 
+    access constraints associated with the resource grant or deny access to the resource. 
+    An authorization handler must implement the Weborb.Security.IAuthorizationHandler interface and 
+    must have a default no-argument constructor. To override the global authorization handler, 
+    individual services may have their own service-level authorization handler. If one is specified, 
+    it takes priority over the the global handler when the resource is accessed.
+    -->
+    <authorizationHandler>Weborb.Security.WebORBAuthorizationHandler</authorizationHandler>
+    
+    <!-- <rolesProvider>Weborb.Examples.Security.CustomRolesProvider</rolesProvider> -->
+    <rolesProvider>Weborb.Security.WebORBRolesProvider</rolesProvider> 
+    
+    <secure-resources>
+      <secure-resource>
+        <!--
+        method - name of the method in the format of serviceid.methodname
+        service - id of the service to secure (fully qualified class name, WSDL URL)
+        assembly name - name of the assembly to secure with the specified containt(s)
+        namespace - name of the namespace, in the form of My.Assembly.*        
+        named service - name of the resource as it is defined in the named services section
+        -->
+        <resource>ORBSecurity</resource>
+
+        <!--
+        Specify the name of a constraint to secure the resource.
+        Multiple constraint-name elements are allowed
+        -->
+        <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>
+      <secure-resource>
+         <resource>weborb.tests.*</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>
+      
+      <!-- 
+      ****************************************************
+      Security declaration for the system level resources.
+      These declarations must be present in the config file
+      when WebORB runs in the 'closed system' mode.
+      The default access level is 'everyone', thus exposing
+      WebORB itself (but not the deployed application) to
+      all potential clients. 
+      *****************************************************
+      -->
+      <secure-resource>
+         <resource>flashorbHttpHandler</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>
+      <secure-resource>
+         <resource>flashorbInspector</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>
+      <secure-resource>
+         <resource>flashorbInvoker</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>
+      <secure-resource>
+         <resource>flashorbObjectHandler</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>
+      <secure-resource>
+         <resource>flashorbWebServiceHandler</resource>
+         <constraint-name>everyone</constraint-name>
+      </secure-resource>                  
+      <!-- end of system level resources -->
+
+      <secure-resource>
+         <resource>serverInfo</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>
+      
+      <secure-resource>
+         <resource>CallTraceBrowser</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>      
+      <secure-resource>
+         <resource>SingleIPRestriction</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>        
+      <secure-resource>
+         <resource>IPRangeRestriction</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>        
+      <secure-resource>
+         <resource>HostNameRestriction</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>        
+      <secure-resource>
+         <resource>RoleNameRestriction</resource>
+         <constraint-name>localhost constraint</constraint-name>
+      </secure-resource>        
+    
+    
+    <secure-resource><resource>Weborb.Examples.Security.SecureProducts</resource><constraint-name>Constraint.Grant.Weborb.Examples.Security.SecureProducts</constraint-name><constraint-name>Constraint.Deny.Weborb.Examples.Security.SecureProducts</constraint-name></secure-resource><secure-resource><resource>Weborb.Examples.AccountBalance</resource><constraint-name>Constraint.Deny.Weborb.Examples.AccountBalance</constraint-name></secure-resource></secure-resources>
+
+    <access-constraints>
+      <!--
+      Define access constaints with the <access-constraint> elements.
+      The action attribute is required. valid values are "grant" and "reject".
+      A single access-constraint element may have a combination of the following
+      constraints:
+            - zero or more IP address
+            - zero or more IP range
+            - zero or more hostnames
+            - zero or more user roles
+            - zero or more java package name patterns
+      A constraint element must have a name, so it can be reused for securing
+      multiple resources
+      -->
+      <access-constraint action="reject">
+
+        <!--
+        Name of the access constraint
+        -->
+        <name>localhost constraint</name>
+        <!--
+        This can be either a single ip address (212.45.21.112)
+        or a mask of ip addresses (212.45.*.*)
+        Multiple IP elements allowed
+
+        <IP></IP>
+        -->
+
+        <!--
+        Range of ip addresses. Use either specific addresses or masks.
+        Multiple IPrange elements allowed
+
+        <IPrange>
+          <subnet-address></subnet-address>
+          <subnet-mask></subnet-mask>
+        </IPrange>
+        -->
+
+        <!--
+        this can be either a single hostname (themidnightcoders.com),
+        or a pattern of host names (*.themidnightcoders.com)
+        Multiple hostname elements allowed
+        -->
+        <hostname>localhost</hostname>
+
+        <!--
+        Define role-based access constrains using the role element. The roles must be
+        defined using in acl.xml file. Multiple <role> elements allowed
+
+        <role></role>
+        -->
+      </access-constraint>
+      <access-constraint action="grant">
+        <name>everyone</name>
+        <IP>*.*.*.*</IP>
+      </access-constraint>
+    <access-constraint action="grant"><name>Constraint.Grant.Weborb.Examples.Security.SecureProducts</name><role>examplesuser</role></access-constraint><access-constraint action="reject"><name>Constraint.Deny.Weborb.Examples.Security.SecureProducts</name><IP>*.*.*.*</IP></access-constraint><access-constraint action="reject"><name>Constraint.Deny.Weborb.Examples.AccountBalance</name><IP>*.*.*.*</IP></access-constraint></access-constraints>
+  </security>
+  <acl>
+    <user>
+        <name>admin</name>
+        <password>changeme</password>
+        <role>administrator</role>
+    </user>
+    <user>
+        <name>testuser</name>
+        <password>password</password>
+        <role>examplesuser</role>
+    </user>
+
+  </acl>
+  <!-- ============================================================================================= -->
+  <!-- ===========                                                                 ================= -->
+  <!-- ===========          B U S I N E S S   I N T E L L I G E N C E              ================= -->
+  <!-- ===========                                                                 ================= -->
+  <!-- ============================================================================================= -->
+  <businessIntelligence>
+     
+  	
+      
+      
+    
+    
+  
+
+
+<monitoredServices><monitoredService><name>addArr</name><items><monitoredService><name>sendArr</name><selection>full</selection></monitoredService></items></monitoredService><monitoredService><name>HelloWorld</name><selection>full</selection></monitoredService><monitoredService><name>InfoService</name><selection>full</selection></monitoredService><monitoredService><name>testRemoteInvoke</name><selection>full</selection></monitoredService><monitoredService><name>TestStream</name><selection>full</selection></monitoredService><monitoredService><name>Weborb</name><items><monitoredService><name>Examples</name><selection>full</selection></monitoredService></items></monitoredService><monitoredService><name>testBug</name><selection>full</selection></monitoredService></monitoredServices><serverConfiguration><serverAddress>http://192.168.1.102:8080/weborb.wo</serverAddress><reconnectionTimeout>5</reconnectionTimeout></serverConfiguration></businessIntelligence>
+</weborb>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init()" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="578" height="230" viewSourceURL="srcview/index.html">
+<mx:Script>
+	<![CDATA[
+		import mx.rpc.events.FaultEvent;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		import mx.rpc.remoting.RemoteObject;
+		
+		private var xmlExampleService:RemoteObject;
+
+		[Bindable]
+		private var sourceDataGrid:XMLList;
+	
+		private function init():void
+		{
+            xmlExampleService = new RemoteObject( "GenericDestination" );
+            xmlExampleService.source = "Weborb.Examples.XmlExample";
+            xmlExampleService.getData.addEventListener( ResultEvent.RESULT, onResult );
+			xmlExampleService.addEventListener( FaultEvent.FAULT, gotError );            
+            xmlExampleService.getData();
+		}
+
+        private function gotError( fault:FaultEvent ):void
+        {
+            Alert.show( "Server reported an error - " + fault.fault.faultString, "Error" );
+        }
+		
+		private function onResult(result:ResultEvent):void
+		{
+			sourceDataGrid = result.result.customer;
+		}
+		
+	]]>
+</mx:Script>	
+	<mx:DataGrid dataProvider="{sourceDataGrid}" top="10" bottom="10" left="10" right="10">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Id" dataField="@id"/>
+			<mx:DataGridColumn headerText="First name" dataField="@firstname"/>
+			<mx:DataGridColumn headerText="Last name" dataField="@lastname"/>
+			<mx:DataGridColumn headerText="Phone" dataField="@phone"/>
+			<mx:DataGridColumn headerText="City" dataField="@city"/>
+			<mx:DataGridColumn headerText="Country" dataField="@country"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:Application>

@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Basic Flex Remoting using RemotObject MXML</title>
+<LINK href="..\..\..\orbexamples.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<table border="0" style="border-collapse: collapse" width="100%" cellpadding="3" id="table1" cellspacing="2">
+	<tr>
+		<td width="181" valign="top" class="boldCell">Example name:</td>
+		<td><b>Basic Flex Remoting Invocation using RemoteObject MXML</b></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Description:</td>
+		<td>The example demonstrates the following:<ul>
+			<li>Declaration of the RemoteObject MXML tag</li>
+			<li>Registration of invocation result and fault handlers</li>
+			<li>Invocation of a remote method in a C# class</li>
+			<li>Response and error handling</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Client-side code:</td>
+		<td><a href="srcview/index.html">Browse</a>&nbsp;
+		<a href="srcview/BasicInvocation.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Server-side code:</td>
+		<td><a href="server-code">Browse</a>&nbsp;
+		<a href="server-code/BasicServiceSource.zip">Download</a></td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Product edition 
+		availability:</td>
+		<td>
+		  	<ul>
+				<li>WebORB Standard Edition (localhost clients only)</li>
+				<li>WebORB Professional Edition</li>
+				<li>WebORB Enterprise Edition</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Run example:</td>
+		<td>
+		  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+					id="BasicInvocation" width="416" height="276"
+					codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+					<param name="movie" value="BasicInvocation.swf" />
+					<param name="quality" value="high" />
+					<param name="bgcolor" value="#869ca7" />
+					<param name="allowScriptAccess" value="sameDomain" />
+					<embed src="BasicInvocation.swf" quality="high" bgcolor="#869ca7"
+						width="416" height="276" name="BasicInvocation" align="middle"
+						play="true"
+						loop="false"
+						quality="high"
+						allowScriptAccess="sameDomain"
+						type="application/x-shockwave-flash"
+						pluginspage="http://www.adobe.com/go/getflashplayer">
+					</embed>
+			</object>		
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell">Key points:</td>
+		<td>
+		<ul>
+			<li>The example uses RemoteObject MXML tag to declare a reference to 
+			a remote .NET class</li>
+			<li>This example uses 'GenericDestination' as the destination for 
+			the RemoteObject. GenericDestination requires the 'source' attribute 
+			to contain the name of the class to invoke.</li>
+			<li>The example sends three primitive values as arguments for the method 
+			invocation and receives a primitive value (integer) back.</li>
+			<li>The client code sends arguments as String values, but the server 
+			side signatures accepts integers. WebORB performs type adaptation to 
+			convert client-side values to the corresponding formal argument 
+			types in the invoked method </li>
+			<li style="margin-left: 5pt; padding-left: 0pt">.NET assembly with the server-side class must be deployed in a 
+			WebORB-enabled ASP.NET application. Use the 'Deployment' tab to 
+			deploy WebORB into any ASP.NET application.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="181" valign="top" class="boldCell bottomCell">Things to try:</td>
+		<td class="bottomCell">
+		<ul>
+			<li>Try to invoke the method with no values in the arguments</li>
+			<li>Try to enter a non numeric value in the text fields</li>
+			<li>Select division operator, enter zero for the second argument and 
+			click the button to invoke</li>
+			<li>Explore example's source code (click Browse or right-mouse click 
+			and select View Source)</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

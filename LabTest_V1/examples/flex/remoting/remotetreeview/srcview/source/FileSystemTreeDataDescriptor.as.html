@@ -1,0 +1,51 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FileSystemTreeDataDescriptor.as</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span>
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.controls.treeClasses.ITreeDataDescriptor;
+    <span class="asReserved">import</span> mx.collections.ICollectionView;
+    <span class="asReserved">import</span> mx.collections.ArrayCollection;
+    
+    <span class="asReserved">public</span> <span class="asClass">class</span> FileSystemTreeDataDescriptor <span class="asReserved">implements</span> ITreeDataDescriptor
+    <span class="asBracket">{</span>
+        <span class="asReserved">public</span> <span class="asFunction">function</span> getData<span class="asBracket">(</span>node<span class="asOperator">:</span>Object, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Object
+        <span class="asBracket">{</span>
+            <span class="asReserved">return</span> node;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> hasChildren<span class="asBracket">(</span>node<span class="asOperator">:</span>Object, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Boolean
+        <span class="asBracket">{</span>
+           <span class="asReserved">return</span> node <span class="asReserved">is</span> FolderNode;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> addChildAt<span class="asBracket">(</span>parent<span class="asOperator">:</span>Object, newChild<span class="asOperator">:</span>Object, index<span class="asOperator">:</span>int, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Boolean
+        <span class="asBracket">{</span>
+            <span class="asReserved">return</span> <span class="asReserved">false</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> isBranch<span class="asBracket">(</span>node<span class="asOperator">:</span>Object, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Boolean
+        <span class="asBracket">{</span>
+            <span class="asReserved">return</span> <span class="asOperator">!</span><span class="asBracket">(</span>node <span class="asReserved">is</span> FileNode<span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span> hasChildren<span class="asBracket">(</span>node<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> removeChildAt<span class="asBracket">(</span>parent<span class="asOperator">:</span>Object, child<span class="asOperator">:</span>Object, index<span class="asOperator">:</span>int, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>Boolean
+        <span class="asBracket">{</span>
+            <span class="asComment">//FileSystemNode(parent).Items.slice(index,index);
+</span>            
+            <span class="asReserved">return</span> <span class="asReserved">false</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> getChildren<span class="asBracket">(</span>node<span class="asOperator">:</span>Object, model<span class="asOperator">:</span>Object<span class="asOperator">=</span><span class="asReserved">null</span><span class="asBracket">)</span><span class="asOperator">:</span>ICollectionView
+        <span class="asBracket">{</span>
+            <span class="asReserved">return</span> FolderNode<span class="asBracket">(</span>node<span class="asBracket">)</span>.Items;
+        <span class="asBracket">}</span>        
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span> </pre></body>
+</html>

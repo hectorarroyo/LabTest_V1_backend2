@@ -1,0 +1,218 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ArrayOfPrimitivesTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent
+
+    <span class="asReserved">import</span> mx.controls.List;
+
+    <span class="asReserved">public</span> <span class="asClass">class</span> ArrayOfPrimitivesTest
+    <span class="asBracket">{</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> remotePrimitiveTest<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        <span class="asReserved">private</span> <span class="asVar">var</span> arrayObj<span class="asOperator">:</span>Array;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> ArrayOfPrimitivesTest<span class="asBracket">(</span>application<span class="asOperator">:</span>Object<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+            remotePrimitiveTest <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               remotePrimitiveTest.destination <span class="asOperator">=</span> <span class="asString">&quot;PrimitiveArrayTest&quot;</span>;
+               remotePrimitiveTest.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, onFault<span class="asBracket">)</span>;
+               
+               remotePrimitiveTest.echoIntArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoIntArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoLongArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoLongArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoShortArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoShortArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoDoubleArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoDoubleArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoByteArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoByteArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoBooleanArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoBooleanArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoFloatArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoFloatArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoEmptyArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoEmptyArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.echoNullArray.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, echoNullArray_Result<span class="asBracket">)</span>;
+               remotePrimitiveTest.getArrayObject.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, getArrayObject_Result<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runPrimitiveArraysTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            
+            arrayObj <span class="asOperator">=</span> ComplexType.getArray<span class="asBracket">(</span> 2 <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoIntArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoLongArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoShortArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoDoubleArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoByteArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;    
+            remotePrimitiveTest.echoBooleanArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>; 
+            remotePrimitiveTest.echoFloatArray<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoEmptyArray<span class="asBracket">(</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span> <span class="asBracket">)</span>;
+            remotePrimitiveTest.echoNullArray<span class="asBracket">(</span> <span class="asReserved">null</span> <span class="asBracket">)</span>;
+            remotePrimitiveTest.getArrayObject<span class="asBracket">(</span> arrayObj <span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoIntArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoIntArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        var resultArray:Array = Array(event.result);
+        var outcome:Boolean = resultArray.length == arrayObj.length;
+        
+        if( !outcome )
+        {
+          summaryObj.push( &quot;failure: primitive array test - echoIntArray, arrays different length&quot; );
+          return;
+        }
+        
+        for( var i:Number = 0; i &lt; resultArray.length; i++ )
+        {
+            if( resultArray[i] != arrayObj[i] )
+                outcome = false;
+        }
+        
+        if( outcome )
+          summaryObj.push( &quot;success: primitive array test - echoIntArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoIntArray&quot; );
+            
+          */</span>
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoLongArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoLongArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoLongArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoLongArray&quot; );    
+            */</span>    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoShortArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoShortArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoShortArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoShortArray&quot; );        
+            */</span>
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoDoubleArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoDoubleArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoDoubleArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoDoubleArray&quot; );        
+            */</span>
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoByteArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoByteArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoByteArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoByteArray&quot; );    
+            */</span>    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoBooleanArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoBooleanArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( event.result.length == arrayObj.length )
+          summaryObj.push( &quot;success: primitive array test - echoBooleanArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoBooleanArray&quot; );    
+            */</span>    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoFloatArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;echoFloatArray&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoFloatArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoFloatArray&quot; );        
+            */</span>
+    <span class="asBracket">}</span>
+
+    <span class="asReserved">private</span> <span class="asFunction">function</span> getArrayObject_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        testArray<span class="asBracket">(</span>event, <span class="asString">&quot;getArrayObject&quot;</span><span class="asBracket">)</span>;
+        <span class="asComment">/*
+        if( ObjectComparator.equals( event.result, arrayObj  ) )
+          summaryObj.push( &quot;success: primitive array test - echoFloatArray&quot; );
+        else
+            summaryObj.push( &quot;failure: primitive array test - echoFloatArray&quot; );        
+            */</span>
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoEmptyArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> resultArray<span class="asOperator">:</span>Array <span class="asOperator">=</span> event.result <span class="asReserved">as</span> Array;
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span>resultArray <span class="asOperator">!=</span> <span class="asReserved">null</span> <span class="asOperator">&amp;&amp;</span> resultArray.length <span class="asOperator">==</span> 0 <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: primitive array test - echoEmptyArray&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: primitive array test - echoEmptyArray&quot;</span> <span class="asBracket">)</span>;        
+    
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">private</span> <span class="asFunction">function</span> echoNullArray_Result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asReserved">if</span><span class="asBracket">(</span> event.result <span class="asOperator">==</span> <span class="asReserved">null</span> <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: primitive array test - echoNullArray&quot;</span> <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: primitive array test - echoNullArray&quot;</span> <span class="asBracket">)</span>;
+            
+          application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;        
+    <span class="asBracket">}</span>
+    
+    <span class="asReserved">public</span> <span class="asFunction">function</span> testArray<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent, test<span class="asOperator">:</span>String <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+    <span class="asBracket">{</span>
+        <span class="asVar">var</span> resultArray<span class="asOperator">:</span>Array <span class="asOperator">=</span> event.result <span class="asReserved">as</span> Array;
+        <span class="asVar">var</span> outcome<span class="asOperator">:</span>Boolean <span class="asOperator">=</span> resultArray.length <span class="asOperator">==</span> arrayObj.length;
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span> <span class="asOperator">!</span>outcome <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: &quot;</span> <span class="asOperator">+</span> test <span class="asOperator">+</span> <span class="asString">&quot;, arrays different length, sent: &quot;</span> <span class="asOperator">+</span> arrayObj.length.toString<span class="asBracket">()</span> <span class="asOperator">+</span> <span class="asString">&quot; received: &quot;</span> <span class="asOperator">+</span> resultArray.length.toString<span class="asBracket">()</span> <span class="asBracket">)</span>;
+          <span class="asReserved">return</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">for</span><span class="asBracket">(</span> <span class="asVar">var</span> i<span class="asOperator">:</span>Number <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> resultArray.length; i<span class="asOperator">++</span> <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span><span class="asBracket">(</span> resultArray<span class="asBracket">[</span>i<span class="asBracket">]</span> <span class="asOperator">!=</span> arrayObj<span class="asBracket">[</span>i<span class="asBracket">]</span> <span class="asBracket">)</span>
+                outcome <span class="asOperator">=</span> <span class="asReserved">false</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">if</span><span class="asBracket">(</span> outcome <span class="asBracket">)</span>
+          summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: primitive array test - &quot;</span> <span class="asOperator">+</span> test  <span class="asBracket">)</span>;
+        <span class="asReserved">else</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: primitive array test - &quot;</span> <span class="asOperator">+</span> test <span class="asBracket">)</span>;
+    <span class="asBracket">}</span>
+    
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

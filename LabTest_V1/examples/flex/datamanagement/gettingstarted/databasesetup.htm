@@ -1,0 +1,257 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Basic Flex Remoting using RemotObject MXML</title>
+<LINK href="../../../orbexamples.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+var base= "images/"
+var nrm = new Array();
+var omo = new Array();
+var ocl = new Array();
+var imgnames = new Array('mysql','mssql','nextsteps');
+var stuff = new Array('mysql','mssql','nextsteps');
+var select = 0;
+var name2 = "";
+var temp = 0;
+
+// Pre-load part.
+
+if (document.images)
+{
+	for (i=0;i<stuff.length;i++)
+	{
+		nrm[i] = new Image;
+		nrm[i].src = base + imgnames[i] + ".gif"
+		omo[i] = new Image;
+		omo[i].src = base + imgnames[i] + "_omo.gif";
+		ocl[i] = new Image;
+		ocl[i].src = base + imgnames[i] + "_clic.gif";
+	}
+}
+
+// The functions: first mouseover, then mouseout
+
+function over(no)
+{
+	if (document.images && select != no)
+	{
+		document.images[stuff[no]].src = omo[no].src;
+	}
+}
+
+function out(no)
+{
+	if (document.images && select != no)
+	{
+		document.images[stuff[no]].src = nrm[no].src;
+	}
+}
+
+function clic(no)
+{
+	if (document.images)
+	{
+		document.images[stuff[no]].src = ocl[no].src;
+		temp = select;
+		select = no;
+		if (temp != -1) 
+		{
+			out(temp);
+			document.getElementById( stuff[temp] + "_div" ).style.display = 'none';
+			document.getElementById( stuff[no] + "_div" ).style.display = 'block';			
+		}
+	}
+	
+	return false;
+}
+
+</script>
+
+</head>
+<body>
+<div style="border-style: solid; border-width: 2;border-color: #e8e8e8;padding:2px">
+For an overview of WebORB Data Management, watch a video available at:<br>
+<a href="http://www.themidnightcoders.com/weborb/php/videos/wdmf/overview/">
+http://www.themidnightcoders.com/weborb/php/videos/wdmf/overview/</a></div><p>All WebORB Data Management Examples work with either MySQL or Microsoft SQL Server. The examples use the FoodAndDrinks database. There 
+are SQL scripts included with WebORB for PHP product distribution for installing 
+the 
+database into either MySQL or MSSQL. <b><font size="4">It is important to install the database files 
+AND go through the instructions on the 'Once the database is installed' tab in order to 
+get the WDMF examples working.</font></b> </p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" id="AutoNumber1" width="800">
+  <tr>
+    <td width="50%" valign="bottom" cellpadding="0" style="padding: 0">
+<img name="mysql" onMouseOver="over(0)" onMouseOut="out(0)" onClick="clic(0)" border="0" src="images/mysql_clic.gif"  style="margin-bottom:-3px;padding-bottom:0px;margin-left:5px" align="absbottom" width="148" height="53"  >
+<img name="mssql" onMouseOver="over(1)" onMouseOut="out(1)" onClick="clic(1)" border="0" src="images/mssql.gif"  style="margin-bottom:-3px;padding-bottom:0px;margin-left:0px" align="absbottom" width="148" height="53"  >
+    </td>
+    <td width="50%" valign="bottom" cellpadding="0" style="padding: 0" align="right">
+<img name="nextsteps" onMouseOver="over(2)" onMouseOut="out(2)" onClick="clic(2)" border="0" src="images/nextsteps.gif"  style="margin-bottom:-3px;padding-bottom:0px;margin-left:5px" align="absbottom" width="284" height="53"  >
+</td>
+  </tr>
+  <tr>
+   <td align="left" style="border-style: solid; border-width: 2;border-color: #ff8735;padding:3px" colspan="2">
+   <div id="mysql_div">
+<h3>MySQL Database Installation</h3>
+<blockquote>
+	<h2>Installing the Sample Database</h2>
+	<h4><b>Attaching the Pre-built Files by Using MySQL Query Browser
+</b></h4>
+	<blockquote>
+		<p>To attach the pre-built files by using MySQL Query Browser:
+</p>
+		<ol>
+			<li>Start MySQL Query Browser</li>
+			<li>From the main menu select File &gt; Open Script...</li>
+			<li>Browse to examples\flex\datamanagement\gettingstarted\ and 
+            select FoodAndDrinks-MYSQL.sql</li>
+			<li>Execute the script</li>
+		</ol>
+	</blockquote>
+</blockquote>
+
+   </div>
+   <div id="mssql_div" style="display:none">                        
+
+<h3>Microsoft SQL Server</h3>
+<blockquote>
+	<h2>Database Files Prerequisites</h2>
+	<p>The user attaching the pre-built database files must be a member of the SQL Server <b>sysadmin</b> or <b>dbcreator</b> 
+fixed server roles. </p>
+	<p>The user running the SQL Server 2000 Sample Database Scripts must be a member of the SQL Server <b>sysadmin</b> or 
+	<b>dbcreator</b> fixed server roles, or have been granted CREATE DATABASE permissions.</p>
+	<p>The files can be used with the following versions of SQL Server:</p>
+	<blockquote>
+		<ul>
+			<li>SQL Server 2000 Service Pack 3 (SP3) or later.</li>
+			<li>SQL Server 2000 Desktop Engine (MSDE 2000) SP3 or later.</li>
+			<li>SQL Server 2000 Desktop Engine (MSDE 2000) Release A.</li>
+			<li>SQL Server 2005</li>
+			<li>SQL Server 2005 Express Edition</li>
+		</ul>
+	</blockquote>
+	<h2>Installing the Sample Database</h2>
+	<h4><b>Attaching the Pre-built database files by Using Enterprise Manager
+</b></h4>
+	<blockquote>
+		<p>To attach the pre-built files by using SQL Query Analyzer:
+</p>
+		<ol>
+			<li>From the Start menu, point to All Programs, point to Microsoft SQL Server, and then click the Enterprise Manager 
+icon.
+</li>
+			<li>Right-click Databases and select All Tasks/Attach Database.
+</li>
+			<li>Either enter examples\flex\datamanagement\gettingstarted\FoodAndDrinks_Data.MDF as 
+the MDF file of database to attach, or click Browse (…) to search for the file to attach. </li>
+			<li>Click Verify to ensure the selected MDF file is correct. </li>
+			<li>Specify FoodAndDrinks in Attach as. </li>
+			<li>Specify the database owner.
+</li>
+			<li>Click OK. </li>
+		</ol>
+	</blockquote>
+	<h4>Running the Script Using SQL Query Analyzer </h4>
+	<blockquote>
+		<p>To run the database setup script using SQL Query Analyzer: </p>
+		<ol>
+			<li>From the Start menu, point to All Programs, point to Microsoft SQL Server, and then click the Query Analyzer icon.
+
+			</li>
+			<li>Connect to the instance of SQL Server 2000 on which you want to create the sample database.
+
+</li>
+			<li>On the File menu, click Open, and navigate to the \weborb\examples\flex\datamanagement\gettingstarted\ 
+		folder. Select FoodAndDrinks-MSSQL.sql. </li>
+			<li>On the toolbar, click Execute Query. </li>
+		</ol>
+	</blockquote>
+</blockquote>
+
+   </div>
+      <div id="nextsteps_div" style="display:none">           
+      The data management examples included with WebORB contain just the 
+      client-side part. The server-side must come from the code generator. Since 
+      we do not know what database you would be using, there is one more step in 
+      getting the examples running. This step includes running the data 
+      management code generator to create all the supporting backend code for 
+      the examples. Please follow the instructions below to set up and run the 
+      code generator:<ol>
+        <li>Open Management &gt; Data Management tab in the WebORB Management 
+        Console.</li>
+        <li>Click 'Add New Database'
+        <img border="0" src="images/databa1.gif" width="32" height="24"> button 
+        In the 'Databases' pod:<br>
+        <img border="0" src="images/databa2.jpg" width="303" height="209"><br>
+&nbsp;</li>
+        <li>Select the database type (MySQL or SQL Server) and enter the host 
+        name, userid and password in the Database Connection popup and click 
+        Next (notice the userid and password for your database may be different 
+        than shown below):<br>
+        <img border="0" src="images/databa3.jpg" width="401" height="315"><br>
+&nbsp;</li>
+        <li>Select the 'foodanddrinks' database from the dropdown list.<br>
+&nbsp;</li>
+        <li>Once the connection with the database is established, the Databases 
+        pod displays the database and all its tables:<br>
+        <img border="0" src="images/databa4.jpg" width="243" height="213"><br>
+&nbsp;</li>
+        <li>The next step is to create a data model. Data model is a collection 
+        of all tables for a particular application. You can identify individual 
+        tables or select the entire database for the data model. For this 
+        example, we will work with the entire database. Drag and drop the 'foodanddrinks' 
+        node from the Databases pod into the central area of the interface as 
+        shown below:<br>
+        <img border="0" src="images/databa5.jpg" width="435" height="381"><br>
+&nbsp;</li>
+        <li>The management console detects that you do not have a data model and 
+        prompts to create a new one. Enter the values <b>exactly</b> as shown 
+        below since the examples included with WebORB expect the generated code 
+        to be in the specific path/namespace. Click Save when done:<br>
+        <img border="0" src="images/databa6.jpg" width="439" height="287"><br>
+&nbsp;</li>
+        <li>Management console creates the 'groceries' data model and displays 
+        the database tables in the interface. Click the 'Build' (gear) icon to 
+        start the code generation:<br>
+        <img border="0" src="images/databa7.jpg" width="508" height="177"><br>
+&nbsp;</li>
+        <li>Management console instructs WebORB to start code generation and 
+        reports the progress in the Output tab. When the code generation is 
+        done, you will see the 'Code generation complete' message as shown 
+        below:<br>
+        <img border="0" src="images/databa8.jpg" width="500" height="178"><br>
+&nbsp;</li>
+        <li>At this point, WDMF has generated <b>all</b> data management 
+        client-side (ActionScript) and server-side (PHP) code for the data 
+        model. This includes the API and implementation for loading data from 
+        the database, creating, updating and deleting records. You can download 
+        the code to deploy in Flex Builder using the Download Code button:<br>
+        <img border="0" src="images/databa9.jpg" width="134" height="89"><br>
+        This step is optional as all the provided examples already use the code 
+        we pre-generated. However, the next step is very important.<br>
+&nbsp;</li>
+        <li>Deploy all the generated server-side code into WebORB by clicking 
+        the 'Auto deploy server code' button (<img border="0" src="images/databa10.jpg" width="32" height="24">). 
+        The auto-deployment automatically copies all generated PHP files into 
+        the web server.&nbsp; Once the code is deployed, the console displays a 
+        message in the output tab:<br>
+        <img border="0" src="images/databa11.jpg" width="498" height="389"><br>
+&nbsp;</li>
+        <li>You can verify that the server-side code is deployed using the 
+        Services tab. Click the Services and then the Refresh button to rebuild 
+        the deployed services tree. The FoodAndDrinks node should show up as 
+        shown below:<br>
+        <img border="0" src="images/databa12.jpg" width="234" height="337"><br>
+&nbsp;</li>
+        <li>At this point the server-side is ready and you can proceed to 
+        running the data management examples.</li>
+      </ol>
+      </div>
+    </td>
+  </tr>
+</table>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ProductAddView.mxml</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:TitleWindow</span> layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">566</span>&quot; height=&quot;<span class="mxmlString">440</span>&quot; title=&quot;<span class="mxmlString">Add New Product</span>&quot; creationComplete=&quot;onCreationComplete<span class="asBracket">()</span>&quot; close=&quot;onClose<span class="asBracket">()</span>&quot; showCloseButton=&quot;<span class="mxmlString">true</span>&quot; xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot;<span class="mxmlComponent">&gt;</span>
+  <span class="mxmlTag">&lt;mx:Script&gt;</span><span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+          <span class="asReserved">import</span> FoodAndDrinks.<span class="asOperator">*</span>;
+          <span class="asReserved">import</span> mx.controls.Alert;
+          <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+          <span class="asReserved">import</span> mx.core.Application;
+          <span class="asReserved">import</span> mx.managers.PopUpManager;
+          <span class="asReserved">import</span> mx.rpc.AsyncToken;
+          <span class="asReserved">private</span> <span class="asVar">var</span> _model<span class="asOperator">:</span>Product <span class="asOperator">=</span> <span class="asReserved">new</span> Product<span class="asBracket">()</span>;
+
+          <span class="asReserved">public</span> <span class="asReserved">static</span> <span class="asFunction">function</span> ShowDialog<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+            PopUpManager.createPopUp<span class="asBracket">(</span> DisplayObject<span class="asBracket">(</span>Application.application<span class="asBracket">)</span>,
+              ProductAddView, <span class="asReserved">true</span> <span class="asBracket">)</span>;
+          <span class="asBracket">}</span>
+
+          <span class="asReserved">private</span> <span class="asFunction">function</span> onCreationComplete<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+            PopUpManager.centerPopUp<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+
+            
+
+          <span class="asBracket">}</span>
+
+          <span class="asReserved">private</span> <span class="asFunction">function</span> onClose<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+          PopUpManager.removePopUp<span class="asBracket">(</span><span class="asReserved">this</span><span class="asBracket">)</span>;
+          <span class="asBracket">}</span>
+
+          <span class="asReserved">private</span> <span class="asFunction">function</span> onSave<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+
+          <span class="asVar">var</span> asyncToken<span class="asOperator">:</span>AsyncToken <span class="asOperator">=</span> _model.save<span class="asBracket">()</span>;
+
+          asyncToken.addResponder<span class="asBracket">(</span><span class="asReserved">new</span> mx.rpc.Responder<span class="asBracket">(</span>
+          <span class="asFunction">function</span><span class="asBracket">(</span>resultEvent<span class="asOperator">:*</span><span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+          onClose<span class="asBracket">()</span>;
+          <span class="asBracket">}</span>,
+          <span class="asFunction">function</span><span class="asBracket">(</span>faultEvent<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+          <span class="asBracket">{</span>
+          Alert.show<span class="asBracket">(</span>faultEvent.fault.faultString<span class="asBracket">)</span>;
+          <span class="asBracket">}))</span>;
+          <span class="asBracket">}</span>
+
+          <span class="asBracket">]]</span><span class="asOperator">&gt;</span><span class="mxmlTag">&lt;/mx:Script&gt;</span>
+  <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;editorName.text&quot; destination=&quot;_model.Name&quot; <span class="mxmlTag">/&gt;</span>
+  <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;<span class="asBracket">{</span>Number<span class="asBracket">(</span>editorPrice.text<span class="asBracket">)}</span>&quot; destination=&quot;_model.Price&quot; <span class="mxmlTag">/&gt;</span>
+  <span class="mxmlTag">&lt;mx:Binding</span> source=&quot;editorPictureFileName.text&quot; destination=&quot;_model.PictureFileName&quot; <span class="mxmlTag">/&gt;</span>
+  <span class="mxmlComponent">&lt;mx:VBox</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Form</span> width=&quot;<span class="mxmlString">100%</span>&quot; height=&quot;<span class="mxmlString">350</span>&quot;<span class="mxmlComponent">&gt;</span>
+      <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Name</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">editorName</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+      <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">Price</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">editorPrice</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+      <span class="mxmlComponent">&lt;mx:FormItem</span> label=&quot;<span class="mxmlString">PictureFileName</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> id=&quot;<span class="mxmlString">editorPictureFileName</span>&quot; width=&quot;<span class="mxmlString">100%</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;/mx:FormItem&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Form&gt;</span>
+    <span class="mxmlComponent">&lt;mx:ControlBar</span> width=&quot;<span class="mxmlString">100%</span>&quot; horizontalAlign=&quot;<span class="mxmlString">right</span>&quot; paddingRight=&quot;<span class="mxmlString">15</span>&quot;<span class="mxmlComponent">&gt;</span>
+      <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Cancel</span>&quot; width=&quot;<span class="mxmlString">90</span>&quot; click=&quot;onClose<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+      <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Save</span>&quot; width=&quot;<span class="mxmlString">90</span>&quot; click=&quot;onSave<span class="asBracket">()</span>&quot; <span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:ControlBar&gt;</span>
+  <span class="mxmlComponent">&lt;/mx:VBox&gt;</span>
+<span class="mxmlComponent">&lt;/mx:TitleWindow&gt;</span></pre></body>
+</html>

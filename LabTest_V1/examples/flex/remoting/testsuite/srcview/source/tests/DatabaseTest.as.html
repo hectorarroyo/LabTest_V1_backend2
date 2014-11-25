@@ -1,0 +1,70 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DatabaseTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent
+    
+    
+    <span class="asReserved">public</span> <span class="asClass">class</span> DatabaseTest
+    <span class="asBracket">{</span>
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> remoteObject<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> DatabaseTest<span class="asBracket">(</span>application<span class="asOperator">:</span>Object<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+            remoteObject <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               remoteObject.destination <span class="asOperator">=</span> <span class="asString">&quot;DatabaseTestMySql&quot;</span>;
+               remoteObject.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, onFault<span class="asBracket">)</span>;
+               
+               remoteObject.getCustomers.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, getCustomers_result<span class="asBracket">)</span>;
+               remoteObject.getCustomers.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, getCustomers_fault<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> onFault <span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            Alert.show<span class="asBracket">(</span>event.fault.faultString, <span class="asString">&apos;Error&apos;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> getCustomers_result<span class="asBracket">(</span> event<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> resultArray<span class="asOperator">:</span>Array <span class="asOperator">=</span> event.result <span class="asReserved">as</span> Array;
+            
+            <span class="asReserved">if</span><span class="asBracket">(</span> resultArray.length <span class="asOperator">&gt;</span> 0 <span class="asBracket">)</span>
+              summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: data access test - getCustomers&quot;</span> <span class="asBracket">)</span>;
+            <span class="asReserved">else</span>
+                summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: data access test - getCustomers&quot;</span> <span class="asBracket">)</span>;
+                
+                application.setSummary<span class="asBracket">(</span>summaryObj<span class="asBracket">)</span>;
+                application.setDataOutput<span class="asBracket">(</span>resultArray<span class="asBracket">)</span>;        
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> getCustomers_fault<span class="asBracket">(</span>event<span class="asOperator">:</span>FaultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span> 
+        <span class="asBracket">{</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: server reported an error: &quot;</span> <span class="asOperator">+</span> event.fault.faultString <span class="asBracket">)</span>;
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;run northwind.sql from /Services/weborb/tests/ to set up the database&quot;</span> <span class="asBracket">)</span>;
+               application.setSummary<span class="asBracket">(</span>summaryObj<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            remoteObject.getCustomers<span class="asBracket">(</span>10<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

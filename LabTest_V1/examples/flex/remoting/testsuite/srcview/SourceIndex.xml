@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of PHPTestSuite</title>
+	<nodes>
+		<node label="tests" icon="packageIcon" expanded="true">
+			<node label="ArrayOfPrimitivesTest.as" icon="actionScriptIcon" url="source/tests/ArrayOfPrimitivesTest.as.html"/>
+			<node label="Cache.as" icon="actionScriptIcon" url="source/tests/Cache.as.html"/>
+			<node label="ComplexType.as" icon="actionScriptIcon" url="source/tests/ComplexType.as.html"/>
+			<node label="ComplexTypeTest.as" icon="actionScriptIcon" url="source/tests/ComplexTypeTest.as.html"/>
+			<node label="DatabaseTest.as" icon="actionScriptIcon" url="source/tests/DatabaseTest.as.html"/>
+			<node label="MultipleArgsTest.as" icon="actionScriptIcon" url="source/tests/MultipleArgsTest.as.html"/>
+			<node label="ObjectComparator.as" icon="actionScriptIcon" url="source/tests/ObjectComparator.as.html"/>
+			<node label="PrimitiveTest.as" icon="actionScriptIcon" url="source/tests/PrimitiveTest.as.html"/>
+			<node label="SecureInvocationTest.as" icon="actionScriptIcon" url="source/tests/SecureInvocationTest.as.html"/>
+			<node label="StringTest.as" icon="actionScriptIcon" url="source/tests/StringTest.as.html"/>
+		</node>
+		<node label="weborb.tests" icon="packageIcon" expanded="true">
+			<node label="Employee.as" icon="actionScriptIcon" url="source/weborb/tests/Employee.as.html"/>
+		</node>
+		<node selected="true" label="main.mxml" icon="mxmlAppIcon" url="source/main.mxml.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 12K)" url="PHPTestSuite.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

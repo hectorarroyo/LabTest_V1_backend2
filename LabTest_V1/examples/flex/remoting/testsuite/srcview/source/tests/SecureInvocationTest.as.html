@@ -1,0 +1,89 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>SecureInvocationTest.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asPackage">package</span> tests
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+     <span class="asReserved">import</span> mx.controls.Alert;
+    <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+    <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+    <span class="asReserved">import</span> mx.messaging.config.ServerConfig;
+    <span class="asReserved">import</span> mx.messaging.channels.AMFChannel;
+        
+    <span class="asReserved">public</span> <span class="asClass">class</span> SecureInvocationTest
+    <span class="asBracket">{</span>    
+        <span class="asReserved">private</span> <span class="asVar">var</span> summaryObj<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> secureTestService<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> unsecureTestService<span class="asOperator">:</span>RemoteObject;
+        <span class="asReserved">private</span> <span class="asVar">var</span> application<span class="asOperator">:</span>Object;
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> SecureInvocationTest<span class="asBracket">(</span> application<span class="asOperator">:</span>Object <span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">this</span>.application <span class="asOperator">=</span> application;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> runSecureTests<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asComment">// this invocation should succeed
+</span>            testUnsecureInvocation<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> testUnsecureInvocation<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asComment">// this remote object will NOT have credentials
+</span>            unsecureTestService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>;
+               unsecureTestService.destination <span class="asOperator">=</span> <span class="asString">&quot;SecureTest&quot;</span>;
+              unsecureTestService.CheckBalance.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, helloWorldNoCred_Fault<span class="asBracket">)</span>;
+               unsecureTestService.CheckBalance.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, helloWorldNoCred_Result<span class="asBracket">)</span>;
+            <span class="asComment">// this invocation should fail
+</span>            unsecureTestService.CheckBalance<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> testSecureInvocation<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asComment">// this remote object will have credentials
+</span>            secureTestService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">()</span>; 
+               secureTestService.destination <span class="asOperator">=</span> <span class="asString">&quot;SecureTest&quot;</span>;
+               secureTestService.setCredentials<span class="asBracket">(</span> <span class="asString">&quot;testuser&quot;</span>, <span class="asString">&quot;password&quot;</span> <span class="asBracket">)</span>;
+              secureTestService.CheckBalance.addEventListener<span class="asBracket">(</span><span class="asString">&quot;fault&quot;</span>, helloWorld_Fault<span class="asBracket">)</span>;
+               secureTestService.CheckBalance.addEventListener<span class="asBracket">(</span><span class="asString">&quot;result&quot;</span>, helloWorld_Result<span class="asBracket">)</span>;
+               secureTestService.CheckBalance<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> helloWorld_Fault<span class="asBracket">(</span> event<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: secure destination threw an exception - &quot;</span> <span class="asOperator">+</span> event.fault.faultString <span class="asBracket">)</span>;        
+              application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;            
+              secureTestService.logout<span class="asBracket">()</span>;              
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> helloWorld_Result<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: secure destination accepted credentials&quot;</span> <span class="asBracket">)</span>;
+              application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;            
+              secureTestService.logout<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> helloWorldNoCred_Fault<span class="asBracket">(</span> event<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;success: secure destination rejected invocation without credentials. Server error: &quot;</span> <span class="asOperator">+</span> event.fault.faultString <span class="asBracket">)</span>;        
+              application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;    
+              testSecureInvocation<span class="asBracket">()</span>;        
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> helloWorldNoCred_Result<span class="asBracket">(</span> result<span class="asOperator">:</span>ResultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            summaryObj.push<span class="asBracket">(</span> <span class="asString">&quot;failure: secure destination accepted invocation without credentials&quot;</span> <span class="asBracket">)</span>;
+              application.setSummary<span class="asBracket">(</span> summaryObj <span class="asBracket">)</span>;            
+              testSecureInvocation<span class="asBracket">()</span>;
+        <span class="asBracket">}</span>        
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span></pre></body>
+</html>

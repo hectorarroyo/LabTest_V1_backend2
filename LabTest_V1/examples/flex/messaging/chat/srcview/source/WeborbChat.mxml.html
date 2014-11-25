@@ -1,0 +1,87 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>WeborbChat.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">381</span>&quot; height=&quot;<span class="mxmlString">339</span>&quot;
+    creationComplete=&quot;init<span class="asBracket">()</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.messaging.messages.AsyncMessage;
+            <span class="asReserved">import</span> mx.messaging.events.MessageEvent;
+            <span class="asReserved">import</span> weborb.messaging.WeborbConsumer;
+            <span class="asReserved">import</span> weborb.messaging.WeborbProducer;
+            
+            <span class="asReserved">private</span> <span class="asVar">var</span> producer<span class="asOperator">:</span>WeborbProducer;
+            <span class="asReserved">private</span> <span class="asVar">var</span> consumer<span class="asOperator">:</span>WeborbConsumer;
+        
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asComment">// create a producer and configure it to talk to ChatDestination
+</span>                producer <span class="asOperator">=</span> <span class="asReserved">new</span> WeborbProducer<span class="asBracket">(</span> <span class="asString">&quot;ChatDestination&quot;</span> <span class="asBracket">)</span>;
+                
+                <span class="asComment">// create a consumer and configure it to talk to the 
+</span>                <span class="asComment">// same destination as the producer
+</span>                consumer <span class="asOperator">=</span> <span class="asReserved">new</span> WeborbConsumer<span class="asBracket">(</span> <span class="asString">&quot;ChatDestination&quot;</span> <span class="asBracket">)</span>;
+                
+                <span class="asComment">// add listener to the consumer. The listener is invoked when 
+</span>                <span class="asComment">// a message from the destination is available
+</span>                consumer.addEventListener<span class="asBracket">(</span> MessageEvent.MESSAGE, gotMessage <span class="asBracket">)</span>;
+                
+                <span class="asComment">// subscribe to the destination to connect and start polling
+</span>                consumer.subscribe<span class="asBracket">()</span>;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> gotMessage<span class="asBracket">(</span> event<span class="asOperator">:</span>MessageEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asComment">// received message is always AsyncMessage, so cast it
+</span>                <span class="asVar">var</span> msg<span class="asOperator">:</span>AsyncMessage <span class="asOperator">=</span> AsyncMessage<span class="asBracket">(</span> event.message <span class="asBracket">)</span>;
+                
+                <span class="asComment">// if the producer set the logical id (see the line 
+</span>                <span class="asComment">// where it does: &quot;producer.producerId = userID.text&quot;, then
+</span>                <span class="asComment">// get the id and show it with the incoming message in the chat log
+</span>                <span class="asVar">var</span> sender<span class="asOperator">:</span>String <span class="asOperator">=</span> msg.headers<span class="asBracket">[</span> <span class="asString">&quot;WebORBClientId&quot;</span> <span class="asBracket">]</span>;
+                
+                <span class="asComment">// if no name was assigned to the producer, make it an anonymous message
+</span>                <span class="asReserved">if</span><span class="asBracket">(</span> sender <span class="asOperator">==</span> <span class="asString">&quot;&quot;</span> <span class="asBracket">)</span>
+                    sender <span class="asOperator">=</span> <span class="asString">&quot;Anonymous&quot;</span>
+                    
+                <span class="asComment">// display the message in the chat log
+</span>                chatLog.text <span class="asOperator">=</span> sender <span class="asOperator">+</span> <span class="asString">&quot;: &quot;</span> <span class="asOperator">+</span> msg.body <span class="asOperator">+</span> <span class="asString">&quot;\n&quot;</span> <span class="asOperator">+</span> chatLog.text;
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">public</span> <span class="asFunction">function</span> sendMessage<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                <span class="asComment">// set the logical id for the producer
+</span>                producer.producerId <span class="asOperator">=</span> userID.text;
+                
+                <span class="asComment">// create AsyncMessage - this is a wrapper for the outgoing message
+</span>                <span class="asVar">var</span> message<span class="asOperator">:</span>AsyncMessage <span class="asOperator">=</span> <span class="asReserved">new</span> AsyncMessage<span class="asBracket">()</span>;
+                
+                <span class="asComment">// set the body property with the payload
+</span>                message.body <span class="asOperator">=</span> messageText.text;
+                
+                <span class="asComment">// send the message out
+</span>                producer.send<span class="asBracket">(</span> message <span class="asBracket">)</span>;    
+                
+                <span class="asComment">// chat message sent - clear the IM text
+</span>                messageText.text <span class="asOperator">=</span> <span class="asString">&quot;&quot;</span>;            
+            <span class="asBracket">}</span>
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">360</span>&quot; height=&quot;<span class="mxmlString">315</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">WebORB Chat Client</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; text=&quot;<span class="mxmlString">User ID:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">70</span>&quot; y=&quot;<span class="mxmlString">8</span>&quot; width=&quot;<span class="mxmlString">260</span>&quot; id=&quot;<span class="mxmlString">userID</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextArea</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">36</span>&quot; width=&quot;<span class="mxmlString">320</span>&quot; height=&quot;<span class="mxmlString">200</span>&quot; id=&quot;<span class="mxmlString">chatLog</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">244</span>&quot; text=&quot;<span class="mxmlString">Message:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextInput</span> x=&quot;<span class="mxmlString">77</span>&quot; y=&quot;<span class="mxmlString">242</span>&quot; width=&quot;<span class="mxmlString">191</span>&quot; id=&quot;<span class="mxmlString">messageText</span>&quot; enter=&quot;sendMessage<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">276</span>&quot; y=&quot;<span class="mxmlString">242</span>&quot; label=&quot;<span class="mxmlString">Send</span>&quot; click=&quot;sendMessage<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

@@ -1,0 +1,62 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Exceptions.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; width=&quot;<span class="mxmlString">660</span>&quot; height=&quot;<span class="mxmlString">290</span>&quot; creationComplete=&quot;init<span class="asBracket">()</span>&quot; viewSourceURL=&quot;<span class="mxmlString">srcview/index.html</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlTag">&lt;mx:Script&gt;</span>
+        <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+            <span class="asReserved">import</span> mx.controls.Alert;
+            <span class="asReserved">import</span> mx.rpc.events.FaultEvent;
+            <span class="asReserved">import</span> mx.rpc.remoting.RemoteObject;
+        
+            <span class="asReserved">private</span> <span class="asVar">var</span> exceptionGenService<span class="asOperator">:</span>RemoteObject;
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> init<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                exceptionGenService <span class="asOperator">=</span> <span class="asReserved">new</span> RemoteObject<span class="asBracket">(</span> <span class="asString">&quot;GenericDestination&quot;</span> <span class="asBracket">)</span>;
+                exceptionGenService.source <span class="asOperator">=</span> <span class="asString">&quot;Weborb.Examples.ExceptionsTest&quot;</span>;
+                exceptionGenService.addEventListener<span class="asBracket">(</span> FaultEvent.FAULT, gotError <span class="asBracket">)</span>;                                
+            <span class="asBracket">}</span>
+            
+            <span class="asReserved">private</span> <span class="asFunction">function</span> gotError<span class="asBracket">(</span> fault<span class="asOperator">:</span>FaultEvent <span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+            <span class="asBracket">{</span>
+                Alert.show<span class="asBracket">(</span> <span class="asString">&quot;Server reported an error - &quot;</span> <span class="asOperator">+</span> fault.fault.faultString <span class="asBracket">)</span>;
+                faultCodeField.text <span class="asOperator">=</span> fault.fault.faultCode;
+                faultStringField.text <span class="asOperator">=</span> fault.fault.faultString;
+                faultDetailField.text <span class="asOperator">=</span> fault.fault.faultDetail;
+                nameField.text <span class="asOperator">=</span> fault.fault.name;
+                messageField.text <span class="asOperator">=</span> fault.fault.message;
+            <span class="asBracket">}</span>
+            
+        <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+    <span class="mxmlTag">&lt;/mx:Script&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> x=&quot;<span class="mxmlString">10</span>&quot; y=&quot;<span class="mxmlString">10</span>&quot; width=&quot;<span class="mxmlString">640</span>&quot; height=&quot;<span class="mxmlString">270</span>&quot; layout=&quot;<span class="mxmlString">absolute</span>&quot; title=&quot;<span class="mxmlString">Exception Handling Example</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">25.5</span>&quot; y=&quot;<span class="mxmlString">67</span>&quot; label=&quot;<span class="mxmlString">Generate Division by Zero</span>&quot; width=&quot;<span class="mxmlString">205</span>&quot; click=&quot;exceptionGenService.divByZero<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">25.5</span>&quot; y=&quot;<span class="mxmlString">112</span>&quot; label=&quot;<span class="mxmlString">Generate NullPointerException</span>&quot; width=&quot;<span class="mxmlString">205</span>&quot; click=&quot;exceptionGenService.NPE<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Button</span> x=&quot;<span class="mxmlString">25.5</span>&quot; y=&quot;<span class="mxmlString">158</span>&quot; label=&quot;<span class="mxmlString">Generate Application Exception</span>&quot; width=&quot;<span class="mxmlString">205</span>&quot; click=&quot;exceptionGenService.throwException<span class="asBracket">()</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextArea</span> x=&quot;<span class="mxmlString">20</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; width=&quot;<span class="mxmlString">216</span>&quot; height=&quot;<span class="mxmlString">43</span>&quot; textAlign=&quot;<span class="mxmlString">center</span>&quot; borderStyle=&quot;<span class="mxmlString">none</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:text&gt;</span>Click a button below to generate an exception on the server<span class="mxmlComponent">&lt;/mx:text&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:TextArea&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Canvas</span> x=&quot;<span class="mxmlString">263</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; width=&quot;<span class="mxmlString">345</span>&quot; height=&quot;<span class="mxmlString">199</span>&quot; borderStyle=&quot;<span class="mxmlString">solid</span>&quot;<span class="mxmlComponent">&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">28</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; text=&quot;<span class="mxmlString">faultString:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">28</span>&quot; y=&quot;<span class="mxmlString">57</span>&quot; text=&quot;<span class="mxmlString">faultDetail:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">31</span>&quot; y=&quot;<span class="mxmlString">98</span>&quot; text=&quot;<span class="mxmlString">faultCode:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">34</span>&quot; y=&quot;<span class="mxmlString">134</span>&quot; text=&quot;<span class="mxmlString">message:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">53</span>&quot; y=&quot;<span class="mxmlString">169</span>&quot; text=&quot;<span class="mxmlString">name:</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">103</span>&quot; y=&quot;<span class="mxmlString">20</span>&quot; id=&quot;<span class="mxmlString">faultStringField</span>&quot; width=&quot;<span class="mxmlString">230</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">103</span>&quot; y=&quot;<span class="mxmlString">57</span>&quot; id=&quot;<span class="mxmlString">faultDetailField</span>&quot; width=&quot;<span class="mxmlString">230</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">103</span>&quot; y=&quot;<span class="mxmlString">98</span>&quot; id=&quot;<span class="mxmlString">faultCodeField</span>&quot; width=&quot;<span class="mxmlString">230</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">103</span>&quot; y=&quot;<span class="mxmlString">134</span>&quot; id=&quot;<span class="mxmlString">messageField</span>&quot; width=&quot;<span class="mxmlString">230</span>&quot;<span class="mxmlComponent">/&gt;</span>
+            <span class="mxmlComponent">&lt;mx:Label</span> x=&quot;<span class="mxmlString">103</span>&quot; y=&quot;<span class="mxmlString">169</span>&quot; id=&quot;<span class="mxmlString">nameField</span>&quot; width=&quot;<span class="mxmlString">230</span>&quot;<span class="mxmlComponent">/&gt;</span>
+        <span class="mxmlComponent">&lt;/mx:Canvas&gt;</span>
+        <span class="mxmlComponent">&lt;mx:Text</span> x=&quot;<span class="mxmlString">273</span>&quot; y=&quot;<span class="mxmlString">11</span>&quot; text=&quot;<span class="mxmlString">Exception Details</span>&quot; opaqueBackground=&quot;<span class="mxmlString">0xffffff</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>
